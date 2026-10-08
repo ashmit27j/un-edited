@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Your front page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 12px 24px 28px 24px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: flex; flex-direction: column;">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; height: 44px;">
+    <a href="OB6Sources.dc.html" aria-label="Back" style="width: 44px; height: 44px; margin-left: -12px; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <span style="justify-self: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Step 6 of 6</span>
+    <a href="OB8Printing.dc.html" style="justify-self: end; height: 44px; display: flex; align-items: center; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Skip</a>
+  </div>
+  <div style="height: 2px; background: {{t.accent}};"></div>
+
+  <h1 style="margin: 24px 0 0 0; font-weight: 400; font-size: 30px; line-height: 1.15; letter-spacing: -0.4px;">Your homepage layout</h1>
+  <p style="margin: 10px 0 0 0; font-size: 17px; line-height: 1.45; color: {{t.muted}};">Your topics are already on it. Add or remove the extras.</p>
+
+  <div style="margin-top: 24px; display: flex; flex-direction: column; border-top: 1px solid {{t.ink}};">
+    <sc-for list="{{opts}}" as="o" hint-placeholder-count="4">
+      <button role="switch" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+        <span style="display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 19px;">{{o.label}}</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.4; color: {{t.muted}};">{{o.desc}}</span>
+        </span>
+        <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{o.track}}; border: 1.5px solid {{o.edge}}; position: relative;">
+          <span style="position: absolute; top: 3px; left: {{o.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{o.knob}};"></span>
+        </span>
+      </button>
+    </sc-for>
+  </div>
+
+  <a href="OB8Printing.dc.html" style="margin-top: auto; height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Print my first edition</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { trending: false, papers: true, outside: true, cont: true };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F' }
+      : { bg: '#F1EBE0', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A' };
+    const s = this.state;
+    const list = [
+      { id: 'papers', label: 'Papers & Reports', desc: 'Research and official documents, clearly labelled.' },
+      { id: 'outside', label: 'Outside your sources', desc: 'A few stories from outlets you haven’t chosen, near the bottom.' },
+      { id: 'cont', label: 'Continue reading', desc: 'Pick up articles you started.' },
+      { id: 'trending', label: 'Trending', desc: 'Stories the most outlets are covering right now. Five at most.' }
+    ];
+    const opts = list.map((o) => ({
+      label: o.label, desc: o.desc,
+      on: !!s[o.id],
+      track: s[o.id] ? t.ink : 'transparent',
+      edge: s[o.id] ? t.ink : t.muted,
+      knob: s[o.id] ? t.bg : t.muted,
+      knobX: s[o.id] ? 21 : 3,
+      pick: () => this.setState({ [o.id]: !s[o.id] })
+    }));
+    return { t: t, opts: opts };
+  }
+}
+</script>
+</body>
+</html>

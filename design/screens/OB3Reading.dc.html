@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Reading preferences</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 12px 24px 28px 24px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: flex; flex-direction: column;">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; height: 44px;">
+    <a href="OB2Language.dc.html" aria-label="Back" style="width: 44px; height: 44px; margin-left: -12px; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <span style="justify-self: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Step 2 of 6</span>
+    <a href="OB8Printing.dc.html" style="justify-self: end; height: 44px; display: flex; align-items: center; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Skip</a>
+  </div>
+  <div style="height: 2px; background: {{t.rule}}; position: relative;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 33.3%; background: {{t.accent}};"></span></div>
+
+  <h1 style="margin: 24px 0 0 0; font-weight: 400; font-size: 30px; line-height: 1.15; letter-spacing: -0.4px;">How do you like to read?</h1>
+
+  <div aria-label="Preview" style="margin-top: 16px; padding: 14px; background: {{t.surface}}; border: 1px solid {{t.rule}}; display: flex; gap: 12px; align-items: flex-start;">
+    <span style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: {{t.accent}};">Preview</span>
+      <span style="font-family: {{face}}; font-size: 18px; line-height: 1.2;">Water board clears a 24-hour supply pilot for three wards</span>
+      <span style="font-family: {{face}}; font-size: 14px; line-height: 1.45; color: {{t.muted}};">Meters will be installed before the switch.</span>
+    </span>
+    <sc-if value="{{comfy}}" hint-placeholder-val="{{ true }}">
+      <span style="width: 78px; height: 78px; flex-shrink: 0; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+    </sc-if>
+  </div>
+
+  <div style="margin-top: 22px; display: flex; flex-direction: column; gap: 20px;">
+    <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">{{g.label}}</span>
+        <div style="display: flex; border: 1px solid {{t.ink}};">
+          <sc-for list="{{g.options}}" as="o" hint-placeholder-count="2">
+            <button aria-pressed="{{o.on}}" onClick="{{o.pick}}" style="flex: 1; height: 44px; border: 0; background: {{o.fill}}; color: {{o.color}}; font-family: {{o.font}}; font-size: 15px; cursor: pointer;">{{o.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <p style="margin: 14px 0 0 0; font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">Text size and everything else can be changed later in You › Reading.</p>
+
+  <a href="OB4Topics.dc.html" style="margin-top: auto; height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Continue</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { font: 'serif', theme: 'light', view: 'comfortable' };
+  }
+  renderVals() {
+    const s = this.state;
+    const dark = s.theme === 'dark';
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', photo: '#2D2924', hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', photo: '#DCD2C1', hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)' };
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const mk = (key, label, opts) => ({
+      label: label,
+      options: opts.map((o) => ({
+        label: o.label,
+        on: s[key] === o.id,
+        fill: s[key] === o.id ? t.ink : 'transparent',
+        color: s[key] === o.id ? t.bg : t.ink,
+        font: o.font || sans,
+        pick: () => this.setState({ [key]: o.id })
+      }))
+    });
+    return {
+      t: t,
+      face: s.font === 'sans' ? sans : serif,
+      comfy: s.view === 'comfortable',
+      groups: [
+        mk('theme', 'Theme', [{ id: 'light', label: 'Light' }, { id: 'dark', label: 'Dark' }, { id: 'system', label: 'System' }]),
+        mk('font', 'Font', [{ id: 'serif', label: 'Serif', font: serif }, { id: 'sans', label: 'Sans serif', font: sans }]),
+        mk('view', 'Home view', [{ id: 'comfortable', label: 'Comfortable' }, { id: 'focused', label: 'Focused' }])
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

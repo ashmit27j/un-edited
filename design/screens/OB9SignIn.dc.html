@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+@keyframes ob9-stamp{0%{opacity:0;transform:translateY(-34px) scale(2.1) rotate(-16deg)}55%{opacity:1;transform:translateY(0) scale(.9) rotate(3deg)}70%{transform:scale(1.06) rotate(-1deg)}85%{transform:scale(.98) rotate(0)}100%{opacity:1;transform:none}}
+@keyframes ob9-thud{0%,100%{transform:none}30%{transform:translateY(2px) rotate(-.4deg)}60%{transform:translateY(-1px)}}
+@keyframes ob9-ring{0%{opacity:.55;transform:scale(.7)}100%{opacity:0;transform:scale(1.5)}}
+.ob9-stamp{animation:ob9-stamp .5s cubic-bezier(.5,0,.75,1.4) .7s both;transform-origin:50% 50%}
+.ob9-card{animation:ob9-thud .28s ease-out .98s both}
+.ob9-ring{animation:ob9-ring .5s ease-out .98s both}
+@media (prefers-reduced-motion: reduce){.ob9-stamp,.ob9-card,.ob9-ring{animation:none}.ob9-ring{opacity:0}}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 40px 24px 28px 24px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: flex; flex-direction: column; position: relative">
+
+  <div aria-hidden="true" class="ob9-card" style="align-self: center; width: 250px; padding: 16px 16px 18px 16px; background: {{t.surface}}; border: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 8px; position: relative">
+    <div style="font-weight: 700; font-size: 20px; display: flex; align-items: center; line-height: 1;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 4px; margin: 0 2px; padding-top: 2px;"><span style="width: 4px; height: 4px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 4px; height: 4px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</div>
+    <div style="border-top: 2px solid {{t.ink}}; border-bottom: 1px solid {{t.ink}}; padding: 4px 0; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.6px; text-transform: uppercase; color: {{t.muted}}; display: flex; justify-content: space-between;"><span>Edition Nº 1</span><span>Tue 6 Oct</span></div>
+    <div style="height: 70px; background-color: {{t.photo}}; background-image: {{t.hatch}};"></div>
+    <div style="font-size: 15px; line-height: 1.2;">Water board clears a 24-hour supply pilot for three wards</div>
+    <div style="height: 5px; width: 80%; background: {{t.rule}};"></div>
+    <div style="height: 5px; width: 60%; background: {{t.rule}};"></div>
+  </div>
+
+  <h1 style="margin: 34px 0 0 0; font-weight: 400; font-size: 32px; line-height: 1.12; letter-spacing: -0.4px;">Keep your edition on every device.</h1>
+  <p style="margin: 10px 0 0 0; font-size: 17px; line-height: 1.45; color: {{t.muted}};">Sign in to keep your sources, settings and saved folders in sync.</p>
+
+  <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
+    <a href="Tour.dc.html" style="height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Continue with Google</a>
+    <a href="Tour.dc.html" style="height: 52px; border: 1px solid {{t.ink}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Continue with email</a>
+    <a href="Tour.dc.html" style="height: 44px; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 15px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Not now</a>
+    <p style="margin: 2px 0 0 0; font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.5; color: {{t.muted}}; text-align: center;">Without an account, your choices stay on this phone and saving to folders is off.</p>
+  </div>
+<span aria-hidden="true" class="ob9-ring" style="position: absolute; left: 276px; top: 206px; width: 96px; height: 96px; box-sizing: border-box; border-radius: 50%; border: 2px solid {{t.accent}}; pointer-events: none;"></span>
+<img class="ob9-stamp" src="{{t.stamp}}" alt="Brand stamp, capped: Every story, as it was written. Un:edited, 2026." style="width: 96px; height: 96px; position: absolute; left: 276px; top: 206px; margin: 0px; box-sizing: border-box"></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    return {
+      t: dark
+        ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', stamp: 'assets/stamp-brand-ink-capped.svg', photo: '#2D2924', hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)' }
+        : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', stamp: 'assets/stamp-brand-paper-capped.svg', photo: '#DCD2C1', hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)' }
+    };
+  }
+}
+</script>
+</body>
+</html>

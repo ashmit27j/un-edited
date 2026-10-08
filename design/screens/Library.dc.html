@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Library</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+
+  <header style="padding: 22px 24px 0 24px; display: flex; flex-direction: column; gap: 6px;">
+    <h1 style="margin: 0; font-family: {{t.head}}; font-weight: 500; font-size: 34px; letter-spacing: -0.5px;">Library</h1>
+    <div style="border-bottom: 1px solid {{t.ink}}; padding-bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">3 folders · 25 articles · 14 downloaded</div>
+  </header>
+
+  <main style="padding: 18px 24px 100px 24px; display: flex; flex-direction: column; gap: 26px;">
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+      <sc-for list="{{folders}}" as="f" hint-placeholder-count="4">
+        <a href="#folder" style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="height: 118px; position: relative; display: block;">
+            <span style="position: absolute; left: 16px; right: 0; top: 0; height: 96px; background-color: {{t.photo2}}; border: 1px solid {{t.rule}};"></span>
+            <span style="position: absolute; left: 8px; right: 8px; top: 10px; height: 96px; background-color: {{t.photo}}; border: 1px solid {{t.rule}};"></span>
+            <span style="position: absolute; left: 0; right: 16px; top: 20px; height: 96px; background-color: {{t.surface}}; background-image: {{t.hatch}}; border: 1px solid {{t.rule}}; display: flex; align-items: flex-end; padding: 8px; box-sizing: border-box;">
+              <sc-if value="{{f.offline}}" hint-placeholder-val="{{ false }}">
+                <span style="display: flex; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: {{t.accent}};">
+                  <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 20h14"></path></svg>{{f.offlineLabel}}</span>
+              </sc-if>
+            </span>
+          </span>
+          <span style="display: flex; justify-content: space-between; align-items: baseline; gap: 6px;">
+            <span style="font-family: {{t.head}}; font-size: 17px; font-weight: 500;">{{f.name}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{f.count}}</span>
+          </span>
+        </a>
+      </sc-for>
+      <button style="margin-top: 20px; width: calc(100% - 16px); height: 96px; box-sizing: border-box; border: 1px dashed {{t.muted}}; background: none; color: {{t.muted}}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><path d="M12 5v14M5 12h14"></path></svg>New folder</button>
+    </div>
+
+    <section style="display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid {{t.ink}};">
+        <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">RECENTLY VIEWED</h2>
+        <a href="History.dc.html" style="height: 44px; margin-right: -4px; padding: 0 4px; display: flex; align-items: center; gap: 4px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: {{t.accent}};">See all
+          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+      <sc-for list="{{recent}}" as="r" hint-placeholder-count="5">
+        <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid {{t.rule}};">
+          <a href="Article.dc.html" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding: 10px 0;">
+            <span style="font-family: {{t.head}}; font-size: 16px; line-height: 1.3; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{r.title}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{r.meta}}</span>
+          </a>
+          <button onClick="{{r.toggle}}" aria-pressed="{{r.on}}" aria-label="{{r.label}}" style="width: 44px; height: 44px; margin-right: -10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: {{r.color}}; padding: 0; background: none; border: 0; cursor: pointer;">
+            <svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{r.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg>
+          </button>
+        </div>
+      </sc-for>
+    </section>
+  </main>
+
+  <div role="status" aria-live="polite" style="position: absolute; left: 24px; right: 24px; bottom: 88px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 76px; box-sizing: border-box; padding: 6px 12px 18px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>Home</a>
+    <a href="Feed.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>Feed</a>
+    <a href="Library.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>Library</a>
+    <a href="You.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>You</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  theme(dark, type) {
+    const serifHead = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const serifBody = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const base = dark ? {
+      bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D',
+      accent: '#C8705F', photo: '#2D2924', photo2: '#25221E',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4',
+      accent: '#A8372A', photo: '#DCD2C1', photo2: '#E6DDCE',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    base.head = type === 'sans' ? sans : serifHead;
+    base.body = type === 'sans' ? sans : serifBody;
+    return base;
+  }
+  renderVals() {
+    const t = this.theme(this.props.dark ?? false, this.props.type ?? 'serif');
+    const viewed = [
+      { title: 'Water board clears a 24-hour supply pilot for three wards', meta: 'Morning Ledger · 20 min ago · in Saved', saved: true },
+      { title: 'State cabinet approves new crop insurance window for rabi season', meta: 'Deccan Courier · 1h ago', saved: false },
+      { title: 'Urban heat islands and night-time temperatures in tier-2 cities', meta: 'Journal · Peer-reviewed · 3h ago · in Weekend reads', saved: true },
+      { title: 'Rail ministry lists 40 stations for platform-height upgrades', meta: 'Civic Wire · Yesterday', saved: false },
+      { title: 'Election commission publishes revised voter rolls for two states', meta: 'Deccan Courier · Yesterday', saved: false }
+    ];
+    return {
+      t: t,
+      toast: this.toastVals(),
+      recent: viewed.map((r, i) => {
+        const sv = this.saveVals('recent' + i, r.saved, t, false);
+        return { title: r.title, meta: r.meta, label: sv.label, fill: sv.fill, color: sv.color, on: sv.on, toggle: sv.toggle };
+      }),
+      folders: [
+        { name: 'Saved', count: '12', offline: true, offlineLabel: '6 downloaded' },
+        { name: 'Weekend reads', count: '4', offline: true, offlineLabel: 'Downloaded' },
+        { name: 'Elections', count: '9', offline: true, offlineLabel: '4 downloaded' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

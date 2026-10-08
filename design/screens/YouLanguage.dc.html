@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Language settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 1280px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif;">
+  <header style="padding: 12px 24px 0 24px; display: flex; flex-direction: column; gap: 6px;">
+    <a href="You.dc.html" style="align-self: flex-start; height: 44px; margin-left: -6px; display: flex; align-items: center; gap: 4px; font-size: 15px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>You</a>
+    <h1 style="margin: 4px 0 0 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 34px; letter-spacing: -0.4px;">Language</h1>
+  </header>
+
+  <main style="padding: 0 24px 40px 24px; display: flex; flex-direction: column;">
+
+    <!-- Interface language -->
+    <section style="margin-top: 22px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">App language</h2>
+      <p style="margin: 10px 0 0 0; font-size: 12.5px; line-height: 1.5; color: {{t.muted}};">Menus, buttons and settings. Stories always stay in the language they were published in.</p>
+      <div role="radiogroup" aria-label="App language" style="display: flex; flex-direction: column;">
+        <sc-for list="{{ui}}" as="l" hint-placeholder-count="3">
+          <button role="radio" aria-checked="{{l.on}}" onClick="{{l.pick}}" style="width: 100%; min-height: 64px; padding: 8px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+            <span style="display: flex; flex-direction: column; gap: 2px;">
+              <span lang="{{l.code}}" style="font-family: {{l.font}}; font-size: 22px; line-height: 1.25;">{{l.native}}</span>
+              <span style="font-size: 12.5px; color: {{t.muted}};">{{l.english}}</span>
+            </span>
+            <span aria-hidden="true" style="width: 22px; height: 22px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; border: 1.5px solid {{l.edge}}; display: flex; align-items: center; justify-content: center;"><sc-if value="{{l.on}}" hint-placeholder-val="{{ false }}"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{t.ink}};"></span></sc-if></span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- Source languages -->
+    <section style="margin-top: 30px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Source languages</h2>
+      <p style="margin: 10px 0 0 0; font-size: 12.5px; line-height: 1.5; color: {{t.muted}};">Home, Feed and Search show outlets that publish in these languages. Keep at least one on.</p>
+      <sc-for list="{{src}}" as="l" hint-placeholder-count="3">
+        <button role="switch" aria-checked="{{l.on}}" aria-disabled="{{l.locked}}" onClick="{{l.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span lang="{{l.code}}" style="font-family: {{l.font}}; font-size: 18px; line-height: 1.3;">{{l.native}}</span>
+            <span style="font-size: 12.5px; color: {{t.muted}};">{{l.note}}</span>
+          </span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{l.track}}; border: 1.5px solid {{l.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{l.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{l.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- Devanagari reading font -->
+    <section style="margin-top: 30px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Hindi and Marathi text</h2>
+      <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 15px;">Reading font</span>
+        <div role="radiogroup" aria-label="Hindi and Marathi reading font" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid {{t.ink}};">
+          <sc-for list="{{fonts}}" as="o" hint-placeholder-count="3">
+            <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0 4px; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 13.5px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+          </sc-for>
+        </div>
+        <span style="font-size: 12.5px; line-height: 1.45; color: {{t.muted}};">{{fontNote}}</span>
+      </div>
+      <div data-dv="{{dv}}" style="margin-top: 16px; padding: 14px 16px; background: {{t.surface}}; border: 1px solid {{t.ruleStrong}}; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">Preview</span>
+        <p lang="hi" style="margin: 0; font-size: 19px; line-height: 1.65;">शहर के जल बोर्ड ने सोमवार को तीन वार्डों में चौबीस घंटे जलापूर्ति का छह महीने का पायलट मंज़ूर किया।</p>
+        <p lang="mr" style="margin: 0; font-size: 19px; line-height: 1.65;">शहराच्या जल मंडळाने सोमवारी तीन प्रभागांत चोवीस तास पाणीपुरवठ्याचा सहा महिन्यांचा प्रयोग मंजूर केला.</p>
+      </div>
+      <p style="margin: 12px 0 0 0; font-size: 12.5px; line-height: 1.5; color: {{t.muted}};">Tiro Devanagari only comes in one weight, so bolder text uses Mukta Medium.</p>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1280}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { ui: 'en', src: { en: true, hi: false, mr: true }, font: 'match' };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', ruleStrong: '#4A443C', accent: '#C8705F' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', ruleStrong: '#C2B6A2', accent: '#A8372A' };
+    const s = this.state;
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const list = [
+      { code: 'en', native: 'English', english: 'English', font: serif },
+      { code: 'hi', native: 'हिंदी', english: 'Hindi', font: "'Tiro Devanagari Hindi', serif" },
+      { code: 'mr', native: 'मराठी', english: 'Marathi', font: "'Tiro Devanagari Marathi', serif" }
+    ];
+    const ui = list.map((l) => ({
+      code: l.code, native: l.native, english: l.english, font: l.font,
+      on: s.ui === l.code, edge: s.ui === l.code ? t.ink : t.muted,
+      pick: () => this.setState({ ui: l.code })
+    }));
+    const onCount = list.filter((l) => s.src[l.code]).length;
+    const src = list.map((l) => {
+      const on = !!s.src[l.code];
+      const locked = on && onCount === 1;
+      return {
+        code: l.code, native: l.native, font: l.font,
+        note: locked ? 'Last one on. Keep at least one.' : (l.code === 'en' ? 'English-language outlets' : l.english + '-language outlets'),
+        on: on, locked: locked,
+        track: on ? t.ink : 'transparent', edge: on ? t.ink : t.muted,
+        knob: on ? t.bg : t.muted, knobX: on ? 21 : 3,
+        pick: () => { if (locked) return; this.setState({ src: Object.assign({}, s.src, { [l.code]: !on }) }); }
+      };
+    });
+    const opts = [
+      { id: 'match', label: 'Match Font' },
+      { id: 'serif', label: 'Serif' },
+      { id: 'sans', label: 'Sans' }
+    ];
+    const fonts = opts.map((o) => ({
+      label: o.label, on: s.font === o.id,
+      bg: s.font === o.id ? t.ink : 'transparent', fg: s.font === o.id ? t.bg : t.ink,
+      weight: s.font === o.id ? 500 : 400,
+      pick: () => this.setState({ font: o.id })
+    }));
+    const note = {
+      match: 'Follows your Serif or Sans choice in You › Reading.',
+      serif: 'Tiro Devanagari, a book serif for Hindi and Marathi.',
+      sans: 'Mukta, a clean sans for Hindi and Marathi.'
+    }[s.font];
+    return { t: t, ui: ui, src: src, fonts: fonts, fontNote: note, dv: s.font === 'sans' ? 'sans' : 'serif' };
+  }
+}
+</script>
+</body>
+</html>

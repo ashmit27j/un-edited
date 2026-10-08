@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Article</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 1640px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+
+  <div style="height: 300px; position: relative; background-color: {{t.photo}}; background-image: {{t.hatch}};">
+    <a href="ImageView.dc.html" aria-label="View image full screen" style="position: absolute; inset: 0; cursor: zoom-in;"></a>
+    <a href="Main.dc.html" aria-label="Back" style="position: absolute; left: 16px; top: 14px; width: 44px; height: 44px; border-radius: 50%; background: {{t.chip}}; display: flex; align-items: center; justify-content: center; color: {{t.ink}};">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>
+    </a>
+    <a href="MoreSheet.dc.html" aria-label="More options" style="position: absolute; right: 16px; top: 14px; width: 44px; height: 44px; border-radius: 50%; background: {{t.chip}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor;"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
+    </a>
+    <span style="position: absolute; left: 16px; bottom: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.6px; color: {{t.muted}};">{{s.credit}}</span>
+    <img src="{{t.stamp}}" alt="Stamp: As published. Word for word. Not rewritten." style="position: absolute; right: 18px; bottom: -40px; width: 92px; height: 92px; z-index: 2; pointer-events: none;">
+  </div>
+
+  <main style="padding: 22px 24px 112px 24px; display: flex; flex-direction: column; gap: 14px;">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">City · Covered by 4 of your sources</div>
+    <h1 style="margin: 0; font-family: {{t.head}}; font-weight: 500; font-size: 30px; line-height: 1.12; letter-spacing: -0.4px;">{{s.headline}}</h1>
+
+    
+
+    
+
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">{{s.mode}}</span>
+    <sc-for list="{{s.body}}" as="para" hint-placeholder-count="3">
+      <p style="margin: 0; font-size: 18px; line-height: 1.62;">{{para}}</p>
+    </sc-for>
+
+    <a href="#source" style="margin-top: 6px; height: 48px; border: 1px solid {{t.ink}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;">Continue on {{s.name}}
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M8 16L16 8M9 8h7v7"></path></svg>
+    </a>
+
+    <div style="margin-top: 10px; padding: 12px 0; border-top: 1px solid {{t.ink}}; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">Primary source</span>
+      <a href="#pdf" style="font-family: {{t.head}}; font-size: 16px; text-decoration: underline; text-underline-offset: 3px;">Water board resolution on the 24-hour supply pilot (PDF)</a>
+      <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">Linked by 2 of the 4 outlets</span>
+    </div>
+
+    <h2 style="margin: 14px 0 0 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Related stories</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+      <a href="Article.dc.html" style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="height: 96px; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+        <span style="font-family: {{t.head}}; font-size: 15px; line-height: 1.3; font-weight: 500;">Metering drive: how the switch to billed use will work</span>
+        <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">Civic Wire · Yesterday</span>
+      </a>
+      <a href="Article.dc.html" style="display: flex; flex-direction: column; gap: 8px;">
+        <span style="height: 96px; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+        <span style="font-family: {{t.head}}; font-size: 15px; line-height: 1.3; font-weight: 500;">Lake levels at the end of monsoon, ward by ward</span>
+        <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">Morning Ledger · 2 Oct</span>
+      </a>
+    </div>
+
+    <p style="margin: 20px 0 0 0; text-align: center; font-family: {{t.head}}; font-style: italic; font-size: 14px; color: {{t.muted}};">Shown in the publishers' own words. Nothing here is rewritten.</p>
+  </main>
+
+  <div role="status" aria-live="polite" style="position: absolute; left: 24px; right: 24px; bottom: 84px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+
+  <nav aria-label="Article actions" style="position: absolute; left: 0; right: 0; bottom: 0; height: 72px; box-sizing: border-box; padding: 0 12px 8px 12px; background: {{t.surface}}; border-top: 1px solid {{t.rule}}; display: flex; align-items: center; gap: 2px;">
+    <button aria-label="Previous source" onClick="{{prev}}" style="flex-shrink: 0; width: 44px; height: 44px; padding: 0; border: 0; background: none; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>
+    </button>
+    <div aria-live="polite" style="flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 3px;">
+      <span style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;">{{s.name}}</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Source {{pos}} of {{total}}</span>
+    </div>
+    <button aria-label="Next source" onClick="{{next}}" style="flex-shrink: 0; width: 44px; height: 44px; padding: 0; border: 0; background: none; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 5l7 7-7 7"></path></svg>
+    </button>
+    <span aria-hidden="true" style="flex-shrink: 0; width: 1px; height: 28px; margin: 0 6px; background: {{t.rule}};"></span>
+    <sc-if value="{{save.guest}}" hint-placeholder-val="{{ false }}"><a href="GuestPrompt.dc.html" aria-label="Save. Sign in to save stories" style="flex-shrink: 0; height: 44px; padding: 0 10px; display: flex; align-items: center; gap: 6px; color: {{save.color}}; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg><span>Save</span></a></sc-if>
+    <sc-if value="{{save.member}}" hint-placeholder-val="{{ true }}"><button onClick="{{save.toggle}}" aria-pressed="{{save.on}}" aria-label="{{save.label}}" style="flex-shrink: 0; height: 44px; padding: 0 10px; display: flex; align-items: center; gap: 6px; color: {{save.color}}; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; background: none; border: 0; cursor: pointer;"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg><span>{{save.text}}</span></button></sc-if>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"saved":{"editor":"boolean","default":false,"section":"State"},"guest":{"editor":"boolean","default":false,"section":"Account"},"$preview":{"width":390,"height":1640}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  constructor(props) {
+    super(props);
+    this.state = { idx: 0 };
+  }
+  theme(dark, type) {
+    const serifHead = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const serifBody = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const base = dark ? {
+      bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D',
+      accent: '#C8705F', photo: '#2D2924', fade: 'rgba(30,28,25,0)', chip: 'rgba(30,28,25,0.82)',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4',
+      accent: '#A8372A', photo: '#DCD2C1', fade: 'rgba(241,235,224,0)', chip: 'rgba(248,243,234,0.88)',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    base.stamp = dark ? 'assets/stamp-published-ink.svg' : 'assets/stamp-published-paper.svg';
+    base.head = type === 'sans' ? sans : serifHead;
+    base.body = type === 'sans' ? sans : serifBody;
+    return base;
+  }
+  renderVals() {
+    const t = this.theme(this.props.dark ?? false, this.props.type ?? 'serif');
+    const list = [
+      {
+        name: 'Morning Ledger', short: 'Morning Ledger', time: '7:42 AM',
+        headline: 'Water board clears a 24-hour supply pilot for three wards',
+        credit: 'PHOTO · MORNING LEDGER STAFF',
+        mode: 'ARTICLE BY: John Doe ',
+        body: [
+          'The city water board on Monday approved a six-month pilot that will move three wards from scheduled supply to round-the-clock water.',
+          'Officials said meters will be installed in all connections before the switch, and that billing will move to actual use from the first full month of the pilot.',
+          'The board said it would publish the pilot’s findings before deciding whether to extend it to other wards.'
+        ]
+      },
+      {
+        name: 'Deccan Courier', short: 'Deccan Courier', time: '8:15 AM',
+        headline: 'Round-the-clock water, but only for three wards — for now',
+        credit: 'PHOTO · A. RAO / DECCAN COURIER',
+        mode: 'Excerpt · full story on Deccan Courier',
+        body: [
+          'Three wards will get water 24 hours a day under a pilot cleared on Monday, while the rest of the city stays on its current schedule.',
+          'Corporators from wards left out of the pilot asked how the three were chosen.'
+        ]
+      },
+      {
+        name: 'Civic Wire', short: 'Civic Wire', time: '9:02 AM',
+        headline: '24-hour water pilot: what changes for residents from November',
+        credit: 'PHOTO · CIVIC WIRE',
+        mode: 'Excerpt · full story on Civic Wire',
+        body: [
+          'Meters first, then the switch: a step-by-step look at the timeline the board has set for the pilot wards.',
+          'Residents in the three wards will receive notices before meter installation begins.'
+        ]
+      },
+      {
+        name: 'The Plateau Times', short: 'Plateau Times', time: '10:30 AM',
+        headline: 'Residents ask for a public review before 24×7 water pilot expands',
+        credit: 'PHOTO · S. DESHMUKH / THE PLATEAU TIMES',
+        mode: 'Excerpt · full story on The Plateau Times',
+        body: [
+          'Residents’ groups welcomed the pilot but said its results should be reviewed in public before any expansion.',
+          'The board said findings would be published at the end of the six months.'
+        ]
+      }
+    ];
+    const idx = this.state.idx;
+    const sources = list.map((s, i) => ({
+      short: s.short,
+      on: i === idx,
+      bar: i === idx ? t.accent : 'transparent',
+      color: i === idx ? t.ink : t.muted,
+      weight: i === idx ? 500 : 400,
+      pick: () => this.setState({ idx: i })
+    }));
+    const n = list.length;
+    const save = this.saveVals('a', this.props.saved ?? false, t, this.props.guest ?? false);
+    return {
+      t: t, s: list[idx], sources: sources, save: save, toast: this.toastVals(),
+      pos: idx + 1, total: n,
+      prev: () => this.setState({ idx: (idx - 1 + n) % n }),
+      next: () => this.setState({ idx: (idx + 1) % n })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — First-run tour</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+.tr-spot{transition:left .35s cubic-bezier(.3,.7,.3,1),top .35s cubic-bezier(.3,.7,.3,1),width .35s cubic-bezier(.3,.7,.3,1),height .35s cubic-bezier(.3,.7,.3,1)}
+.tr-card{transition:top .35s cubic-bezier(.3,.7,.3,1)}
+@keyframes tr-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tr-body{animation:tr-in .3s ease-out both}
+@keyframes tr-swipe{0%{transform:translateX(-96px);opacity:0}12%{opacity:1}50%{transform:translateX(96px);opacity:1}62%{opacity:0;transform:translateX(96px)}63%{transform:translateX(96px)}75%{opacity:1}100%{transform:translateX(-96px);opacity:0}}
+@keyframes tr-trail-r{0%,10%{transform:scaleX(0);opacity:.0}45%{transform:scaleX(1);opacity:.55}60%,100%{opacity:0}}
+@keyframes tr-trail-l{0%,60%{opacity:0;transform:scaleX(0)}95%{opacity:.55;transform:scaleX(1)}100%{opacity:0}}
+.tr-dot{animation:tr-swipe 2.6s cubic-bezier(.45,0,.3,1) infinite}
+.tr-trail-r{transform-origin:left center;animation:tr-trail-r 2.6s ease-out infinite}
+.tr-trail-l{transform-origin:right center;animation:tr-trail-l 2.6s ease-out infinite}
+@keyframes tr-stamp{0%{opacity:0;transform:translateY(-30px) scale(2) rotate(-16deg)}55%{opacity:1;transform:scale(.9) rotate(3deg)}72%{transform:scale(1.05) rotate(-1deg)}100%{opacity:1;transform:none}}
+.tr-stamp{animation:tr-stamp .5s cubic-bezier(.5,0,.75,1.4) .2s both}
+@media (prefers-reduced-motion: reduce){.tr-spot,.tr-card{transition:none}.tr-body,.tr-stamp{animation:none}.tr-dot{animation:none;transform:none}.tr-trail-r,.tr-trail-l{animation:none;opacity:.5;transform:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: {{t.bg}}; font-family: 'Inter', sans-serif;">
+
+  <sc-if value="{{scr.home}}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 1900px;"><dc-import name="Main" dark="{{dark}}" hint-size="390px,1900px"></dc-import></div>
+  </sc-if>
+  <sc-if value="{{scr.feed}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 844px;"><dc-import name="Feed" dark="{{dark}}" hint-size="390px,844px"></dc-import></div>
+  </sc-if>
+  <sc-if value="{{scr.library}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 844px;"><dc-import name="Library" dark="{{dark}}" hint-size="390px,844px"></dc-import></div>
+  </sc-if>
+  <sc-if value="{{scr.you}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 1700px;"><dc-import name="You" dark="{{dark}}" hint-size="390px,1700px"></dc-import></div>
+  </sc-if>
+
+  <div aria-hidden="true" style="position: absolute; inset: 0;"></div>
+  <div aria-hidden="true" class="tr-spot" style="position: absolute; left: {{s.x}}px; top: {{s.y}}px; width: {{s.w}}px; height: {{s.h}}px; box-shadow: 0 0 0 2000px {{t.scrim}}; outline: 2px solid {{s.ring}}; outline-offset: 3px; pointer-events: none;"></div>
+
+  <sc-if value="{{s.swipe}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 236px; height: 60px; display: flex; align-items: center; justify-content: center; pointer-events: none;">
+      <span style="position: absolute; left: 70px; font-size: 30px; line-height: 1; color: {{t.onScrim}}; font-family: 'Inter', sans-serif;">‹</span>
+      <span style="position: absolute; right: 70px; font-size: 30px; line-height: 1; color: {{t.onScrim}}; font-family: 'Inter', sans-serif;">›</span>
+      <span class="tr-trail-r" style="position: absolute; left: 99px; width: 96px; height: 3px; background: {{t.accent}};"></span>
+      <span class="tr-trail-l" style="position: absolute; right: 99px; width: 96px; height: 3px; background: {{t.accent}};"></span>
+      <span class="tr-dot" style="width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 2px solid {{t.accent}}; background: {{t.dotFill}}; display: flex; align-items: center; justify-content: center;">
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: {{t.accent}};"></span>
+      </span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}">
+    <img class="tr-stamp" src="{{t.stamp}}" alt="" style="position: absolute; left: 135px; top: 168px; width: 120px; height: 120px;">
+  </sc-if>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="tr-title" class="tr-card" style="position: absolute; left: 16px; right: 16px; top: {{s.cardY}}px; box-sizing: border-box; padding: 16px 18px 14px 18px; background: {{t.surface}}; border: 1px solid {{t.rule}}; border-top: 3px solid {{t.accent}}; color: {{t.ink}}; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; height: 24px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">{{s.kicker}}</span>
+      <sc-if value="{{s.canSkip}}" hint-placeholder-val="{{ true }}">
+        <a href="Main.dc.html" style="height: 44px; margin: -10px -6px -10px 0; padding: 0 6px; display: flex; align-items: center; font-size: 13px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Skip tour</a>
+      </sc-if>
+    </div>
+    <div class="tr-body" style="display: flex; flex-direction: column; gap: 6px;">
+      <h2 id="tr-title" style="margin: 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 500; font-size: 23px; line-height: 1.15;">{{s.title}}</h2>
+      <p style="margin: 0; font-size: 14.5px; line-height: 1.5; color: {{t.body}};">{{s.text}}</p>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px;">
+      <div aria-hidden="true" style="display: flex; gap: 5px;">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="8">
+          <span style="width: {{d.w}}px; height: 4px; background: {{d.c}};"></span>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px;">
+        <sc-if value="{{s.canBack}}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{back}}" style="height: 44px; padding: 0 12px; border: 0; background: none; color: {{t.ink}}; font-size: 14.5px; cursor: pointer;">Back</button>
+        </sc-if>
+        <sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}">
+          <a href="Main.dc.html" style="height: 44px; padding: 0 20px; background: {{t.ink}}; color: {{t.surface}}; display: flex; align-items: center; font-size: 14.5px; font-weight: 500;">Start reading</a>
+        </sc-if>
+        <sc-if value="{{s.notDone}}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{next}}" style="height: 44px; padding: 0 20px; border: 0; background: {{t.ink}}; color: {{t.surface}}; font-size: 14.5px; font-weight: 500; cursor: pointer;">{{s.nextLabel}}</button>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"step":{"editor":"enum","options":["1","2","3","4","5","6","7","8","9"],"default":"1","section":"State"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { i: null };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', body: '#B5AC9C', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', scrim: 'rgba(10,9,8,0.72)', onScrim: '#C9C0B0', dotFill: 'rgba(38,35,32,0.9)', stamp: 'assets/stamp-brand-ink-capped.svg' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', body: '#3F3A33', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', scrim: 'rgba(28,26,23,0.62)', onScrim: '#F8F3EA', dotFill: 'rgba(248,243,234,0.92)', stamp: 'assets/stamp-brand-paper-capped.svg' };
+    const steps = [
+      { scr: 'home', x: 24, y: 74, w: 342, h: 32, cardY: 128, title: 'This is today’s edition.', text: 'Home is put together at 6:00 every morning from the sources you chose. It stays the same all day, so you can actually finish it.' },
+      { scr: 'home', x: 14, y: 114, w: 362, h: 500, cardY: 630, title: 'Tap a story to read it.', text: 'When several outlets cover the same news, you can read each one’s version in its own words. The ⋯ under a story lets you save, share or see less of a topic.' },
+      { scr: 'home', x: 320, y: 18, w: 48, h: 48, cardY: 86, title: 'Search anything.', text: 'Find stories, papers, outlets and topics, in your sources or across all of them.' },
+      { scr: 'home', x: 0, y: 768, w: 390, h: 76, cardY: 520, title: 'Four places, always here.', text: 'Home for today’s edition. Feed for stories as they arrive. Library for what you save. You for settings.', nextLabel: 'Show me Feed' },
+      { scr: 'feed', x: 12, y: 52, w: 366, h: 430, cardY: 512, swipe: true, title: 'Swipe left or right to switch sections.', text: 'Move between Today, World, India and the rest without reaching for the tabs. Swipe up for the next story.' },
+      { scr: 'feed', x: 100, y: 8, w: 190, h: 48, cardY: 78, title: 'My Feed or Explore.', text: 'My Feed is only the outlets you chose. Explore shows stories from everyone else, and always says so.' },
+      { scr: 'library', x: 195, y: 772, w: 91, h: 56, cardY: 540, title: 'Your Library.', text: 'Save any story into folders. Download a story from ⋯, or a whole folder, to read it offline. Your last five stories are under Recently viewed.' },
+      { scr: 'you', x: 286, y: 772, w: 92, h: 56, cardY: 540, title: 'Make it yours.', text: 'Change sources, topics, places, font and theme any time. You can replay this tour from You › About.' },
+      { scr: 'home', x: 195, y: 360, w: 0, h: 0, cardY: 330, done: true, title: 'You’re all set.', text: 'Your first edition is ready. Every story, as it was written.' }
+    ];
+    const n = steps.length;
+    const i = this.state.i === null ? Math.min(n - 1, Math.max(0, parseInt(this.props.step ?? '1', 10) - 1)) : this.state.i;
+    const st = steps[i];
+    const s = {
+      x: st.x, y: st.y, w: st.w, h: st.h, cardY: st.cardY,
+      ring: st.done ? 'transparent' : t.accent,
+      swipe: !!st.swipe, done: !!st.done, notDone: !st.done,
+      canBack: i > 0 && !st.done, canSkip: !st.done,
+      kicker: st.done ? 'Tour complete' : (st.scr === 'home' ? 'Home' : st.scr === 'feed' ? 'Feed' : st.scr === 'library' ? 'Library' : 'You') + ' · ' + (i + 1) + ' of ' + (n - 1),
+      title: st.title, text: st.text,
+      nextLabel: st.nextLabel || (i === n - 2 ? 'Finish' : 'Next')
+    };
+    return {
+      t: t, dark: dark, s: s,
+      scr: { home: st.scr === 'home', feed: st.scr === 'feed', library: st.scr === 'library', you: st.scr === 'you' },
+      dots: steps.slice(0, n - 1).map((_, k) => ({ w: k === i ? 16 : 6, c: k <= i ? t.accent : t.rule })),
+      next: () => this.setState({ i: Math.min(n - 1, i + 1) }),
+      back: () => this.setState({ i: Math.max(0, i - 1) })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Choose who you trust</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 12px 24px 0 24px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: flex; flex-direction: column; position: relative;">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; height: 44px;">
+    <a href="OB5Regions.dc.html" aria-label="Back" style="width: 44px; height: 44px; margin-left: -12px; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <span style="justify-self: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Step 5 of 6</span>
+    <a href="OB8Printing.dc.html" style="justify-self: end; height: 44px; display: flex; align-items: center; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Skip</a>
+  </div>
+  <div style="height: 2px; background: {{t.rule}}; position: relative;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 83.3%; background: {{t.accent}};"></span></div>
+
+  <h1 style="margin: 24px 0 0 0; font-weight: 400; font-size: 30px; line-height: 1.15; letter-spacing: -0.4px;">Choose who you trust.</h1>
+  <p style="margin: 8px 0 0 0; font-size: 16.5px; line-height: 1.45; color: {{t.muted}};">My Feed shows only these sources.</p>
+
+  <div style="margin-top: 22px; margin-bottom: 6px; display: flex; gap: 28px; border-bottom: 1px solid {{t.rule}}; font-family: 'Inter', sans-serif; font-size: 14.5px; white-space: nowrap; overflow: hidden;">
+    <sc-for list="{{filters}}" as="f" hint-placeholder-count="5">
+      <button aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="height: 46px; padding: 0 2px; margin-bottom: -1px; background: none; border: 0; border-bottom: 2px solid {{f.bar}}; color: {{f.color}}; font-weight: {{f.weight}}; cursor: pointer; flex-shrink: 0;">{{f.label}}</button>
+    </sc-for>
+  </div>
+
+  <div style="flex: 1; overflow: hidden; display: flex; flex-direction: column; padding-bottom: 120px;">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+      <div style="border-bottom: 1px solid {{t.rule}};">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button aria-pressed="{{r.on}}" onClick="{{r.pick}}" style="flex: 1; min-height: 60px; padding: 8px 0; background: none; border: 0; color: {{t.ink}}; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 3px;">
+            <span lang="{{r.code}}" style="font-family: {{r.font}}; font-size: 19px; line-height: 1.2;">{{r.name}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{r.meta}}</span>
+          </button>
+          <button aria-pressed="{{r.on}}" aria-label="Trust {{r.plain}}" onClick="{{r.pick}}" tabindex="-1" style="width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <span style="width: 22px; height: 22px; box-sizing: border-box; border: 1.5px solid {{r.box}}; background: {{r.fill}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center;">
+              <sc-if value="{{r.on}}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+            </span>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 24px 28px 24px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}}; text-align: center;">{{countLine}}</span>
+    <sc-if value="{{ready}}" hint-placeholder-val="{{ true }}">
+      <a href="OB7Front.dc.html" style="height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Continue</a>
+    </sc-if>
+    <sc-if value="{{notReady}}" hint-placeholder-val="{{ false }}">
+      <button disabled="{{yes}}" style="height: 52px; border: 0; background: {{t.rule}}; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500; cursor: not-allowed;">Continue</button>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { filter: 'All', open: 'Morning Ledger', on: { 'Morning Ledger': true, 'Civic Wire': true } };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A' };
+    const s = this.state;
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const all = [
+      { plain: 'Morning Ledger', name: 'Morning Ledger', code: 'en', lang: 'English', font: serif, meta: 'English · Daily newspaper · Mumbai', owner: 'Ledger Media Pvt Ltd', funding: 'Subscriptions and advertising', base: 'Mumbai, India' },
+      { plain: 'Deccan Courier', name: 'Deccan Courier', code: 'en', lang: 'English', font: serif, meta: 'English · Daily newspaper · Pune', owner: 'Courier Publications Ltd', funding: 'Advertising', base: 'Pune, India' },
+      { plain: 'Civic Wire', name: 'Civic Wire', code: 'en', lang: 'English', font: serif, meta: 'English · Non-profit newsroom · Online', owner: 'Civic Wire Foundation', funding: 'Reader donations and grants', base: 'Bengaluru, India' },
+      { plain: 'Sahyadri Varta', name: 'सह्याद्री वार्ता', code: 'mr', lang: 'मराठी', font: "'Tiro Devanagari Marathi', serif", meta: 'Marathi · Daily newspaper · Pune', owner: 'Sahyadri Prakashan', funding: 'Subscriptions and advertising', base: 'Pune, India' },
+      { plain: 'Nagar Darpan', name: 'नगर दर्पण', code: 'hi', lang: 'हिंदी', font: "'Tiro Devanagari Hindi', serif", meta: 'Hindi · Daily newspaper · Nagpur', owner: 'Darpan Media Group', funding: 'Advertising', base: 'Nagpur, India' },
+      { plain: 'The Plateau Times', name: 'The Plateau Times', code: 'en', lang: 'English', font: serif, meta: 'English · Weekly · Pune', owner: 'Independent, reader-owned', funding: 'Memberships', base: 'Pune, India' },
+      { plain: 'Open Research Repository', name: 'Open Research Repository', code: 'en', lang: 'Journals', font: serif, meta: 'Journals · Preprints and papers', owner: 'University consortium', funding: 'Public research grants', base: 'International' }
+    ];
+    const filterNames = ['All', 'English', 'हिंदी', 'मराठी', 'Journals'];
+    const filters = filterNames.map((f) => ({
+      label: f,
+      on: s.filter === f,
+      bar: s.filter === f ? t.accent : 'transparent',
+      color: s.filter === f ? t.ink : t.muted,
+      weight: s.filter === f ? 500 : 400,
+      pick: () => this.setState({ filter: f })
+    }));
+    const visible = s.filter === 'All' ? all : all.filter((r) => r.lang === s.filter);
+    const rows = visible.map((r) => Object.assign({}, r, {
+      on: !!s.on[r.plain],
+      open: s.open === r.plain,
+      box: s.on[r.plain] ? t.ink : t.muted,
+      fill: s.on[r.plain] ? t.ink : 'transparent',
+      pick: () => this.setState({ on: Object.assign({}, s.on, { [r.plain]: !s.on[r.plain] }) }),
+      toggleOpen: () => this.setState({ open: s.open === r.plain ? '' : r.plain })
+    }));
+    const count = Object.keys(s.on).filter((k) => s.on[k]).length;
+    const need = 3 - count;
+    return {
+      t: t, filters: filters, rows: rows, yes: true,
+      ready: need <= 0, notReady: need > 0,
+      countLine: need > 0 ? count + ' chosen · pick ' + need + ' more' : count + ' chosen'
+    };
+  }
+}
+</script>
+</body>
+</html>

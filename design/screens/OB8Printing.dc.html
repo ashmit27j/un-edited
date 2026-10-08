@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Printing your edition</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+@keyframes ue-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes ue-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes ue-fade{from{opacity:0}to{opacity:1}}
+@keyframes ue-blink{0%,100%{opacity:1}50%{opacity:.25}}
+.ue-row{animation:ue-rise .4s ease-out both}
+.ue-wipe{display:inline-block;animation:ue-wipe .7s cubic-bezier(.4,0,.2,1) .12s both}
+.ue-fade{animation:ue-fade .5s ease-out both}
+.ue-blink{animation:ue-blink 1s ease-in-out infinite}
+@keyframes ue-dot{0%,15%{opacity:0}35%,70%{opacity:1}90%,100%{opacity:0}}
+.ue-dot{display:inline-block;opacity:0;animation:ue-dot 1.4s ease-in-out infinite}
+.ue-d2{animation-delay:.2s}
+.ue-d3{animation-delay:.4s}
+.ue-bar{transition:width 1.6s linear}
+@media (prefers-reduced-motion: reduce){.ue-row,.ue-wipe,.ue-fade,.ue-blink,.ue-dot{animation:none}.ue-dot{opacity:1}.ue-bar{transition:none}}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 0 32px 28px 32px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+
+  <div role="img" aria-label="Un:edited" class="ue-fade" style="width: 128px; height: 128px; box-sizing: border-box; background: {{t.iconBg}}; border: 1px solid {{t.iconEdge}}; border-radius: 28px; position: relative; overflow: hidden;">
+    <span style="position: absolute; left: 17px; top: 14px; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 105px; line-height: 1; letter-spacing: -6px; color: {{t.iconInk}}; white-space: nowrap;">Un</span>
+  </div>
+
+  <div style="margin-top: 34px; height: 36px; display: flex; align-items: center; justify-content: center;">
+    <sc-if value="{{working}}" hint-placeholder-val="{{ true }}">
+      <h1 class="ue-wipe" style="margin: 0; font-weight: 400; font-size: 27px; line-height: 1.15; text-align: center; white-space: nowrap;">Getting your edition ready<span aria-hidden="true"><span class="ue-dot">.</span><span class="ue-dot ue-d2">.</span><span class="ue-dot ue-d3">.</span></span></h1>
+    </sc-if>
+    <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+      <h1 class="ue-wipe" style="margin: 0; font-weight: 400; font-size: 30px; line-height: 1.15; text-align: center; white-space: nowrap;">Your edition is ready.</h1>
+    </sc-if>
+  </div>
+
+  <div role="status" style="margin-top: 26px; width: 100%; height: 188px; display: flex; flex-direction: column; border-top: 1px solid {{t.rule}};">
+    <sc-for list="{{steps}}" as="s" hint-placeholder-count="2">
+      <div class="ue-row" style="display: flex; align-items: center; gap: 12px; height: 46px; flex-shrink: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}};">
+        <span style="width: 18px; display: flex; justify-content: center; font-family: 'Inter', sans-serif; font-size: 14px; color: {{s.markColor}};">
+          <sc-if value="{{s.finished}}" hint-placeholder-val="{{ false }}"><span class="ue-fade">✓</span></sc-if>
+          <sc-if value="{{s.current}}" hint-placeholder-val="{{ true }}"><span class="ue-blink">•</span></sc-if>
+        </span>
+        <span class="ue-wipe" style="font-size: 17px; white-space: nowrap;">{{s.label}}</span>
+        <sc-if value="{{s.current}}" hint-placeholder-val="{{ true }}"><span class="ue-blink" style="font-size: 17px; margin-left: -10px;">…</span></sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="margin-top: 22px; width: 100%; height: 2px; background: {{t.rule}}; position: relative;"><span class="ue-bar" style="position: absolute; left: 0; top: 0; bottom: 0; width: {{pct}}%; background: {{t.accent}};"></span></div>
+
+  <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+    <a href="OB9SignIn.dc.html" class="ue-row" style="position: absolute; left: 32px; right: 32px; bottom: 28px; height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">See my edition</a>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 0, pct: 0 };
+  }
+  componentDidMount() {
+    this.kick = setTimeout(() => this.setState({ pct: 25 }), 60);
+    this.timer = setInterval(() => {
+      const next = this.state.step + 1;
+      if (next > 4) { clearInterval(this.timer); return; }
+      this.setState({ step: next, pct: Math.min(100, (next + 1) * 25) });
+      if (next >= 4) clearInterval(this.timer);
+    }, 1600);
+  }
+  componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.kick); }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', iconBg: '#1C1A17', iconEdge: '#38332D', iconInk: '#C8705F' }
+      : { bg: '#F1EBE0', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', iconBg: '#F8F3EA', iconEdge: '#DDD4C4', iconInk: '#A8372A' };
+    const labels = ['Setting the type', 'Gathering your sources', 'Arranging your front page', 'Folding the paper'];
+    const step = this.state.step;
+    const steps = labels.slice(0, Math.min(step + 1, 4)).map((l, i) => ({
+      label: l,
+      finished: i < step,
+      current: i === step,
+      markColor: i < step ? t.accent : t.ink
+    }));
+    const done = step >= 4;
+    return {
+      t: t, steps: steps, done: done, working: !done,
+      pct: this.state.pct
+    };
+  }
+}
+</script>
+</body>
+</html>

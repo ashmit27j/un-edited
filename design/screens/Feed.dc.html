@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Feed</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+@keyframes ue-peek{from{opacity:0;transform:translateY(80px) rotate(0deg)}to{opacity:1;transform:translateY(0) rotate(var(--r))}}
+.ue-peek{position:absolute;bottom:calc(100% - 24px);animation:ue-peek 1.1s cubic-bezier(.16,.8,.24,1) both;animation-delay:var(--d)}
+@media (prefers-reduced-motion: reduce){.ue-peek{animation:none;transform:rotate(var(--r))}}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+
+  <div style="padding: 10px 24px 0 24px; display: flex; justify-content: center; gap: 4px; font-family: 'Inter', sans-serif; font-size: 15px;">
+    <sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+      <button onClick="{{m.pick}}" aria-pressed="{{m.on}}" style="background: none; border: 0; padding: 0 14px; height: 44px; cursor: pointer; color: {{m.color}}; font-weight: {{m.weight}}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
+        <span>{{m.label}}</span>
+        <span style="width: 18px; height: 2px; background: {{m.bar}};"></span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; gap: 20px; padding: 0 24px; border-bottom: 1px solid {{t.rule}}; overflow: hidden; white-space: nowrap; font-family: 'Inter', sans-serif; font-size: 14px;">
+    <sc-for list="{{cats}}" as="c" hint-placeholder-count="6">
+      <button onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="background: none; border: 0; padding: 0; height: 40px; cursor: pointer; color: {{c.color}}; font-weight: {{c.weight}}; border-bottom: 2px solid {{c.bar}}; flex-shrink: 0;">{{c.label}}</button>
+    </sc-for>
+  </div>
+
+  <article style="position: absolute; left: 24px; right: 24px; top: 108px; bottom: 112px; display: flex; flex-direction: column; gap: 10px; overflow: hidden;">
+    <a href="Article.dc.html" aria-label="Open story" style="display: block; height: 230px; flex-shrink: 0; background-color: {{t.photo}}; background-image: {{t.hatch}}; position: relative;">
+      <span style="position: absolute; left: 10px; bottom: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.6px; color: {{t.muted}};">PHOTO · CREDIT FROM SOURCE</span>
+    </a>
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">City · 4 of your sources</div>
+    <a href="Article.dc.html" style="font-family: {{t.head}}; font-weight: 500; font-size: 25px; line-height: 1.15; letter-spacing: -0.3px;">Water board clears a 24-hour supply pilot for three wards</a>
+    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid {{t.rule}}; border-bottom: 1px solid {{t.rule}};">
+      <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">Morning Ledger · 2h</span>
+      <div style="display: flex;">
+        
+        <sc-if value="{{save.guest}}" hint-placeholder-val="{{ false }}"><a href="GuestPrompt.dc.html" aria-label="Save. Sign in to save stories" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.ink}};"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg></a></sc-if><sc-if value="{{save.member}}" hint-placeholder-val="{{ true }}"><button onClick="{{save.toggle}}" aria-pressed="{{save.on}}" aria-label="{{save.label}}" style="background: none; border: 0; padding: 0; width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{save.color}}; cursor: pointer;"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg></button></sc-if><a href="MoreSheet.dc.html" aria-label="More options" style="background: none; border: 0; padding: 0; width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.ink}}; cursor: pointer;"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor;"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></a>
+      </div>
+    </div>
+    <div style="position: relative; flex: 1; overflow: hidden;">
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.55;">The city water board on Monday approved a six-month pilot that will move three wards from scheduled supply to round-the-clock water. Officials said meters will be installed in all connections before the switch, and that billing will move to actual use. Residents' groups asked for a public review of the pilot's results before it is extended to other wards, and the board said findings would be published.</p>
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 90px; background: linear-gradient(to bottom, {{t.bg0}}, {{t.bg}});"></div>
+    </div>
+  </article>
+
+  <div style="position: absolute; left: 24px; right: 24px; bottom: 82px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">
+    <span>3 of 18 today</span>
+    <span>Swipe up ↑</span>
+  </div>
+
+  <div role="status" aria-live="polite" style="position: absolute; left: 24px; right: 24px; bottom: 88px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+
+  <sc-if value="{{caughtUp}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: {{t.scrim}};"></div>
+    <div style="position: absolute; left: 0; right: 0; bottom: 76px;">
+      <span class="ue-peek" aria-hidden="true" style="left: 20px; --r: -9deg; --d: .2s;"><svg width="112" height="96" viewBox="0 0 112 96" aria-hidden="true" style="display: block; fill: none; stroke: {{t.line}}; stroke-width: 1.1; stroke-linecap: round;"><rect x="1" y="1" width="110" height="94" style="fill: {{t.bg}};"></rect><path d="M12 20H100M12 24H100"></path><path d="M30 13H82" style="stroke-width: 2.4;"></path><path d="M12 36H74" style="stroke-width: 2.4;"></path><path d="M12 50H51"></path><path d="M12 59H51"></path><path d="M12 68H51"></path><path d="M12 77H33"></path><path d="M12 86H51"></path><path d="M61 50H100"></path><path d="M61 59H100"></path><path d="M61 68H100"></path><path d="M61 77H82"></path><path d="M61 86H100"></path></svg></span>
+      <span class="ue-peek" aria-hidden="true" style="left: 130px; --r: 3deg; --d: .35s;"><svg width="124" height="104" viewBox="0 0 124 104" aria-hidden="true" style="display: block; fill: none; stroke: {{t.line}}; stroke-width: 1.1; stroke-linecap: round;"><rect x="1" y="1" width="122" height="102" style="fill: {{t.bg}};"></rect><path d="M12 20H112M12 24H112"></path><path d="M36 13H88" style="stroke-width: 2.4;"></path><path d="M12 36H82" style="stroke-width: 2.4;"></path><path d="M12 50H57"></path><path d="M12 59H57"></path><path d="M12 68H57"></path><path d="M12 77H37"></path><path d="M12 86H57"></path><path d="M12 95H57"></path><path d="M67 50H112"></path><path d="M67 59H112"></path><path d="M67 68H112"></path><path d="M67 77H92"></path><path d="M67 86H112"></path><path d="M67 95H112"></path></svg></span>
+      <span class="ue-peek" aria-hidden="true" style="left: 256px; --r: 9deg; --d: .5s;"><svg width="112" height="94" viewBox="0 0 112 94" aria-hidden="true" style="display: block; fill: none; stroke: {{t.line}}; stroke-width: 1.1; stroke-linecap: round;"><rect x="1" y="1" width="110" height="92" style="fill: {{t.bg}};"></rect><path d="M12 20H100M12 24H100"></path><path d="M30 13H82" style="stroke-width: 2.4;"></path><path d="M12 36H74" style="stroke-width: 2.4;"></path><path d="M12 50H51"></path><path d="M12 59H51"></path><path d="M12 68H51"></path><path d="M12 77H33"></path><path d="M61 50H100"></path><path d="M61 59H100"></path><path d="M61 68H100"></path><path d="M61 77H82"></path></svg></span>
+    <section aria-label="All caught up" style="position: relative; background: {{t.surface}}; border-top: 1px solid {{t.rule}}; border-radius: 14px 14px 0 0; padding: 10px 24px 24px 24px; display: flex; flex-direction: column; gap: 10px;">
+      <span style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: {{t.rule}};"></span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}}; margin-top: 6px;">Tue 6 Oct · 18 of 18</span>
+      <h2 style="margin: 0; font-family: {{t.head}}; font-weight: 500; font-size: 26px; line-height: 1.15;">You're all caught up.</h2>
+      <p style="margin: 0 0 6px 0; font-size: 16px; line-height: 1.5; color: {{t.muted}};">That's everything your 14 sources published today. You can stop here, or keep going.</p>
+      <button style="height: 48px; border: 0; background: {{t.ink}}; color: {{t.bg}}; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer;">Older stories in My Feed</button>
+      <button style="height: 48px; border: 1px solid {{t.ink}}; background: none; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer;">Go to Explore</button>
+    </section>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 76px; box-sizing: border-box; padding: 6px 12px 18px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>Home</a>
+    <a href="Feed.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>Feed</a>
+    <a href="Library.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>Library</a>
+    <a href="You.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>You</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"caughtUp":{"editor":"boolean","default":false,"section":"State"},"guest":{"editor":"boolean","default":false,"section":"Account"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  constructor(props) {
+    super(props);
+    this.state = { mode: 'yours', cat: 'Today' };
+  }
+  theme(dark, type) {
+    const serifHead = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const serifBody = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const base = dark ? {
+      bg: '#1E1C19', bg0: 'rgba(30,28,25,0)', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D',
+      accent: '#C8705F', photo: '#2D2924', line: '#4A443C', scrim: 'rgba(0,0,0,0.45)',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', bg0: 'rgba(241,235,224,0)', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4',
+      accent: '#A8372A', photo: '#DCD2C1', line: '#C2B6A2', scrim: 'rgba(28,26,23,0.28)',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    base.head = type === 'sans' ? sans : serifHead;
+    base.body = type === 'sans' ? sans : serifBody;
+    return base;
+  }
+  renderVals() {
+    const t = this.theme(this.props.dark ?? false, this.props.type ?? 'serif');
+    const mode = this.state.mode;
+    const cat = this.state.cat;
+    const modes = [{ id: 'yours', label: 'My Feed' }, { id: 'all', label: 'Explore' }].map((m) => ({
+      label: m.label,
+      on: m.id === mode,
+      color: m.id === mode ? t.ink : t.muted,
+      weight: m.id === mode ? 500 : 400,
+      bar: m.id === mode ? t.accent : 'transparent',
+      pick: () => this.setState({ mode: m.id })
+    }));
+    const cats = ['Today', 'World', 'India', 'Technology', 'Finance', 'Research'].map((c) => ({
+      label: c,
+      on: c === cat,
+      color: c === cat ? t.ink : t.muted,
+      weight: c === cat ? 500 : 400,
+      bar: c === cat ? t.ink : 'transparent',
+      pick: () => this.setState({ cat: c })
+    }));
+    return { t: t, modes: modes, cats: cats, caughtUp: this.props.caughtUp ?? false, save: this.saveVals('lead', false, t, this.props.guest ?? false), toast: this.toastVals() };
+  }
+}
+</script>
+</body>
+</html>

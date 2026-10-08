@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Story options</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden;">
+  <dc-import name="Feed" dark="{{dark}}" hint-size="390px,844px"></dc-import>
+  <a href="Feed.dc.html" aria-label="Close" style="position: absolute; inset: 0; background: {{t.scrim}};"></a>
+
+  <section aria-label="Story options" style="position: absolute; left: 0; right: 0; bottom: 0; background: {{t.surface}}; border-top: 1px solid {{t.rule}}; border-radius: 14px 14px 0 0; padding: 10px 24px 30px 24px; color: {{t.ink}}; display: flex; flex-direction: column;">
+    <span style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: {{t.rule}};"></span>
+    <span style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Morning Ledger · City</span>
+    <span style="margin-top: 4px; padding-bottom: 12px; border-bottom: 1px solid {{t.rule}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 18px; line-height: 1.25;">Water board clears a 24-hour supply pilot for three wards</span>
+
+    <sc-if value="{{isMenu}}" hint-placeholder-val="{{ true }}">
+    <button role="menuitem" aria-label="{{dl.label}}" onClick="{{dl.pick}}" style="display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 0; background: none; border: 0; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15.5px; cursor: pointer; text-align: left;">
+      <sc-if value="{{dl.off}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"></path></svg></sc-if>
+      <sc-if value="{{dl.on}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: {{t.accent}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="8.5"></circle><path d="M8.2 12.4l2.7 2.7 5-5.4"></path></svg></sc-if>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px;"><span>{{dl.text}}</span><span style="font-size: 12.5px; color: {{t.muted}};">{{dl.note}}</span></span></button>
+    <button style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0; background: none; border: 0; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15.5px; cursor: pointer; text-align: left;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v7h14v-7"></path></svg>Share link</button>
+    <span style="height: 1px; background: {{t.rule}}; margin: 4px 0;"></span>
+    <button style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0; background: none; border: 0; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15.5px; cursor: pointer; text-align: left;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><path d="M12 5v14M5 12h14"></path></svg>More about City</button>
+
+    <button aria-expanded="{{lessOpen}}" onClick="{{toggleLess}}" style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0; background: none; border: 0; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15.5px; cursor: pointer; text-align: left;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><path d="M5 12h14"></path></svg><span style="flex: 1;">Not interested</span><span style="font-size: 13px; color: {{t.muted}};">{{lessArrow}}</span></button>
+    <sc-if value="{{lessOpen}}" hint-placeholder-val="{{ false }}">
+      <div style="margin: 0 0 6px 34px; display: flex; flex-direction: column; border-left: 1px solid {{t.rule}}; padding-left: 14px;">
+        <button style="height: 44px; padding: 0; background: none; border: 0; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 14.5px; text-align: left; cursor: pointer;">Less about City</button>
+        <button style="height: 44px; padding: 0; background: none; border: 0; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 14.5px; text-align: left; cursor: pointer;">Hide Morning Ledger from My Feed</button>
+      </div>
+    </sc-if>
+
+    <button onClick="{{openReport}}" style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 15.5px; cursor: pointer; text-align: left;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><path d="M6 21V4h11l-2 4 2 4H6"></path></svg><span style="flex: 1;">Report a problem</span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{t.muted}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 5l7 7-7 7"></path></svg></button>
+    </sc-if>
+    <sc-if value="{{isForm}}" hint-placeholder-val="{{ false }}">
+      <form aria-label="Report a problem" onSubmit="{{send}}" style="margin: 0; padding-top: 6px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 6px; margin-left: -12px;">
+          <button type="button" aria-label="Back to options" onClick="{{backToMenu}}" style="width: 44px; height: 44px; padding: 0; background: none; border: 0; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>
+          </button>
+          <h2 style="margin: 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 500; font-size: 22px;">Report a problem</h2>
+        </div>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column;">
+          <legend style="padding: 0 0 4px 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">What's wrong?</legend>
+          <sc-for list="{{reasons}}" as="r" hint-placeholder-count="4">
+            <label style="display: flex; align-items: center; gap: 12px; min-height: 46px; border-bottom: 1px solid {{t.rule}}; font-family: 'Inter', sans-serif; font-size: 15px; cursor: pointer;">
+              <input type="radio" name="reason" value="{{r.id}}" checked="{{r.on}}" onChange="{{r.pick}}" style="width: 18px; height: 18px; margin: 0; accent-color: {{t.accent}};">
+              <span>{{r.label}}</span>
+            </label>
+          </sc-for>
+        </fieldset>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">
+          <span>Add details <span style="color: {{t.muted}};">(optional)</span></span>
+          <textarea rows="3" placeholder="{{hint}}" style="box-sizing: border-box; width: 100%; resize: none; padding: 10px 12px; border: 1px solid {{t.rule}}; border-radius: 0; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.45;"></textarea>
+        </label>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button type="submit" disabled="{{cantSend}}" style="height: 50px; border: 0; background: {{sendBg}}; color: {{sendFg}}; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; cursor: {{sendCursor}};">Send report</button>
+          <span style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.5; color: {{t.muted}};">{{sendNote}}</span>
+        </div>
+      </form>
+    </sc-if>
+    <sc-if value="{{isSent}}" hint-placeholder-val="{{ false }}">
+      <div role="status" style="padding: 22px 0 4px 0; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">Report sent · {{sentReason}}</span>
+        <h2 style="margin: 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 500; font-size: 22px; line-height: 1.25;">Thank you. We'll check it against the publisher's original.</h2>
+        <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.55; color: {{t.muted}};">If it's our mistake, we'll fix it for everyone. We never change the publisher's words.</p>
+        <a href="Feed.dc.html" style="margin-top: 6px; height: 50px; display: flex; align-items: center; justify-content: center; border: 1px solid {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;">Done</a>
+      </div>
+    </sc-if>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"panel":{"editor":"enum","options":["menu","report","sent"],"default":"menu","section":"State"},"downloaded":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: 'less', panel: null, reason: '', downloaded: null };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', scrim: 'rgba(0,0,0,0.5)', off: '#38332D', offFg: '#8E8678' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', scrim: 'rgba(28,26,23,0.32)', off: '#DDD4C4', offFg: '#6B645A' };
+    const open = this.state.open;
+    const panel = this.state.panel ?? (this.props.panel ?? 'menu');
+    const list = [
+      { id: 'link', label: 'Broken link', hint: 'Where did the link go?' },
+      { id: 'image', label: 'Wrong image or credit', hint: 'What should the image or credit be?' },
+      { id: 'group', label: 'Wrongly grouped with other stories', hint: 'Which story doesn\u2019t belong here?' },
+      { id: 'other', label: 'Something else', hint: 'Tell us what you noticed.' }
+    ];
+    const reason = this.state.reason || (this.props.panel === 'sent' && !this.state.panel ? 'link' : '');
+    const picked = list.find((r) => r.id === reason);
+    // Download is a per-article action. It works the same whether or not the story is saved,
+    // and the "Auto-download saved articles" setting (You › Storage) never changes what is already downloaded.
+    const downloaded = this.state.downloaded === null ? (this.props.downloaded ?? false) : this.state.downloaded;
+    const dl = downloaded
+      ? { on: true, off: false, text: 'Remove download', note: 'Downloaded · 240 KB · readable offline', label: 'Remove download' }
+      : { on: false, off: true, text: 'Download', note: 'Keep this story for offline reading', label: 'Download for offline reading' };
+    dl.pick = () => this.setState({ downloaded: !downloaded });
+    return {
+      t: t, dark: dark, dl: dl,
+      lessOpen: open === 'less',
+      lessArrow: open === 'less' ? '\u25b4' : '\u25be',
+      toggleLess: () => this.setState({ open: open === 'less' ? '' : 'less' }),
+      isMenu: panel === 'menu', isForm: panel === 'report', isSent: panel === 'sent',
+      openReport: () => this.setState({ panel: 'report' }),
+      backToMenu: () => this.setState({ panel: 'menu' }),
+      reasons: list.map((r) => ({ id: r.id, label: r.label, on: r.id === reason, pick: () => this.setState({ reason: r.id }) })),
+      hint: picked ? picked.hint : 'Pick a reason above first.',
+      cantSend: !picked,
+      sendBg: picked ? t.ink : t.off,
+      sendFg: picked ? t.surface : t.offFg,
+      sendCursor: picked ? 'pointer' : 'not-allowed',
+      sendNote: picked ? 'Your report includes this story and its source. No account details are sent.' : 'Pick what\u2019s wrong to send the report.',
+      sentReason: picked ? picked.label : '',
+      send: (e) => { if (e && e.preventDefault) e.preventDefault(); if (picked) this.setState({ panel: 'sent' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

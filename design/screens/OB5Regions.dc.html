@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Regions</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+input::placeholder{color:inherit;opacity:.85}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 12px 24px 28px 24px; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: flex; flex-direction: column;">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; height: 44px;">
+    <a href="OB4Topics.dc.html" aria-label="Back" style="width: 44px; height: 44px; margin-left: -12px; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <span style="justify-self: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Step 4 of 6</span>
+    <a href="OB8Printing.dc.html" style="justify-self: end; height: 44px; display: flex; align-items: center; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Skip</a>
+  </div>
+  <div style="height: 2px; background: {{t.rule}}; position: relative;"><span style="position: absolute; left: 0; top: 0; bottom: 0; width: 66.6%; background: {{t.accent}};"></span></div>
+
+  <h1 style="margin: 24px 0 0 0; font-weight: 400; font-size: 30px; line-height: 1.15; letter-spacing: -0.4px;">Which places matter to you?</h1>
+  <p style="margin: 10px 0 0 0; font-size: 17px; line-height: 1.45; color: {{t.muted}};">From the whole world down to your city.</p>
+
+  <label style="margin-top: 18px; display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border: 1px solid {{t.rule}}; background: {{t.surface}}; color: {{t.muted}};">
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; flex-shrink: 0;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+    <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Find a state or city</span>
+    <input type="text" value="{{q}}" onChange="{{onQ}}" placeholder="Find a state or city" style="flex: 1; min-width: 0; border: 0; outline: none; background: transparent; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 15px;">
+  </label>
+
+  <sc-if value="{{searching}}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; border: 1px solid {{t.rule}}; border-top: 0; background: {{t.surface}};">
+      <sc-for list="{{results}}" as="p" hint-placeholder-count="3">
+        <button aria-pressed="{{p.on}}" onClick="{{p.pick}}" style="height: 52px; padding: 0 4px 0 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: none; border: 0; border-top: 1px solid {{t.rule}}; color: {{t.ink}}; cursor: pointer; text-align: left;">
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 18px; line-height: 1.15;">{{p.name}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{p.kind}}</span>
+          </span>
+          <span style="width: 44px; height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: {{p.color}};">
+            <sc-if value="{{p.on}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+            <sc-if value="{{p.off}}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;"><path d="M12 5v14M5 12h14"></path></svg></sc-if>
+          </span>
+        </button>
+      </sc-for>
+      <sc-if value="{{none}}" hint-placeholder-val="{{ false }}">
+        <span style="padding: 14px; border-top: 1px solid {{t.rule}}; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}};">No place by that name yet.</span>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <div style="margin-top: 22px; display: flex; align-items: baseline; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">
+    <span>Selected</span><span>{{count}}</span>
+  </div>
+  <div style="margin-top: 8px; display: flex; flex-direction: column; border-top: 1px solid {{t.ink}};">
+    <sc-for list="{{selected}}" as="p" hint-placeholder-count="4">
+      <div style="height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid {{t.rule}};">
+        <span style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 18px; line-height: 1.15;">{{p.name}}</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{p.kind}}</span>
+        </span>
+        <button aria-label="{{p.removeLabel}}" onClick="{{p.remove}}" style="width: 44px; height: 44px; margin-right: -12px; padding: 0; background: none; border: 0; color: {{t.muted}}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+      </div>
+    </sc-for>
+    <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+      <span style="padding: 16px 0; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}};">Nothing selected. Search above to add a place.</span>
+    </sc-if>
+  </div>
+
+  <a href="OB6Sources.dc.html" style="margin-top: auto; height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Continue</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: ['World', 'India', 'Maharashtra', 'Mumbai'], q: '' };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A' };
+    const all = [
+      { name: 'World', kind: 'Global' },
+      { name: 'India', kind: 'Country' },
+      { name: 'Maharashtra', kind: 'State · India' },
+      { name: 'Mumbai', kind: 'City · Maharashtra' },
+      { name: 'Pune', kind: 'City · Maharashtra' },
+      { name: 'Nagpur', kind: 'City · Maharashtra' },
+      { name: 'Nashik', kind: 'City · Maharashtra' },
+      { name: 'Delhi', kind: 'State · India' },
+      { name: 'Karnataka', kind: 'State · India' },
+      { name: 'Bengaluru', kind: 'City · Karnataka' },
+      { name: 'Gujarat', kind: 'State · India' },
+      { name: 'Ahmedabad', kind: 'City · Gujarat' }
+    ];
+    const kindOf = {};
+    all.forEach((p) => { kindOf[p.name] = p.kind; });
+    const sel = this.state.sel;
+    const q = this.state.q || '';
+    const needle = q.trim().toLowerCase();
+    const results = needle ? all.filter((p) => p.name.toLowerCase().indexOf(needle) >= 0).slice(0, 4).map((p) => {
+      const on = sel.indexOf(p.name) >= 0;
+      return {
+        name: p.name, kind: p.kind, on: on, off: !on,
+        color: on ? t.accent : t.ink,
+        pick: () => this.setState({ sel: on ? sel.filter((s) => s !== p.name) : sel.concat([p.name]), q: '' })
+      };
+    }) : [];
+    return {
+      t: t,
+      q: q,
+      onQ: (e) => this.setState({ q: e.target.value }),
+      searching: !!needle,
+      results: results,
+      none: !!needle && results.length === 0,
+      count: sel.length + ' places',
+      selected: sel.map((name) => ({
+        name: name, kind: kindOf[name] || '',
+        removeLabel: 'Remove ' + name,
+        remove: () => this.setState({ sel: sel.filter((s) => s !== name) })
+      })),
+      empty: sel.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

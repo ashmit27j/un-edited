@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Notification settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 1700px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif;">
+  <header style="padding: 12px 24px 0 24px; display: flex; flex-direction: column; gap: 6px;">
+    <a href="You.dc.html" style="align-self: flex-start; height: 44px; margin-left: -6px; display: flex; align-items: center; gap: 4px; font-size: 15px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>You</a>
+    <h1 style="margin: 4px 0 0 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 34px; letter-spacing: -0.4px;">Notifications</h1>
+  </header>
+
+  <main style="padding: 0 24px 40px 24px; display: flex; flex-direction: column;">
+
+    <sc-if value="{{blocked}}" hint-placeholder-val="{{ false }}">
+      <div role="alert" style="margin-top: 14px; padding: 12px 14px; border: 1px solid {{t.ink}}; display: flex; flex-direction: column; gap: 8px;">
+        <span style="font-size: 14px; line-height: 1.45;">Notifications are turned off for Un:edited in your phone settings, so nothing below will reach you yet.</span>
+        <a href="#phone-settings" style="align-self: flex-start; height: 44px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: {{t.accent}}; text-decoration: underline; text-underline-offset: 3px;">Open phone settings</a>
+      </div>
+    </sc-if>
+
+    <!-- What it will look like -->
+    <div style="margin-top: 16px; padding: 12px 14px; background: {{t.surface}}; border: 1px solid {{t.ruleStrong}}; display: flex; gap: 12px; align-items: flex-start;" aria-label="Preview of the notification">
+      <span aria-hidden="true" style="width: 36px; height: 36px; flex-shrink: 0; background: {{t.icon}}; color: {{t.iconFg}}; border: 1px solid {{t.rule}}; display: flex; align-items: center; justify-content: flex-start; overflow: hidden; padding-left: 4px; box-sizing: border-box; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 25px; line-height: 1;">Un</span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+        <span style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};"><span>Un:edited</span><span>{{shownTime}}</span></span>
+        <span style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 17px; line-height: 1.3;">{{headline}}</span>
+        <span style="font-size: 13px; line-height: 1.4; color: {{t.muted}};">Tap to read today’s stories from the outlets you chose.</span>
+      </span>
+    </div>
+
+    <!-- Edition -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">New edition</h2>
+      <button role="switch" aria-checked="{{master.on}}" onClick="{{master.pick}}" style="width: 100%; min-height: 64px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+        <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">Tell me when my edition is ready</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">One notification a day. The edition is printed at 6:00 AM IST.</span></span>
+        <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{master.track}}; border: 1.5px solid {{master.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{master.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{master.knob}};"></span></span>
+      </button>
+
+      <sc-if value="{{masterOn}}" hint-placeholder-val="{{ true }}">
+        <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 15px;">When</span>
+          <div role="radiogroup" aria-label="Notification time" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid {{t.ink}};">
+            <sc-for list="{{times}}" as="o" hint-placeholder-count="6">
+              <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0; border: 0; border-bottom: 1px solid {{t.rule}}; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+            </sc-for>
+          </div>
+          <span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">An edition can’t arrive before it is printed, so 6:00 AM is the earliest.</span>
+        </div>
+        <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 15px;">Days</span>
+          <div role="group" aria-label="Days" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+              <button aria-pressed="{{d.on}}" aria-label="{{d.full}}" onClick="{{d.pick}}" style="height: 44px; padding: 0; border: 1px solid {{d.edge}}; background: {{d.bg}}; color: {{d.fg}}; font-size: 13.5px; font-weight: {{d.weight}}; cursor: pointer;">{{d.short}}</button>
+            </sc-for>
+          </div>
+          <span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{daysNote}}</span>
+        </div>
+      </sc-if>
+    </section>
+
+    <!-- Sound and quiet hours -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column; opacity: {{dim}};">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Sound and quiet hours</h2>
+      <sc-for list="{{soundRows}}" as="r" hint-placeholder-count="3">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+      <sc-if value="{{quietOn}}" hint-placeholder-val="{{ true }}">
+        <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: {{t.muted}};">From
+            <span style="height: 44px; border: 1px solid {{t.ink}}; display: flex; align-items: center; padding: 0 12px; font-size: 15px; color: {{t.ink}};">10:00 PM</span></label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: {{t.muted}};">Until
+            <span style="height: 44px; border: 1px solid {{t.ink}}; display: flex; align-items: center; padding: 0 12px; font-size: 15px; color: {{t.ink}};">7:00 AM</span></label>
+        </div>
+        <span style="padding-top: 10px; font-size: 12.5px; line-height: 1.45; color: {{t.muted}};">{{quietNote}}</span>
+      </sc-if>
+    </section>
+
+    <!-- Topic and source alerts -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column; opacity: {{dim}};">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Topic and source alerts</h2>
+      <button role="switch" aria-checked="{{alerts.on}}" onClick="{{alerts.pick}}" style="width: 100%; min-height: 64px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+        <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">Alert me between editions</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">Off by default. Only the topics and outlets you tick below, shown with the publisher’s own headline. Nothing is picked for you.</span></span>
+        <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{alerts.track}}; border: 1.5px solid {{alerts.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{alerts.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{alerts.knob}};"></span></span>
+      </button>
+      <sc-if value="{{alertsOn}}" hint-placeholder-val="{{ true }}">
+        <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 15px;">Topics</span>
+          <div role="group" aria-label="Topics" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <sc-for list="{{topics}}" as="c" hint-placeholder-count="5">
+              <button aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{c.edge}}; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: {{c.weight}}; cursor: pointer;">{{c.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 15px;">Outlets</span>
+          <div role="group" aria-label="Outlets" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <sc-for list="{{outlets}}" as="c" hint-placeholder-count="4">
+              <button aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{c.edge}}; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: {{c.weight}}; cursor: pointer;">{{c.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 15px;">At most per day</span>
+          <div role="radiogroup" aria-label="Alerts per day" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid {{t.ink}};">
+            <sc-for list="{{caps}}" as="o" hint-placeholder-count="3">
+              <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+            </sc-for>
+          </div>
+          <span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">Alerts follow your sound and quiet-hour choices above. The edition notification never counts towards this number.</span>
+        </div>
+      </sc-if>
+    </section>
+
+    <p style="margin: 22px 0 0 0; font-size: 12.5px; line-height: 1.55; color: {{t.muted}};">On iPhone, notifications only work once Un:edited is on your Home Screen (Share, then Add to Home Screen). In a browser tab they aren’t available. On Android and desktop browsers, allow notifications when asked.</p>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"signedIn":{"editor":"boolean","default":true,"section":"State"},"edition":{"editor":"number","default":12,"section":"State"},"blocked":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":390,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      master: true, time: '6:00', days: { M: true, T: true, W: true, Th: true, F: true, S: true, Su: true },
+      sound: true, vibrate: true, quiet: true, alerts: false,
+      topics: { City: true, Technology: false, Finance: false, Research: false, World: false },
+      outlets: { 'Morning Ledger': true, 'Deccan Courier': false, 'Civic Wire': false, 'The Plateau Times': false },
+      cap: '3'
+    };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', ruleStrong: '#4A443C', accent: '#C8705F', icon: '#1C1A17', iconFg: '#C8705F' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', ruleStrong: '#C2B6A2', accent: '#A8372A', icon: '#F8F3EA', iconFg: '#A8372A' };
+    const s = this.state;
+    const blocked = this.props.blocked ?? false;
+    const signedIn = this.props.signedIn ?? true;
+    const edition = this.props.edition ?? 12;
+    const sw = (id, label, desc) => ({
+      label: label, desc: desc, on: !!s[id],
+      track: s[id] ? t.ink : 'transparent', edge: s[id] ? t.ink : t.muted,
+      knob: s[id] ? t.bg : t.muted, knobX: s[id] ? 21 : 3,
+      pick: () => this.setState({ [id]: !s[id] })
+    });
+    const chips = (key, names) => names.map((n) => ({
+      label: n, on: !!s[key][n],
+      edge: s[key][n] ? t.ink : t.rule,
+      bg: s[key][n] ? t.ink : 'transparent', fg: s[key][n] ? t.bg : t.ink,
+      weight: s[key][n] ? 500 : 400,
+      pick: () => this.setState({ [key]: Object.assign({}, s[key], { [n]: !s[key][n] }) })
+    }));
+    const seg = (current, opts, key) => opts.map((o) => ({
+      label: o.label, on: current === o.id,
+      bg: current === o.id ? t.ink : 'transparent', fg: current === o.id ? t.bg : t.ink,
+      weight: current === o.id ? 500 : 400,
+      pick: () => this.setState({ [key]: o.id })
+    }));
+    const timeOpts = [
+      { id: '6:00', label: '6:00 AM' }, { id: '6:30', label: '6:30 AM' }, { id: '7:00', label: '7:00 AM' },
+      { id: '7:30', label: '7:30 AM' }, { id: '8:00', label: '8:00 AM' }, { id: '9:00', label: '9:00 AM' }
+    ];
+    const dayDefs = [['M', 'Monday'], ['T', 'Tuesday'], ['W', 'Wednesday'], ['Th', 'Thursday'], ['F', 'Friday'], ['S', 'Saturday'], ['Su', 'Sunday']];
+    const days = dayDefs.map((d) => ({
+      short: d[0], full: d[1], on: !!s.days[d[0]],
+      edge: s.days[d[0]] ? t.ink : t.rule,
+      bg: s.days[d[0]] ? t.ink : 'transparent', fg: s.days[d[0]] ? t.bg : t.ink,
+      weight: s.days[d[0]] ? 500 : 400,
+      pick: () => this.setState({ days: Object.assign({}, s.days, { [d[0]]: !s.days[d[0]] }) })
+    }));
+    const dayCount = dayDefs.filter((d) => s.days[d[0]]).length;
+    const timeLabel = (timeOpts.find((o) => o.id === s.time) || timeOpts[0]).label;
+    const master = sw('master');
+    const quietNote = 'An edition due inside quiet hours arrives when they end. Nothing is lost.';
+    return {
+      t: t,
+      blocked: blocked,
+      dim: (!s.master || blocked) ? 0.45 : 1,
+      master: master, masterOn: s.master,
+      alerts: sw('alerts'), alertsOn: s.alerts,
+      shownTime: s.master ? timeLabel : 'off',
+      // Plain text only. The title never carries a headline, so nothing in the notification is written for the reader.
+      headline: signedIn ? ('Morning Edition Nº ' + edition + ' is ready') : 'Your morning edition is ready',
+      times: seg(s.time, timeOpts, 'time'),
+      days: days,
+      daysNote: dayCount === 7 ? 'Every day.' : (dayCount === 0 ? 'No days picked. No edition notifications.' : dayCount + ' days a week.'),
+      soundRows: [
+        sw('sound', 'Sound', 'Plays the phone’s default notification sound.'),
+        sw('vibrate', 'Vibration', 'A short buzz when the edition arrives.'),
+        sw('quiet', 'Quiet hours', 'Hold notifications overnight.')
+      ],
+      quietOn: s.quiet, quietNote: quietNote,
+      topics: chips('topics', ['City', 'Technology', 'Finance', 'Research', 'World']),
+      outlets: chips('outlets', ['Morning Ledger', 'Deccan Courier', 'Civic Wire', 'The Plateau Times']),
+      caps: seg(s.cap, [{ id: '1', label: '1' }, { id: '3', label: '3' }, { id: '5', label: '5' }], 'cap')
+    };
+  }
+}
+</script>
+</body>
+</html>

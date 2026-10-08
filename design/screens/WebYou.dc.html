@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Web settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+button{font:inherit}
+/* Desktop cursors: stylised pointer everywhere, "Read more" stamp over links that open a story */
+@media (hover: hover) and (pointer: fine){
+.ue-paper,.ue-paper *{cursor:url(assets/cursor-pointer-paper.svg) 4 3, default}
+.ue-ink,.ue-ink *{cursor:url(assets/cursor-pointer-ink.svg) 4 3, default}
+.ue-paper a,.ue-paper button,.ue-paper [role=tab],.ue-ink a,.ue-ink button,.ue-ink [role=tab]{cursor:pointer}
+.ue-paper input,.ue-paper textarea,.ue-ink input,.ue-ink textarea{cursor:text}
+.ue-paper a[href="WebArticle.dc.html"],.ue-paper a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-paper.svg) 32 32, pointer}
+.ue-ink a[href="WebArticle.dc.html"],.ue-ink a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-ink.svg) 32 32, pointer}
+}
+*{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7);border:3px solid transparent;background-clip:padding-box}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div class="{{t.cur}}" style="min-height: 100vh; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif;">
+  <nav aria-label="Main" style="border-bottom: 1px solid {{t.rule}};">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 68px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;">
+      <a href="WebHome.dc.html" aria-label="Un:edited home" style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1; text-decoration: none;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 5px; margin: 0 3px; padding-top: 3px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</a>
+      <div style="display: flex; gap: 28px; font-size: 14.5px;">
+        <a href="WebHome.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Home</a>
+        <a href="WebFeed.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Feed</a>
+        <a href="WebLibrary.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Library</a>
+        <a href="WebYou.dc.html" aria-current="page" style="height: 66px; display: flex; align-items: center; border-bottom: 2px solid {{t.accent}}; color: {{t.accent}}; font-weight: 500; text-decoration: none;">You</a>
+      </div>
+      <a href="WebSearch.dc.html" aria-label="Search" style="width: 44px; height: 44px; color: {{t.ink}}; display: flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+      </a>
+    </div>
+  </nav>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 32px 32px 72px 32px; display: flex; flex-wrap: wrap; gap: 32px 64px; align-items: flex-start;">
+    <aside style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 22px;">
+      <h1 style="margin: 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 48px; letter-spacing: -0.6px; line-height: 1;">You</h1>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 14px 0; border-top: 1px solid {{t.ink}}; border-bottom: 1px solid {{t.rule}};">
+        <span style="width: 44px; height: 44px; border-radius: 50%; background: {{t.accentSoft}}; color: {{t.accent}}; display: flex; align-items: center; justify-content: center; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 18px;">Y</span>
+        <span style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 500;">[Your name]</span>
+          <span style="font-size: 12.5px; color: {{t.muted}};">Signed in with Google</span>
+        </span>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <a href="#reading" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Reading</a>
+        <a href="#news" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Your news</a>
+        <a href="#language" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Language</a>
+        <a href="#notifications" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Notifications</a>
+        <a href="#front" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Front page</a>
+        <a href="#access" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Accessibility</a>
+        <a href="#storage" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">Storage</a>
+        <a href="#about" style="height: 40px; display: flex; align-items: center; font-size: 14.5px;">About</a>
+      </div>
+    </aside>
+
+    <main style="flex: 999 1 560px; min-width: 0; max-width: 760px; display: flex; flex-direction: column; gap: 40px;">
+      <section id="reading" style="display: flex; flex-direction: column;">
+        <h2 style="margin: 0; padding-bottom: 10px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase;">Reading</h2>
+        <sc-for list="{{reading}}" as="r" hint-placeholder-count="4">
+          <div style="min-height: 64px; padding: 10px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; border-bottom: 1px solid {{t.rule}};">
+            <span style="font-size: 15px;">{{r.label}}</span>
+            <div role="radiogroup" aria-label="{{r.label}}" style="display: flex; border: 1px solid {{t.rule}};">
+              <sc-for list="{{r.opts}}" as="o" hint-placeholder-count="3">
+                <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 40px; min-width: 76px; padding: 0 14px; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <p style="margin: 16px 0 0 0; padding: 16px 18px; background: {{t.surface}}; border: 1px solid {{t.rule}}; font-family: {{t.preview}}; font-size: {{t.previewSize}}; line-height: {{t.previewLh}};">Preview: The city water board on Monday approved a six-month pilot that will move three wards to round-the-clock water.</p>
+      </section>
+
+      <sc-for list="{{sections}}" as="sec" hint-placeholder-count="4">
+        <section id="{{sec.id}}" style="display: flex; flex-direction: column;">
+          <h2 style="margin: 0; padding-bottom: 10px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase;">{{sec.title}}</h2>
+          <sc-for list="{{sec.rows}}" as="r" hint-placeholder-count="4">
+            <div style="border-bottom: 1px solid {{t.rule}};">
+              <sc-if value="{{r.isSwitch}}" hint-placeholder-val="{{ false }}">
+                <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 12px 0; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: none; border: 0; color: {{t.ink}}; text-align: left; cursor: pointer;">
+                  <span style="display: flex; flex-direction: column; gap: 3px;">
+                    <span style="font-size: 15px;">{{r.label}}</span>
+                    <span style="font-size: 13px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span>
+                  </span>
+                  <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;">
+                    <span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span>
+                  </span>
+                </button>
+              </sc-if>
+              <sc-if value="{{r.isSeg}}" hint-placeholder-val="{{ false }}">
+                <div style="min-height: 64px; padding: 10px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px;">
+                  <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 13px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+                  <div role="radiogroup" aria-label="{{r.label}}" style="display: flex; flex-wrap: wrap; border: 1px solid {{t.rule}};">
+                    <sc-for list="{{r.opts}}" as="o" hint-placeholder-count="3">
+                      <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 40px; min-width: 76px; padding: 0 14px; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isAction}}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 8px 0; display: flex; flex-direction: column; gap: 10px;">
+                  <button onClick="{{r.ask}}" aria-expanded="{{r.asking}}" style="min-height: 56px; padding: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px; background: none; border: 0; color: {{t.accent}}; text-align: left; cursor: pointer;">
+                    <span style="font-size: 15px;">{{r.label}}</span>
+                    <span style="font-size: 13px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span>
+                  </button>
+                  <sc-if value="{{r.asking}}" hint-placeholder-val="{{ false }}">
+                    <div role="alertdialog" aria-label="Clear all downloads" style="max-width: 460px; padding: 14px 16px; border: 1px solid {{t.ink}}; display: flex; flex-direction: column; gap: 12px;">
+                      <span style="font-size: 14.5px; line-height: 1.45;">Remove the {{r.count}} downloaded articles from this browser? Your saved articles stay in your Library and can be downloaded again.</span>
+                      <div style="display: flex; gap: 8px;">
+                        <button onClick="{{r.confirm}}" style="height: 44px; padding: 0 18px; border: 0; background: {{t.ink}}; color: {{t.bg}}; font-size: 14.5px; font-weight: 500; cursor: pointer;">Clear all downloads</button>
+                        <button onClick="{{r.cancel}}" style="height: 44px; padding: 0 18px; border: 1px solid {{t.ink}}; background: none; color: {{t.ink}}; font-size: 14.5px; font-weight: 500; cursor: pointer;">Cancel</button>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.isLink}}" hint-placeholder-val="{{ true }}">
+                <a href="{{r.href}}" style="min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 24px; color: {{r.color}};">
+                  <span style="font-size: 15px;">{{r.label}}</span>
+                  <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: {{t.muted}};">{{r.value}}<span style="color: {{t.ink}}; font-weight: 500;">{{r.action}}</span></span>
+                </a>
+              </sc-if>
+            </div>
+          </sc-for>
+        </section>
+      </sc-for>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+        <button style="height: 46px; padding: 0 22px; border: 1px solid {{t.rule}}; background: none; color: {{t.accent}}; font-size: 15px; cursor: pointer;">Sign out</button>
+        <span style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 14px; color: {{t.muted}};">Un:edited 1.0 · No AI, no algorithm, no fee.</span>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":4300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // autoDl: "Auto-download saved articles". Off by default. Turning it off keeps what is already downloaded.
+    this.state = {
+      font: 'Serif', size: 'Medium', theme: 'Light', view: 'Comfortable', spacing: 'Normal',
+      system: false, contrast: false, underline: false, motion: false, trending: false, papers: true, outside: true, cont: true,
+      autoDl: false, ask: false, cleared: false,
+      uiLang: 'English', dvFont: 'Match Font', srcEn: true, srcHi: false, srcMr: true,
+      colour: 'Standard', cue: false, bold: false, targets: false, focusRing: false, dyslexia: false, tracking: 'Normal', ruler: false, buttons: false, credits: false,
+      ednOn: true, ednTime: '6:00 AM', sound: true, vibrate: true, quiet: true, alerts: false
+    };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', accentSoft: '#3A2924' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', accentSoft: '#EBD5CC' };
+    t.cur = dark ? 'ue-ink' : 'ue-paper';
+    const s = this.state;
+    t.preview = s.font === 'Sans' ? "'Inter', system-ui, sans-serif" : "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    t.previewSize = { Small: '16px', Medium: '19px', Large: '22px', 'Extra large': '25px', Huge: '32px' }[s.size];
+    if (s.dyslexia) t.preview = "'Atkinson Hyperlegible', 'Inter', system-ui, sans-serif";
+    // Colour-vision modes change the accent only.
+    t.accent = ({ 'Standard': t.accent, 'Red-green friendly': dark ? '#7DB0E6' : '#1F5C99', 'Black and white': dark ? '#C9C0B0' : '#1C1A17' })[s.colour];
+    t.previewLh = { Normal: 1.55, Relaxed: 1.75, Loose: 1.95 }[s.spacing];
+    const seg = (key, label, opts) => ({
+      label: label,
+      opts: opts.map((o) => ({
+        label: o, on: s[key] === o,
+        bg: s[key] === o ? t.ink : 'transparent',
+        fg: s[key] === o ? t.bg : t.ink,
+        weight: s[key] === o ? 500 : 400,
+        pick: () => this.setState({ [key]: o })
+      }))
+    });
+    const link = (label, value, href, action, color) => ({ isLink: true, isSwitch: false, isSeg: false, isAction: false, label: label, value: value || '', href: href || '#', action: action || '', color: color || t.ink });
+    const rowSeg = (key, label, desc, opts) => ({
+      isLink: false, isSwitch: false, isAction: false, isSeg: true, label: label, desc: desc || '',
+      opts: opts.map((o) => ({ label: o, on: s[key] === o, bg: s[key] === o ? t.ink : 'transparent', fg: s[key] === o ? t.bg : t.ink, weight: s[key] === o ? 500 : 400, pick: () => this.setState({ [key]: o }) }))
+    });
+    const clearRow = () => ({
+      isLink: false, isSwitch: false, isSeg: false, isAction: true,
+      label: s.cleared ? 'Downloads cleared' : 'Clear all downloads',
+      desc: s.cleared ? 'Nothing is stored in this browser. Your saved articles are still in your Library.' : 'Removes every downloaded article from this browser.',
+      asking: s.ask && !s.cleared, count: '14',
+      ask: () => { if (!s.cleared) this.setState({ ask: !s.ask }); },
+      confirm: () => this.setState({ ask: false, cleared: true }),
+      cancel: () => this.setState({ ask: false })
+    });
+    const sw = (id, label, desc) => ({
+      isLink: false, isSwitch: true, isSeg: false, isAction: false, label: label, desc: desc, on: !!s[id],
+      track: s[id] ? t.ink : 'transparent', edge: s[id] ? t.ink : t.muted,
+      knob: s[id] ? t.bg : t.muted, knobX: s[id] ? 21 : 3,
+      pick: () => this.setState({ [id]: !s[id] })
+    });
+    return {
+      t: t,
+      reading: [
+        seg('font', 'Font', ['Serif', 'Sans']),
+        seg('size', 'Text size', ['Small', 'Medium', 'Large', 'Extra large', 'Huge']),
+        seg('spacing', 'Line spacing', ['Normal', 'Relaxed', 'Loose']),
+        seg('theme', 'Theme', ['Light', 'Dark', 'System']),
+        seg('view', 'Home view', ['Comfortable', 'Focused'])
+      ],
+      sections: [
+        { id: 'news', title: 'Your news', rows: [link('Who you trust', '4 sources', 'OB6Sources.dc.html', 'Edit'), link('Topics', '5', 'OB4Topics.dc.html', 'Edit'), link('Places', '4', 'OB5Regions.dc.html', 'Edit')] },
+        { id: 'language', title: 'Language', rows: [
+          rowSeg('uiLang', 'App language', 'Menus, buttons and settings. Stories stay in the language they were published in.', ['English', 'हिंदी', 'मराठी']),
+          sw('srcEn', 'English sources', 'Show outlets that publish in English.'),
+          sw('srcHi', 'हिंदी sources', 'Show outlets that publish in Hindi.'),
+          sw('srcMr', 'मराठी sources', 'Show outlets that publish in Marathi.'),
+          rowSeg('dvFont', 'Hindi and Marathi font', 'Tiro Devanagari (serif) or Mukta (sans). Match Font follows your Serif or Sans choice.', ['Match Font', 'Serif', 'Sans'])
+        ] },
+        { id: 'notifications', title: 'Notifications', rows: [
+          sw('ednOn', 'Tell me when my edition is ready', 'One notification a day. The edition is printed at 6:00 AM IST. Your browser will ask to allow notifications.'),
+          rowSeg('ednTime', 'When', 'An edition can’t arrive before it is printed, so 6:00 AM is the earliest.', ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM']),
+          sw('sound', 'Sound', 'Plays your system’s notification sound.'),
+          sw('quiet', 'Quiet hours, 10:00 PM to 7:00 AM', 'Notifications wait until quiet hours end. Nothing is lost.'),
+          sw('alerts', 'Topic and source alerts', 'Off by default. Alerts only for the topics and outlets you pick, with the publisher’s own headline. Pick them in Your news.')
+        ] },
+        { id: 'front', title: 'Front page', rows: [sw('trending', 'Trending', 'Five stories the most outlets are covering.'), sw('papers', 'Papers & Reports', 'Research and official documents.'), sw('outside', 'Outside your sources', 'A few stories from outlets you haven’t chosen.'), sw('cont', 'Continue reading', 'Articles you started.')] },
+        { id: 'access', title: 'Accessibility · Text', rows: [sw('system', 'Match my browser’s text size', 'Uses the zoom and font size set in your browser.')] },
+        { id: 'access-colour', title: 'Accessibility · Colour vision', rows: [
+          rowSeg('colour', 'Colour mode', 'Blue-yellow colour blindness: Standard already works, since Un:edited uses no blue, green or yellow. Stamps keep their print colour.', ['Standard', 'Red-green friendly', 'Black and white']),
+          sw('cue', 'Don’t rely on colour alone', 'Adds labels, underlines and shapes wherever colour carries meaning, like Saved and the active tab.'),
+          sw('underline', 'Underline links', 'Links stay underlined, not just coloured.')
+        ] },
+        { id: 'access-low', title: 'Accessibility · Low vision', rows: [
+          sw('contrast', 'Higher contrast', 'Darker text and stronger lines on both Paper and Ink.'),
+          sw('bold', 'Bolder text', 'Uses the medium weight for body text and labels.'),
+          sw('focusRing', 'Stronger focus outline', 'A thick outline shows where you are when using the keyboard.')
+        ] },
+        { id: 'access-read', title: 'Accessibility · Reading and focus', rows: [
+          sw('dyslexia', 'Dyslexia-friendly font', 'Reads in Atkinson Hyperlegible. Devanagari keeps Tiro or Mukta.'),
+          rowSeg('tracking', 'Letter and word spacing', '', ['Normal', 'Wide', 'Wider']),
+          sw('ruler', 'Reading line', 'Dims the lines above and below the one you are reading.')
+        ] },
+        { id: 'access-touch', title: 'Accessibility · Pointer and keyboard', rows: [
+          sw('targets', 'Larger click targets', 'Buttons and rows grow from 44 to 56 pixels tall.'),
+          sw('buttons', 'Buttons instead of swiping', 'Shows Previous and Next in Feed instead of relying on swipes or trackpad gestures.')
+        ] },
+        { id: 'access-motion', title: 'Accessibility · Motion and screen readers', rows: [
+          sw('motion', 'Reduce motion', 'Turns off stamps, wipes and page animations. On automatically if your system asks for it.'),
+          sw('credits', 'Read image credits aloud', 'Screen readers read the photographer and agency line before the story.')
+        ] },
+        { id: 'storage', title: 'Storage', rows: [
+          sw('autoDl', 'Auto-download saved articles', s.autoDl ? 'New saves download to this browser as you save them.' : 'Off. Saving does not download. Use ⋯ › Download on a story, or a folder’s Download. Already-downloaded stories stay.'),
+          link('Downloaded', s.cleared ? '0 articles · 0 MB' : '14 articles · 18 MB', 'WebLibrary.dc.html', 'Open'),
+          clearRow()
+        ] },
+        { id: 'about', title: 'About', rows: [link('Our principles', '', '#', 'Read'), link('Full source list', 'Public', '#', 'Open'), link('Privacy', '', '#', 'Read')] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

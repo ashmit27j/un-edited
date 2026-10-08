@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Save to folder</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden;">
+  <dc-import name="Feed" dark="{{dark}}" hint-size="390px,844px"></dc-import>
+  <a href="Feed.dc.html" aria-label="Close" style="position: absolute; inset: 0; background: {{t.scrim}};"></a>
+
+  <section aria-label="Save to folder" style="position: absolute; left: 0; right: 0; bottom: 0; background: {{t.surface}}; border-top: 1px solid {{t.rule}}; border-radius: 14px 14px 0 0; padding: 10px 24px 30px 24px; color: {{t.ink}}; display: flex; flex-direction: column;">
+    <span style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: {{t.rule}};"></span>
+    <div style="margin-top: 14px; display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid {{t.ink}};">
+      <h2 style="margin: 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 24px;">Save to</h2>
+      <a href="Feed.dc.html" style="font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; padding: 10px 0 10px 16px;">Done</a>
+    </div>
+
+    <sc-for list="{{folders}}" as="f" hint-placeholder-count="3">
+      <button aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="display: flex; align-items: center; justify-content: space-between; height: 54px; padding: 0; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; cursor: pointer; text-align: left;">
+        <span style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 18px;">{{f.name}}</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{f.count}} articles</span>
+        </span>
+        <span style="width: 22px; height: 22px; box-sizing: border-box; border: 1.5px solid {{f.box}}; background: {{f.fill}}; color: {{t.surface}}; display: flex; align-items: center; justify-content: center;">
+          <sc-if value="{{f.on}}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+        </span>
+      </button>
+    </sc-for>
+
+    <sc-if value="{{adding}}" hint-placeholder-val="{{ false }}">
+      <label style="display: flex; align-items: center; gap: 10px; height: 54px; border-bottom: 1px solid {{t.rule}};">
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">New folder name</span>
+        <input type="text" placeholder="Folder name" style="flex: 1; height: 40px; border: 0; border-bottom: 1px solid {{t.ink}}; outline: none; background: transparent; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 18px;">
+        <button onClick="{{stopAdding}}" style="height: 40px; padding: 0 4px; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer;">Create</button>
+      </label>
+    </sc-if>
+    <sc-if value="{{notAdding}}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{startAdding}}" style="display: flex; align-items: center; gap: 10px; height: 54px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 15px; cursor: pointer;">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round;"><path d="M12 5v14M5 12h14"></path></svg>New folder</button>
+    </sc-if>
+
+    <p style="margin: 12px 0 0 0; font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5; color: {{t.muted}};">Saving keeps a story in your Library. To read it offline, use ⋯ › Download, or turn on Auto-download in You › Storage.</p>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { on: { Saved: true }, adding: false };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', scrim: 'rgba(0,0,0,0.5)' }
+      : { surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', scrim: 'rgba(28,26,23,0.32)' };
+    const on = this.state.on;
+    const list = [{ name: 'Saved', count: 12 }, { name: 'Weekend reads', count: 4 }, { name: 'Elections', count: 9 }];
+    const folders = list.map((f) => ({
+      name: f.name, count: String(f.count),
+      on: !!on[f.name],
+      box: on[f.name] ? t.ink : t.muted,
+      fill: on[f.name] ? t.ink : 'transparent',
+      pick: () => this.setState({ on: Object.assign({}, on, { [f.name]: !on[f.name] }) })
+    }));
+    return {
+      t: t, dark: dark, folders: folders,
+      adding: this.state.adding, notAdding: !this.state.adding,
+      startAdding: () => this.setState({ adding: true }),
+      stopAdding: () => this.setState({ adding: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

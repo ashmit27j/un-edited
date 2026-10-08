@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Landing page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+html::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+html::-webkit-scrollbar-track{background:transparent}
+html::-webkit-scrollbar-thumb{background:rgba(122,112,98,.38);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+html::-webkit-scrollbar-thumb:hover{background:rgba(168,55,42,.7);border:3px solid transparent;background-clip:padding-box}
+html::-webkit-scrollbar-corner{background:transparent}
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+@keyframes lp-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 -2% 0 0)}}
+@keyframes lp-rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes lp-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes lp-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes lp-under{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes lp-reveal{from{opacity:0;transform:translateY(48px)}to{opacity:1;transform:none}}
+.lp-wipe{display:inline-block;animation:lp-wipe 1.1s cubic-bezier(.65,0,.35,1) both}
+.lp-rise{animation:lp-rise .8s cubic-bezier(.2,.7,.2,1) both}
+.lp-d1{animation-delay:.15s}.lp-d2{animation-delay:.55s}.lp-d3{animation-delay:.9s}.lp-d4{animation-delay:1.2s}.lp-d5{animation-delay:1.5s}
+.lp-float{animation:lp-float 6s ease-in-out 2s infinite}
+.lp-track{display:flex;width:max-content;animation:lp-marquee 60s linear infinite}
+.lp-track:hover{animation-play-state:paused}
+.lp-out{transition:color .2s ease}
+.lp-out:hover,.lp-out:focus-visible{color:var(--lp-acc);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px}
+.lp-under{position:relative;display:inline-block}
+.lp-under::after{content:"";position:absolute;left:0;right:0;bottom:.06em;height:.07em;background:currentColor;transform-origin:0 50%;animation:lp-under .9s cubic-bezier(.65,0,.35,1) 1.3s both}
+@keyframes lp-fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lp-swap{animation:lp-fadein 1.4s cubic-bezier(.25,.6,.3,1) both}
+.lp-cta{transition:transform .2s ease, box-shadow .2s ease}
+.lp-cta:hover{transform:translateY(-2px)}
+.lp-ghost{transition:transform .2s ease,background-color .2s ease}
+.lp-ghost:hover{background-color:color-mix(in srgb, currentColor 8%, transparent)}
+.lp-fade{transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+.lp-hide{opacity:0;transform:translateY(44px)}
+.lp-peek{position:absolute;bottom:calc(100% - 28px);opacity:0;transform:translateY(90px) rotate(0deg);transition:transform 1.2s cubic-bezier(.16,.8,.24,1),opacity .5s ease;transition-delay:var(--d)}
+.lp-peek-on .lp-peek{opacity:1;transform:translateY(0) rotate(var(--r))}
+.lp-caret-off{animation:none;opacity:0;transition:opacity .8s ease}
+@keyframes lp-unfold{from{opacity:0;transform:translate(-50%,-50%) rotate(0deg) scale(.55)}to{opacity:1;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r)) scale(1)}}
+@keyframes lp-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.lp-sheet{position:absolute;left:0;top:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r));animation:lp-unfold 1.6s cubic-bezier(.16,.8,.24,1) both;animation-delay:var(--d)}
+.lp-sheet path,.lp-sheet rect,.lp-sheet circle{stroke-dasharray:1;animation:lp-draw 1.8s cubic-bezier(.45,0,.25,1) both;animation-delay:calc(var(--d) + .3s)}
+@keyframes lp-scroll{0%,14%{transform:translateY(0)}86%,100%{transform:translateY(var(--to))}}
+@keyframes lp-screen{from{opacity:0}to{opacity:1}}
+@keyframes lp-tap{0%{opacity:.9;transform:translate(-50%,-50%) scale(.35)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}
+.lp-screen{position:absolute;inset:0;animation:lp-screen .45s ease both}
+.lp-scrolling{animation:lp-scroll var(--dur) cubic-bezier(.45,0,.25,1) both}
+.lp-tap{position:absolute;width:56px;height:56px;border-radius:50%;border:2px solid currentColor;animation:lp-tap .65s ease-out both}
+@supports (animation-timeline: scroll()){
+  .lp-px-text{animation:lp-px-text linear both;animation-timeline:scroll(root);animation-range:0 100vh}
+  .lp-px-phone{animation:lp-px-phone linear both;animation-timeline:scroll(root);animation-range:0 100vh}
+  .lp-px-deep{animation:lp-px-deep linear both;animation-timeline:scroll(root);animation-range:0 100vh}
+}
+@keyframes lp-px-text{to{transform:translateY(90px);opacity:.35}}
+@keyframes lp-px-phone{to{transform:translateY(-70px)}}
+@keyframes lp-px-deep{to{transform:translateY(160px) scale(1.06)}}
+@keyframes lp-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.lp-caret{display:inline-block;width:.06em;height:.82em;margin-left:.06em;vertical-align:-.04em;background:currentColor;animation:lp-blink 1.05s steps(1) infinite}
+@media (max-width: 720px){
+  .lp-hero{padding-top:18px !important}
+  .lp-hero-row{margin-top:24px !important;gap:28px !important}
+  .lp-hero-text{gap:18px !important}
+  .lp-hero-p{font-size:18px !important;line-height:1.5 !important}
+  .lp-hero-btn{height:52px !important;padding:0 18px !important;font-size:15px !important}
+  .lp-phone-frame{transform:scale(.9);transform-origin:top center;margin-bottom:-72px}
+  .lp-deep-scale{transform:scale(.68)}
+  .lp-hero-stamp{width:108px !important;height:108px !important;right:4px !important;top:-16px !important}
+}
+@keyframes lp-stamp-in{0%{opacity:0;transform:scale(1.35) rotate(-6deg)}60%{opacity:1;transform:scale(.97)}100%{opacity:1;transform:none}}
+.lp-hero-stamp{animation:lp-stamp-in .45s cubic-bezier(.3,.7,.3,1) 1.9s both}
+@media (prefers-reduced-motion: reduce){.lp-hero-stamp{animation:none}}
+@media (prefers-reduced-motion: reduce){
+  .lp-caret{animation:none}
+  html{scroll-behavior:auto}
+  .lp-wipe,.lp-rise,.lp-float,.lp-track,.lp-swap,.lp-sheet,.lp-sheet path,.lp-sheet rect,.lp-sheet circle,.lp-scrolling,.lp-screen,.lp-tap,.lp-px-text,.lp-px-phone,.lp-px-deep{animation:none}
+  .lp-sheet path,.lp-sheet rect,.lp-sheet circle{stroke-dasharray:none}
+  .lp-fade,.lp-hide{transition:none;opacity:1;transform:none}
+  .lp-peek{transition:none}
+  .lp-under::after{animation:none}
+}
+/* Desktop cursors: stylised pointer everywhere, "Read more" stamp over links that open a story */
+@media (hover: hover) and (pointer: fine){
+.ue-paper,.ue-paper *{cursor:url(assets/cursor-pointer-paper.svg) 4 3, default}
+.ue-ink,.ue-ink *{cursor:url(assets/cursor-pointer-ink.svg) 4 3, default}
+.ue-paper a,.ue-paper button,.ue-paper [role=tab],.ue-ink a,.ue-ink button,.ue-ink [role=tab]{cursor:pointer}
+.ue-paper input,.ue-paper textarea,.ue-ink input,.ue-ink textarea{cursor:text}
+.ue-paper a[href="WebArticle.dc.html"],.ue-paper a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-paper.svg) 32 32, pointer}
+.ue-ink a[href="WebArticle.dc.html"],.ue-ink a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-ink.svg) 32 32, pointer}
+}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div class="{{t.cur}}" style="min-height: 100vh; overflow-x: clip; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif;">
+
+  <header style="border-bottom: 1px solid {{t.rule}};">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 72px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 32px;">
+      <a href="#top" aria-label="Un:edited" style="font-weight: 700; font-size: 28px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1;"><span style="color: {{t.accent}};">Un</span><span aria-hidden="true" style="display: inline-flex; flex-direction: column; gap: 5px; margin: 0 3px; padding-top: 3px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</a>
+      <nav aria-label="Page" style="display: flex; flex-wrap: wrap; gap: 0 28px; font-family: 'Inter', sans-serif; font-size: 14.5px;">
+        <a href="#idea" style="height: 44px; display: flex; align-items: center;">How it works</a>
+        <a href="#sources" style="height: 44px; display: flex; align-items: center;">Sources</a>
+        <a href="#questions" style="height: 44px; display: flex; align-items: center;">Questions</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="position: relative">
+    <section id="top" class="lp-hero" style="max-width: 1200px; margin: 0 auto; padding: 28px 32px 0 32px; position: relative">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.ink}}; color: {{t.bg}};">Nº 1</span>
+        <span>A news reader</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span>
+        <span>No AI · No algorithm · No fee</span>
+      </div>
+
+      <div class="lp-hero-row" style="margin-top: 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px 64px;">
+        <div class="lp-px-text lp-hero-text" style="flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 28px;">
+          <h1 aria-label="Every story, Un:edited." style="margin: 0; font-weight: 500; font-size: clamp(52px, 7.4vw, 104px); line-height: 1.02; letter-spacing: -2px;">
+            <span aria-hidden="true" class="lp-wipe lp-d1">Every story,</span><br>
+            <span aria-hidden="true" class="lp-rise lp-d2" style="display: inline-flex; align-items: baseline; white-space: nowrap;"><span style="color: {{t.accent}};">Un:</span><span>{{typed}}</span><span class="{{caretClass}}" style="color: {{t.accent}};"></span></span>
+          </h1>
+          <p class="lp-rise lp-d3 lp-hero-p" style="margin: 0; max-width: 560px; font-size: 22px; line-height: 1.55; color: {{t.muted}};"><span style="color: {{t.ink}};">Every story, as it was written.</span> Un:edited brings the outlets you choose onto one calm front page. Nothing is summarised, rewritten or ranked for you.</p>
+          <div class="lp-rise lp-d4" style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <a href="OB1Welcome.dc.html" class="lp-cta lp-hero-btn" style="height: 58px; padding: 0 30px; display: inline-flex; align-items: center; gap: 12px; background: {{t.ink}}; color: {{t.bg}}; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Start reading
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="#start" class="lp-hero-btn" style="height: 58px; box-sizing: border-box; padding: 0 30px; display: inline-flex; align-items: center; border: 1px solid {{t.ink}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Get the app</a>
+          </div>
+        </div>
+        <div class="lp-rise lp-d3 lp-phone-col" style="flex: 1 1 320px; display: flex; justify-content: center; position: relative;">
+          
+          <div class="lp-px-deep" aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 0;">
+            <div class="lp-deep-scale">
+            <div class="lp-sheet" style="--x: -200px; --y: -150px; --r: -9deg; --d: 0.5s; width: 230px; height: 300px; color: {{t.line}};">
+              <svg width="230" height="300" viewBox="0 0 230 300" style="display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round;"><rect x="1" y="1" width="228" height="298" pathLength="1"></rect><path d="M16 26H214" pathLength="1"></path><path d="M16 31H214" pathLength="1"></path><path d="M71.0 18H159.0" pathLength="1" style="stroke-width: 3;"></path><path d="M16 48H143M16 58H115" pathLength="1" style="stroke-width: 3;"></path><path d="M16 78H109" pathLength="1"></path><path d="M16 90H109" pathLength="1"></path><path d="M16 102H109" pathLength="1"></path><path d="M16 114H72" pathLength="1"></path><path d="M16 126H109" pathLength="1"></path><path d="M16 138H109" pathLength="1"></path><path d="M16 150H109" pathLength="1"></path><path d="M16 162H72" pathLength="1"></path><path d="M16 174H109" pathLength="1"></path><path d="M121 78H214" pathLength="1"></path><path d="M121 90H214" pathLength="1"></path><path d="M121 102H214" pathLength="1"></path><path d="M121 114H177" pathLength="1"></path><path d="M121 126H214" pathLength="1"></path><path d="M121 138H214" pathLength="1"></path><path d="M121 150H214" pathLength="1"></path><path d="M121 162H177" pathLength="1"></path><path d="M121 174H214" pathLength="1"></path><path d="M115 72V282" pathLength="1"></path></svg>
+            </div>
+            <div class="lp-sheet" style="--x: 110px; --y: -170px; --r: 7deg; --d: 0.65s; width: 210px; height: 280px; color: {{t.line}};">
+              <svg width="210" height="280" viewBox="0 0 210 280" style="display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round;"><rect x="1" y="1" width="208" height="278" pathLength="1"></rect><path d="M16 26H194" pathLength="1"></path><path d="M16 31H194" pathLength="1"></path><path d="M61.0 18H149.0" pathLength="1" style="stroke-width: 3;"></path><path d="M16 48H130M16 58H105" pathLength="1" style="stroke-width: 3;"></path><path d="M16 78H99" pathLength="1"></path><path d="M16 90H99" pathLength="1"></path><path d="M16 102H99" pathLength="1"></path><path d="M16 114H66" pathLength="1"></path><path d="M16 126H99" pathLength="1"></path><path d="M16 138H99" pathLength="1"></path><path d="M16 150H99" pathLength="1"></path><path d="M16 162H66" pathLength="1"></path><path d="M16 174H99" pathLength="1"></path><path d="M111 78H194" pathLength="1"></path><path d="M111 90H194" pathLength="1"></path><path d="M111 102H194" pathLength="1"></path><path d="M111 114H161" pathLength="1"></path><path d="M111 126H194" pathLength="1"></path><path d="M111 138H194" pathLength="1"></path><path d="M111 150H194" pathLength="1"></path><path d="M111 162H161" pathLength="1"></path><path d="M111 174H194" pathLength="1"></path><path d="M105 72V262" pathLength="1"></path></svg>
+            </div>
+            <div class="lp-sheet" style="--x: -215px; --y: 190px; --r: 6deg; --d: 0.8s; width: 180px; height: 170px; color: {{t.line}};">
+              <svg width="180" height="170" viewBox="0 0 180 170" style="display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round;"><rect x="1" y="1" width="178" height="168" pathLength="1"></rect><rect x="14" y="14" width="152" height="71" pathLength="1"></rect><path d="M14 85L166 14" pathLength="1"></path><path d="M14 101H166" pathLength="1"></path><path d="M14 112H166" pathLength="1"></path><path d="M14 123H166" pathLength="1"></path><path d="M14 134H166" pathLength="1"></path><path d="M14 145H148" pathLength="1"></path></svg>
+            </div>
+            <div class="lp-sheet" style="--x: 100px; --y: 200px; --r: -6deg; --d: 0.95s; width: 220px; height: 290px; color: {{t.line}};">
+              <svg width="220" height="290" viewBox="0 0 220 290" style="display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round;"><rect x="1" y="1" width="218" height="288" pathLength="1"></rect><path d="M16 26H204" pathLength="1"></path><path d="M16 31H204" pathLength="1"></path><path d="M66.0 18H154.0" pathLength="1" style="stroke-width: 3;"></path><path d="M16 48H136M16 58H110" pathLength="1" style="stroke-width: 3;"></path><path d="M16 78H104" pathLength="1"></path><path d="M16 90H104" pathLength="1"></path><path d="M16 102H104" pathLength="1"></path><path d="M16 114H69" pathLength="1"></path><path d="M16 126H104" pathLength="1"></path><path d="M16 138H104" pathLength="1"></path><path d="M16 150H104" pathLength="1"></path><path d="M16 162H69" pathLength="1"></path><path d="M16 174H104" pathLength="1"></path><path d="M116 78H204" pathLength="1"></path><path d="M116 90H204" pathLength="1"></path><path d="M116 102H204" pathLength="1"></path><path d="M116 114H169" pathLength="1"></path><path d="M116 126H204" pathLength="1"></path><path d="M116 138H204" pathLength="1"></path><path d="M116 150H204" pathLength="1"></path><path d="M116 162H169" pathLength="1"></path><path d="M116 174H204" pathLength="1"></path><path d="M110 72V272" pathLength="1"></path></svg>
+            </div>
+            <div class="lp-sheet" style="--x: 0px; --y: -330px; --r: -3deg; --d: 1.1s; width: 170px; height: 54px; color: {{t.line}};">
+              <svg width="170" height="54" viewBox="0 0 170 54" style="display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round;"><path d="M1 4H169" pathLength="1"></path><path d="M1 13H147" pathLength="1"></path><path d="M1 22H125" pathLength="1"></path><path d="M1 31H169" pathLength="1"></path><path d="M1 40H147" pathLength="1"></path><path d="M1 49H125" pathLength="1"></path></svg>
+            </div>
+            <div class="lp-sheet" style="--x: -250px; --y: 20px; --r: 0deg; --d: 1.2s; width: 78px; height: 78px; color: {{t.line}};">
+              <svg width="78" height="78" viewBox="0 0 78 78" style="display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round;"><circle cx="39.0" cy="39.0" r="37.0" pathLength="1"></circle><circle cx="39.0" cy="39.0" r="30.0" pathLength="1"></circle><path d="M23.0 39.0H55.0M29.0 47.0H49.0M29.0 31.0H49.0" pathLength="1"></path></svg>
+            </div>
+            </div>
+          </div>
+          <div class="lp-px-phone" style="position: relative; z-index: 1;">
+            <div class="lp-phone-frame" role="img" aria-label="Preview of the Un:edited app moving through Home, Library, You, Feed and an article" style="width: 336px; height: 712px; box-sizing: border-box; padding: 12px; border: 1px solid {{t.ink}}; border-radius: 40px; background: {{t.surface}};">
+              <div aria-hidden="true" style="width: 312px; height: 688px; overflow: hidden; border-radius: 30px; border: 1px solid {{t.rule}}; box-sizing: border-box; pointer-events: none; position: relative;">
+                <div style="width: 390px; height: 860px; transform: scale(0.8); transform-origin: 0 0; position: relative; overflow: hidden; background: {{t.bg}};">
+                  <sc-if value="{{demo.home}}" hint-placeholder-val="{{ false }}">
+                    <div class="lp-screen">
+                      <div class="lp-scrolling" style="--to: -1040px; --dur: 6.4s; width: 390px; height: 1900px;">
+                        <dc-import name="Main" dark="{{dark}}" view="comfortable" hint-size="390px,1900px"></dc-import>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{demo.library}}" hint-placeholder-val="{{ false }}">
+                    <div class="lp-screen">
+                      <div class="lp-scrolling" style="--to: 0px; --dur: 4.2s; width: 390px; height: 844px;">
+                        <dc-import name="Library" dark="{{dark}}" hint-size="390px,844px"></dc-import>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{demo.you}}" hint-placeholder-val="{{ false }}">
+                    <div class="lp-screen">
+                      <div class="lp-scrolling" style="--to: -540px; --dur: 5.6s; width: 390px; height: 1700px;">
+                        <dc-import name="You" dark="{{dark}}" hint-size="390px,1700px"></dc-import>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{demo.feed}}" hint-placeholder-val="{{ false }}">
+                    <div class="lp-screen">
+                      <div class="lp-scrolling" style="--to: 0px; --dur: 4.2s; width: 390px; height: 844px;">
+                        <dc-import name="Feed" dark="{{dark}}" hint-size="390px,844px"></dc-import>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{demo.article}}" hint-placeholder-val="{{ false }}">
+                    <div class="lp-screen">
+                      <div class="lp-scrolling" style="--to: -780px; --dur: 6.4s; width: 390px; height: 1640px;">
+                        <dc-import name="Article" dark="{{dark}}" hint-size="390px,1640px"></dc-import>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{demo.nav}}" hint-placeholder-val="{{ true }}">
+                    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 92px; box-sizing: border-box; padding: 6px 12px 24px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-family: 'Inter', sans-serif; font-size: 11px;">
+                      <sc-for list="{{demo.tabs}}" as="tb" hint-placeholder-count="4">
+                        <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{tb.color}}; font-weight: {{tb.weight}};">
+                          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><path d="{{tb.icon}}"></path></svg>{{tb.label}}</span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{demo.tapping}}" hint-placeholder-val="{{ false }}">
+                    <span class="lp-tap" style="left: {{demo.tapX}}px; top: {{demo.tapY}}px; color: {{t.accent}};"></span>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="--lp-acc: {{t.accent}}; margin-top: 72px; overflow: hidden; border-top: 1px solid {{t.rule}}; border-bottom: 1px solid {{t.rule}};">
+        <div class="lp-track">
+          <sc-for list="{{marquee}}" as="m" hint-placeholder-count="12">
+            <span style="padding: 18px 28px; display: flex; align-items: center; gap: 28px;"><a href="{{m.href}}" tabindex="{{m.tab}}" aria-hidden="{{m.hidden}}" class="lp-out" style="font-size: 26px; white-space: nowrap;">{{m.name}}</a><span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.accent}};"></span></span>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="idea" data-rv="idea" class="lp-fade {{rv.idea}}" style="max-width: 1200px; margin: 0 auto; padding: 128px 32px 0 32px;">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.ink}}; color: {{t.bg}};">01</span><span>The idea</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span><span>Read it from</span>
+      </div>
+      <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start;">
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px;">
+          <h2 style="margin: 0; font-weight: 500; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -1.2px;">One story.<br><i style="color: {{t.accent}};">Every version.</i></h2>
+          <p style="margin: 0; font-size: 20px; line-height: 1.6; color: {{t.muted}};">When several outlets report the same event, Un:edited puts them side by side. Switch between them under “Read it from” and see how each one tells it.</p>
+        </div>
+        <div style="flex: 1 1 480px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.rule}}; padding: 24px 28px 28px 28px;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.accent}};">City · Covered by 4 sources</span>
+          <div role="tablist" aria-label="Read it from" style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 0 24px; border-bottom: 1px solid {{t.rule}}; font-family: 'Inter', sans-serif; font-size: 14.5px;">
+            <sc-for list="{{versions}}" as="v" hint-placeholder-count="4">
+              <button role="tab" aria-selected="{{v.on}}" onClick="{{v.pick}}" style="transition: color .8s ease, border-color .8s ease; height: 46px; padding: 0; margin-bottom: -1px; background: none; border: 0; border-bottom: 2px solid {{v.bar}}; color: {{v.color}}; font-weight: {{v.weight}}; cursor: pointer;">{{v.name}}</button>
+            </sc-for>
+          </div>
+          <div style="min-height: 210px; padding-top: 22px;">
+            <sc-for list="{{versions}}" as="v" hint-placeholder-count="1">
+              <sc-if value="{{v.on}}" hint-placeholder-val="{{ false }}">
+                <div class="lp-swap" style="display: flex; flex-direction: column; gap: 12px;">
+                  <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">{{v.name}} · Tue 6 Oct, {{v.time}}</span>
+                  <span style="font-size: 32px; line-height: 1.15; letter-spacing: -0.4px;">{{v.headline}}</span>
+                  <p style="margin: 0; font-size: 18px; line-height: 1.6;">{{v.lede}}</p>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources" data-rv="sources" class="lp-fade {{rv.sources}}" style="max-width: 1200px; margin: 0 auto; padding: 128px 32px 0 32px;">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.ink}}; color: {{t.bg}};">02</span><span>Your sources</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span><span>Choose who you trust</span>
+      </div>
+      <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start;">
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px;">
+          <h2 style="margin: 0; font-weight: 500; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -1.2px;">Know who is<br><i style="color: {{t.accent}};">behind</i> the news.</h2>
+          <p style="margin: 0; font-size: 20px; line-height: 1.6; color: {{t.muted}};">Every outlet shows who owns it, how it is funded and where it is based before you add it. Your feed shows only the ones you pick.</p>
+        </div>
+        <div style="flex: 1 1 480px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.rule}}; padding: 24px 28px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid {{t.ink}};">
+            <span style="font-size: 30px;">Morning Ledger</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.accent}};">Example</span>
+          </div>
+          <sc-for list="{{facts}}" as="f" hint-placeholder-count="4">
+            <div style="display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid {{t.rule}};">
+              <span style="width: 120px; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}}; padding-top: 4px;">{{f.k}}</span>
+              <span style="font-size: 18px; line-height: 1.4;">{{f.v}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="papers" data-rv="papers" class="lp-fade {{rv.papers}}" style="max-width: 1200px; margin: 0 auto; padding: 128px 32px 0 32px;">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.ink}}; color: {{t.bg}};">03</span><span>Papers &amp; reports</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span><span>Honest labels</span>
+      </div>
+      <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start;">
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px;">
+          <h2 style="margin: 0; font-weight: 500; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -1.2px;">Research,<br><i style="color: {{t.accent}};">labelled</i> honestly.</h2>
+          <p style="margin: 0; font-size: 20px; line-height: 1.6; color: {{t.muted}};">Studies and official documents sit on your front page with a plain label, so you always know what kind of evidence you are reading.</p>
+        </div>
+        <div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; border-top: 1px solid {{t.ink}};">
+          <sc-for list="{{papers}}" as="p" hint-placeholder-count="3">
+            <div style="padding: 20px 0; border-bottom: 1px solid {{t.rule}}; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 20px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.accent}}; padding-top: 6px; line-height: 1.5;">{{p.label}}</span>
+              <span style="display: flex; flex-direction: column; gap: 6px;">
+                <span style="font-size: 21px; line-height: 1.3;">{{p.title}}</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5; color: {{t.muted}};">{{p.note}}</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="day" data-rv="day" class="lp-fade {{rv.day}}" style="max-width: 1200px; margin: 0 auto; padding: 128px 32px 0 32px;">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.ink}}; color: {{t.bg}};">04</span><span>Your day</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span><span>One edition</span>
+      </div>
+      <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start;">
+        <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px;">
+          <h2 style="margin: 0; font-weight: 500; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -1.2px;">News that<br><i style="color: {{t.accent}};">ends.</i></h2>
+          <p style="margin: 0; font-size: 20px; line-height: 1.6; color: {{t.muted}};">There is no endless scroll. When you have read what your sources published today, Un:edited tells you, and you can put it down.</p>
+        </div>
+        <div class="{{peekDay}}" style="flex: 1 1 480px; min-width: 0; position: relative; margin-top: 150px;">
+          <span class="lp-peek" aria-hidden="true" style="left: 6%; --r: -9deg; --d: .15s;"><svg width="170" height="128" viewBox="0 0 170 128" aria-hidden="true" style="display: block; fill: none; stroke: {{t.line}}; stroke-width: 1.1; stroke-linecap: round;"><rect x="1" y="1" width="168" height="126" style="fill: {{t.bg}};"></rect><path d="M12 20H158M12 24H158"></path><path d="M59 13H111" style="stroke-width: 2.4;"></path><path d="M12 36H112" style="stroke-width: 2.4;"></path><path d="M12 50H80"></path><path d="M12 59H80"></path><path d="M12 68H80"></path><path d="M12 77H49"></path><path d="M12 86H80"></path><path d="M12 95H80"></path><path d="M12 104H80"></path><path d="M12 113H49"></path><path d="M90 50H158"></path><path d="M90 59H158"></path><path d="M90 68H158"></path><path d="M90 77H127"></path><path d="M90 86H158"></path><path d="M90 95H158"></path><path d="M90 104H158"></path><path d="M90 113H127"></path></svg></span>
+          <span class="lp-peek" aria-hidden="true" style="left: 34%; --r: 2deg; --d: .3s;"><svg width="190" height="140" viewBox="0 0 190 140" aria-hidden="true" style="display: block; fill: none; stroke: {{t.line}}; stroke-width: 1.1; stroke-linecap: round;"><rect x="1" y="1" width="188" height="138" style="fill: {{t.bg}};"></rect><path d="M12 20H178M12 24H178"></path><path d="M69 13H121" style="stroke-width: 2.4;"></path><path d="M12 36H125" style="stroke-width: 2.4;"></path><path d="M12 50H90"></path><path d="M12 59H90"></path><path d="M12 68H90"></path><path d="M12 77H55"></path><path d="M12 86H90"></path><path d="M12 95H90"></path><path d="M12 104H90"></path><path d="M12 113H55"></path><path d="M12 122H90"></path><path d="M12 131H90"></path><path d="M100 50H178"></path><path d="M100 59H178"></path><path d="M100 68H178"></path><path d="M100 77H143"></path><path d="M100 86H178"></path><path d="M100 95H178"></path><path d="M100 104H178"></path><path d="M100 113H143"></path><path d="M100 122H178"></path><path d="M100 131H178"></path></svg></span>
+          <span class="lp-peek" aria-hidden="true" style="left: 64%; --r: 8deg; --d: .45s;"><svg width="160" height="120" viewBox="0 0 160 120" aria-hidden="true" style="display: block; fill: none; stroke: {{t.line}}; stroke-width: 1.1; stroke-linecap: round;"><rect x="1" y="1" width="158" height="118" style="fill: {{t.bg}};"></rect><path d="M12 20H148M12 24H148"></path><path d="M54 13H106" style="stroke-width: 2.4;"></path><path d="M12 36H106" style="stroke-width: 2.4;"></path><path d="M12 50H75"></path><path d="M12 59H75"></path><path d="M12 68H75"></path><path d="M12 77H47"></path><path d="M12 86H75"></path><path d="M12 95H75"></path><path d="M12 104H75"></path><path d="M85 50H148"></path><path d="M85 59H148"></path><path d="M85 68H148"></path><path d="M85 77H120"></path><path d="M85 86H148"></path><path d="M85 95H148"></path><path d="M85 104H148"></path></svg></span>
+          <div style="position: relative; background: {{t.surface}}; border: 1px solid {{t.rule}}; padding: 32px 28px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;">
+          <span style="width: 48px; height: 1px; background: {{t.ink}};"></span>
+          <span style="font-size: 30px; font-style: italic;">That’s today’s edition.</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.5; color: {{t.muted}};">You’re all caught up. The next edition arrives at 6:00 AM.</span>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="questions" data-rv="questions" class="lp-fade {{rv.questions}}" style="max-width: 1200px; margin: 0 auto; padding: 128px 32px 0 32px;">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.ink}}; color: {{t.bg}};">05</span><span>Questions</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span><span>Plain answers</span>
+      </div>
+      <div style="margin-top: 40px; display: flex; flex-wrap: wrap; gap: 40px 64px; align-items: flex-start;">
+        <div style="flex: 1 1 420px; min-width: 0;">
+          <h2 style="margin: 0; font-weight: 500; font-size: clamp(40px, 5vw, 68px); line-height: 1.02; letter-spacing: -1.2px;">Before you<br><i style="color: {{t.accent}};">start.</i></h2>
+        </div>
+        <div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; border-top: 1px solid {{t.ink}};">
+          <sc-for list="{{faqs}}" as="f" hint-placeholder-count="4">
+            <div style="border-bottom: 1px solid {{t.rule}};">
+              <button aria-expanded="{{f.open}}" onClick="{{f.toggle}}" style="width: 100%; min-height: 64px; padding: 16px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: none; border: 0; color: {{t.ink}}; text-align: left; cursor: pointer; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 22px; line-height: 1.3;">{{f.q}}<span style="font-family: 'Inter', sans-serif; font-size: 20px; color: {{t.accent}};">{{f.sign}}</span></button>
+              <sc-if value="{{f.open}}" hint-placeholder-val="{{ false }}">
+                <p class="lp-rise" style="margin: 0 0 20px 0; font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; color: {{t.muted}};">{{f.a}}</p>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="start" data-rv="start" class="lp-fade {{rv.start}}" style="max-width: 1200px; margin: 0 auto; padding: 128px 32px 112px 32px;">
+      <div style="display: flex; align-items: center; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">
+        <span style="padding: 4px 8px; background: {{t.accent}}; color: {{t.bg}};">06</span><span>Start</span>
+        <span style="flex: 1; height: 1px; background: {{t.rule}};"></span><span>About two minutes</span>
+      </div>
+      <div style="margin-top: 40px; box-sizing: border-box; background: {{b.bg}}; color: {{b.fg}}; border: 1px solid {{b.edge}}; border-top: 3px solid {{b.top}}; padding: clamp(32px, 5vw, 64px) clamp(24px, 6vw, 72px); display: flex; flex-wrap: wrap; gap: 40px 72px; align-items: center; justify-content: space-between;">
+        <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 32px;">
+          <h2 style="margin: 0; font-weight: 500; font-size: clamp(44px, 6vw, 84px); line-height: 1; letter-spacing: -1.6px;">Start your<br><i style="color: {{b.accent}};">first edition.</i></h2>
+          <p style="margin: 0; max-width: 500px; font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: {{b.body}};">Languages, topics, places, sources. Pick them once and your front page is ready.</p>
+          <img class="lp-stamp" src="{{stamp.free}}" alt="Stamp: Free for everyone, always. No ads, no paywall. ₹0." style="width: 136px; height: 136px; margin: -8px 0 0 -6px;">
+        </div>
+        <div style="flex: 1 1 320px; max-width: 400px; min-width: min(100%, 280px); display: flex; flex-direction: column; gap: 12px; font-family: 'Inter', sans-serif; width: 552px">
+          <a href="WebHome.dc.html" class="lp-cta lp-ghost" style="min-height: 60px; padding: 0 22px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; border: 1.5px solid {{b.fg}}; color: {{b.fg}}; font-size: 16px; font-weight: 500;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"></path></svg><span style="flex: 1;">Read on the web <span style="font-weight: 400; color: {{b.body}};">(no install)</span></span><span aria-hidden="true">→</span></a>
+          <a href="OB1Welcome.dc.html" class="lp-cta" style="min-height: 60px; padding: 0 22px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; background: {{b.btnBg}}; color: {{b.btnFg}}; font-size: 16px; font-weight: 500;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"></rect><path d="M10.5 5h3M11 18.5h2"></path></svg><span style="flex: 1;">Add to iPhone</span><span aria-hidden="true">→</span></a>
+          <a href="#download-android" class="lp-cta" style="min-height: 60px; padding: 0 22px; box-sizing: border-box; display: flex; align-items: center; gap: 14px; background: {{b.btnBg}}; color: {{b.btnFg}}; font-size: 16px; font-weight: 500;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;"><path d="M5 17.5V11a7 7 0 0 1 14 0v6.5z"></path><path d="M7.5 5.5L6 3.5M16.5 5.5L18 3.5"></path><circle cx="9.5" cy="9.5" r=".6" style="fill: currentColor;"></circle><circle cx="14.5" cy="9.5" r=".6" style="fill: currentColor;"></circle><path d="M8.5 17.5V21M15.5 17.5V21"></path></svg><span style="flex: 1;">Download for Android</span><span aria-hidden="true">→</span></a>
+
+          <div style="margin-top: 14px; padding-top: 18px; border-top: 1px solid {{b.edge2}}; display: flex; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.55; color: {{b.fg}};">
+            
+            <p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.9px; text-transform: uppercase; color: {{b.sub}}; line-height: 1.55">NO ACCOUNT, NO STORE, INSTALLS IN SECONDS.</p><p style="margin: 0;"><strong style="font-weight: 500">iPhone:</strong> Open in Safari, tap Share, then Add to Home</p>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <p style="margin: 0;"><strong style="font-weight: 500;">Android:</strong> Download the file and open it. Your phone may ask you to allow the install.</p>
+              <a href="#install-guide" style="align-self: flex-start; min-height: 44px; display: inline-flex; align-items: center; font-size: 15px; font-weight: 500; color: {{b.accent}}; text-decoration: underline; text-underline-offset: 3px;">Need help installing?</a>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  <span class="lp-stamp lp-hero-stamp" style="position: absolute; top: 78px; left: 1242px; width: 156px; height: 156px; z-index: 2; pointer-events: none; display: block;"><svg viewBox="0 0 156 156" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;"><path d="M78.00 4.80Q84.85 -0.30 90.71 5.91Q98.34 2.08 103.04 9.21Q111.22 6.76 114.60 14.61Q123.08 13.61 125.05 21.93Q133.58 22.42 134.07 30.95Q142.39 32.92 141.39 41.40Q149.24 44.78 146.79 52.96Q153.92 57.66 150.09 65.29Q156.30 71.15 151.20 78.00Q156.30 84.85 150.09 90.71Q153.92 98.34 146.79 103.04Q149.24 111.22 141.39 114.60Q142.39 123.08 134.07 125.05Q133.58 133.58 125.05 134.07Q123.08 142.39 114.60 141.39Q111.22 149.24 103.04 146.79Q98.34 153.92 90.71 150.09Q84.85 156.30 78.00 151.20Q71.15 156.30 65.29 150.09Q57.66 153.92 52.96 146.79Q44.78 149.24 41.40 141.39Q32.92 142.39 30.95 134.07Q22.42 133.58 21.93 125.05Q13.61 123.08 14.61 114.60Q6.76 111.22 9.21 103.04Q2.08 98.34 5.91 90.71Q-0.30 84.85 4.80 78.00Q-0.30 71.15 5.91 65.29Q2.08 57.66 9.21 52.96Q6.76 44.78 14.61 41.40Q13.61 32.92 21.93 30.95Q22.42 22.42 30.95 21.93Q32.92 13.61 41.40 14.61Q44.78 6.76 52.96 9.21Q57.66 2.08 65.29 5.91Q71.15 -0.30 78.00 4.80Z" style="fill: {{t.bg}}; stroke: {{t.accent}}; stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-linejoin: round;"></path></svg><img src="{{stamp.brand}}" alt="Stamp: Every story, as it was written. Un:edited, 2026." style="position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px);"></span><span class="lp-stamp lp-hero-stamp" style="position: absolute; top: 78px; left: 1242px; width: 156px; height: 156px; z-index: 2; pointer-events: none; display: block;"><svg viewBox="0 0 156 156" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;"><path d="M78.00 4.80Q84.85 -0.30 90.71 5.91Q98.34 2.08 103.04 9.21Q111.22 6.76 114.60 14.61Q123.08 13.61 125.05 21.93Q133.58 22.42 134.07 30.95Q142.39 32.92 141.39 41.40Q149.24 44.78 146.79 52.96Q153.92 57.66 150.09 65.29Q156.30 71.15 151.20 78.00Q156.30 84.85 150.09 90.71Q153.92 98.34 146.79 103.04Q149.24 111.22 141.39 114.60Q142.39 123.08 134.07 125.05Q133.58 133.58 125.05 134.07Q123.08 142.39 114.60 141.39Q111.22 149.24 103.04 146.79Q98.34 153.92 90.71 150.09Q84.85 156.30 78.00 151.20Q71.15 156.30 65.29 150.09Q57.66 153.92 52.96 146.79Q44.78 149.24 41.40 141.39Q32.92 142.39 30.95 134.07Q22.42 133.58 21.93 125.05Q13.61 123.08 14.61 114.60Q6.76 111.22 9.21 103.04Q2.08 98.34 5.91 90.71Q-0.30 84.85 4.80 78.00Q-0.30 71.15 5.91 65.29Q2.08 57.66 9.21 52.96Q6.76 44.78 14.61 41.40Q13.61 32.92 21.93 30.95Q22.42 22.42 30.95 21.93Q32.92 13.61 41.40 14.61Q44.78 6.76 52.96 9.21Q57.66 2.08 65.29 5.91Q71.15 -0.30 78.00 4.80Z" style="fill: {{t.bg}}; stroke: {{t.accent}}; stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-linejoin: round;"></path></svg><img src="{{stamp.brand}}" alt="Stamp: Every story, as it was written. Un:edited, 2026." style="position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px);"></span></main>
+
+  <footer style="border-top: 2px solid {{t.ink}}; margin-top: 24px;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 56px 32px 0 32px; display: flex; flex-wrap: wrap; gap: 48px 64px; justify-content: space-between;">
+      <div style="flex: 1 1 300px; max-width: 380px; display: flex; flex-direction: column; gap: 16px;">
+        <img class="lp-stamp" src="{{stamp.brand}}" alt="Stamp: Every story, as it was written. Un:edited, 2026." style="width: 104px; height: 104px; margin: 0 0 4px -4px;">
+        <a href="#top" aria-label="Un:edited, back to top" style="font-weight: 700; font-size: 34px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1;"><span style="color: {{t.accent}};">Un</span><span aria-hidden="true" style="display: inline-flex; flex-direction: column; gap: 5px; margin: 0 3px; padding-top: 3px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</a>
+        <p style="margin: 0; font-size: 19px; line-height: 1.5;">Every story, as it was written.</p>
+        <p style="margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; color: {{t.muted}};">An independent news reader with no AI rewrites, no ranking algorithm and no ads. Designed and built by one person.</p>
+      </div>
+      <nav aria-label="Footer" style="flex: 2 1 520px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 32px; font-family: 'Inter', sans-serif; font-size: 14px;">
+        <div style="display: flex; flex-direction: column;">
+          <span style="margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">Read</span>
+          <a href="OB1Welcome.dc.html" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Start reading</a>
+          <a href="WebHome.dc.html" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Read on the web</a>
+          <a href="#start" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Get the app</a>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <span style="margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">About</span>
+          <a href="#idea" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">How it works</a>
+          <a href="#sources" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Full source list</a>
+          <a href="#questions" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Questions</a>
+          <a href="#report" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Report a problem</a>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <span style="margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">Maker</span>
+          <span style="min-height: 36px; display: flex; align-items: center;">Ashmit [SURNAME]</span>
+          <a href="[GITHUB PROFILE URL]" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"></path></svg>GitHub ↗</a>
+          <a href="[REPO URL]" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">Source code &amp; changelog ↗</a>
+          <a href="mailto:[CONTACT EMAIL]" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 36px; display: flex; align-items: center;">[CONTACT EMAIL]</a>
+        </div>
+      </nav>
+    </div>
+    <div style="max-width: 1200px; margin: 48px auto 0 auto; padding: 18px 32px 32px 32px; border-top: 1px solid {{t.rule}}; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">
+      <span>© 2026 Un:edited · Free for everyone, always.</span>
+      <span style="display: flex; flex-wrap: wrap; gap: 0 20px;">
+        <a href="#privacy" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 44px; display: flex; align-items: center;">Privacy</a>
+        <a href="#terms" class="lp-out" style="--lp-acc: {{t.accent}}; min-height: 44px; display: flex; align-items: center;">Terms</a>
+        <span style="min-height: 44px; display: flex; align-items: center; gap: 6px;"><span lang="en">English</span>·<span lang="hi">हिंदी</span>·<span lang="mr">मराठी</span></span>
+      </span>
+      <span style="flex-basis: 100%; font-size: 12px;">Headlines and outlets shown on this page are examples. Every article in the app belongs to its publisher.</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"startBlock":{"editor":"enum","options":["paper","ink"],"default":"paper","section":"Theme"},"$preview":{"width":1440,"height":4600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.words = ['changed', 'biased', 'masked', 'edited'];
+    this.state = { v: 0, auto: true, faq: 0, wi: 3, n: 6, typingDone: true, demo: 0, tapping: false, armed: false, seen: {} };
+    this.steps = [
+      { id: 'home', dur: 6400, tab: 0, tapX: 241, tapY: 800 },
+      { id: 'library', dur: 4200, tab: 2, tapX: 332, tapY: 800 },
+      { id: 'you', dur: 5600, tab: 3, tapX: 149, tapY: 800 },
+      { id: 'feed', dur: 4200, tab: 1, tapX: 195, tapY: 330 },
+      { id: 'article', dur: 6400, tab: -1, tapX: 38, tapY: 36 }
+    ];
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      if (this.state.auto) this.setState({ v: (this.state.v + 1) % 4 });
+    }, 6000);
+    const calm = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!calm) {
+      this.setState({ wi: 0, n: 0, typingDone: false });
+      this.typeStep('type', 1400);
+      this.runDemo(0);
+      this.check = () => {
+        if (this.raf) return;
+        this.raf = requestAnimationFrame(() => { this.raf = 0; this.reveal(); });
+      };
+      window.addEventListener('scroll', this.check, { passive: true });
+      window.addEventListener('resize', this.check);
+      this.reveal(true);
+    }
+  }
+  reveal(first) {
+    const els = document.querySelectorAll('[data-rv]');
+    if (!els.length) return;
+    const limit = window.innerHeight * 0.88;
+    const seen = Object.assign({}, this.state.seen);
+    let changed = !!first;
+    els.forEach((el) => {
+      const id = el.getAttribute('data-rv');
+      if (!seen[id] && el.getBoundingClientRect().top < limit) { seen[id] = true; changed = true; }
+    });
+    if (changed) this.setState({ seen: seen, armed: true });
+  }
+  runDemo(i) {
+    const step = this.steps[i];
+    this.setState({ demo: i, tapping: false });
+    this.dt1 = setTimeout(() => this.setState({ tapping: true }), step.dur - 650);
+    this.dt2 = setTimeout(() => this.runDemo((i + 1) % this.steps.length), step.dur);
+  }
+  typeStep(phase, wait) {
+    this.tw = setTimeout(() => {
+      const last = this.state.wi === this.words.length - 1;
+      const word = this.words[this.state.wi];
+      const n = this.state.n;
+      if (phase === 'type') {
+        if (n < word.length) { this.setState({ n: n + 1 }); this.typeStep('type', 150); }
+        else if (last) { this.tw = setTimeout(() => this.setState({ typingDone: true }), 2400); }
+        else this.typeStep('erase', 2600);
+      } else if (n > 0) {
+        this.setState({ n: n - 1 }); this.typeStep('erase', 70);
+      } else {
+        this.setState({ wi: this.state.wi + 1 });
+        this.typeStep('type', 600);
+      }
+    }, wait);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer); clearTimeout(this.tw); clearTimeout(this.dt1); clearTimeout(this.dt2);
+    if (this.check) { window.removeEventListener('scroll', this.check); window.removeEventListener('resize', this.check); }
+    if (this.raf) cancelAnimationFrame(this.raf);
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', accentOnInk: '#A8372A', line: '#4A443C', body: '#B5AC9C' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', accentOnInk: '#E08A78', line: '#C2B6A2', body: '#3F3A33' };
+    t.cur = dark ? 'ue-ink' : 'ue-paper';
+    const list = [
+      { name: 'Morning Ledger', time: '7:42 AM', headline: 'Water board clears a 24-hour supply pilot for three wards', lede: 'The city water board on Monday approved a six-month pilot that will move three wards from scheduled supply to round-the-clock water.' },
+      { name: 'Deccan Courier', time: '8:15 AM', headline: 'Round-the-clock water, but only for three wards — for now', lede: 'Three wards will get water 24 hours a day under a pilot cleared on Monday, while the rest of the city stays on its current schedule.' },
+      { name: 'Civic Wire', time: '9:02 AM', headline: '24-hour water pilot: what changes for residents from November', lede: 'Meters first, then the switch: a step-by-step look at the timeline the board has set for the pilot wards.' },
+      { name: 'The Plateau Times', time: '10:30 AM', headline: 'Residents ask for a public review before the pilot expands', lede: 'Residents’ groups welcomed the pilot but said its results should be reviewed in public before any expansion.' }
+    ];
+    const v = this.state.v;
+    const versions = list.map((s, i) => ({
+      name: s.name, time: s.time, headline: s.headline, lede: s.lede,
+      on: i === v,
+      bar: i === v ? t.accent : 'transparent',
+      color: i === v ? t.ink : t.muted,
+      weight: i === v ? 500 : 400,
+      pick: () => this.setState({ v: i, auto: false })
+    }));
+    const qa = [
+      { q: 'Do you rewrite or summarise articles?', a: 'No. Headlines, text and image credits are shown as each publisher released them. When only an excerpt is available, the article says so and links to the full story.' },
+      { q: 'How is my feed ordered?', a: 'By time of publication, from the sources you chose. Nothing is ranked by what you click.' },
+      { q: 'Do I need an account?', a: 'No. Anyone can read. An account lets you save articles into folders and keep your settings on every device.' },
+      { q: 'How does Un:edited pay for itself?', a: '[ANSWER: how the project is funded]' }
+    ];
+    const outlets = ['Morning Ledger', 'Deccan Courier', 'Civic Wire', 'The Plateau Times', 'सह्याद्री वार्ता', 'नगर दर्पण'];
+    const b = (this.props.startBlock ?? 'paper') === 'ink'
+      ? { bg: t.ink, fg: t.bg, sub: t.bg, body: t.bg, edge: t.ink, edge2: 'rgba(241,235,224,0.22)', top: t.ink, accent: t.accentOnInk, btnBg: t.bg, btnFg: t.ink }
+      : { bg: t.surface, fg: t.ink, sub: t.muted, body: t.body, edge: t.rule, edge2: t.rule, top: t.accent, accent: t.accent, btnBg: t.ink, btnFg: t.bg };
+    return {
+      typed: this.words[this.state.wi].slice(0, this.state.n),
+      caretClass: this.state.typingDone && this.state.wi === this.words.length - 1 && this.state.n === 6 ? 'lp-caret lp-caret-off' : 'lp-caret',
+      peekDay: !this.state.armed || this.state.seen.day ? 'lp-peek-on' : '',
+      rv: ['idea', 'sources', 'papers', 'day', 'questions', 'start'].reduce((o, id) => { o[id] = this.state.armed && !this.state.seen[id] ? 'lp-hide' : ''; return o; }, {}),
+      demo: (() => {
+        const step = this.steps[this.state.demo];
+        const tabs = [['Home', 'M4 5h16v14H4zM4 9h16M9 9v10'], ['Feed', 'M6 3h12v18H6zM9 8h6M9 12h6M9 16h3'], ['Library', 'M3.5 7h6l2 2h9v10h-17z'], ['You', 'M8.5 8.5a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5']];
+        return {
+          home: step.id === 'home', library: step.id === 'library', you: step.id === 'you', feed: step.id === 'feed', article: step.id === 'article',
+          nav: step.tab >= 0, tapping: this.state.tapping, tapX: step.tapX, tapY: step.tapY,
+          tabs: tabs.map((tb, i) => ({ label: tb[0], icon: tb[1], color: i === step.tab ? t.accent : t.muted, weight: i === step.tab ? 500 : 400 }))
+        };
+      })(),
+      t: t, b: b, dark: dark, versions: versions,
+      stamp: (() => {
+        const S = {
+          brand: ['assets/stamp-brand-paper.svg', 'assets/stamp-brand-ink.svg'],
+          free: ['assets/stamp-free-paper.svg', 'assets/stamp-free-ink.svg']
+        };
+        const inkBlock = (this.props.startBlock ?? 'paper') === 'ink';
+        const freeDark = inkBlock ? !dark : dark;
+        return { brand: S.brand[dark ? 1 : 0], free: S.free[freeDark ? 1 : 0] };
+      })(),
+      facts: [
+        { k: 'Owner', v: 'Ledger Media (example)' },
+        { k: 'Funding', v: 'Subscriptions and advertising' },
+        { k: 'Based in', v: 'Pune, Maharashtra' },
+        { k: 'Corrections', v: 'Published policy, noted at the end of articles' }
+      ],
+      // Replace each '#' with the outlet's real homepage before launch.
+      marquee: [0, 1, 2, 3].reduce((all, copy) => all.concat(outlets.map((name) => ({
+        name: name, href: '#',
+        tab: copy === 0 ? '0' : '-1', hidden: copy === 0 ? 'false' : 'true'
+      }))), []),
+      papers: [
+        { label: 'Peer-reviewed', title: 'Urban heat islands and night-time temperatures in tier-2 cities', note: 'Checked by independent researchers before publication.' },
+        { label: 'Preprint · not yet peer-reviewed', title: 'Measuring commute times with open transit data', note: 'Shared early. Findings may change after review.' },
+        { label: 'Official report', title: 'Quarterly report on rural road connectivity, July–September', note: 'A primary document from a government body, linked in full.' }
+      ],
+      faqs: qa.map((f, i) => ({
+        q: f.q, a: f.a, open: this.state.faq === i,
+        sign: this.state.faq === i ? '−' : '+',
+        toggle: () => this.setState({ faq: this.state.faq === i ? -1 : i })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

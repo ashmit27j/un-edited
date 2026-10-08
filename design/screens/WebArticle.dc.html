@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Web article</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+@media (max-width: 1080px){.wa-stamp{display:none}}
+/* Desktop cursors: stylised pointer everywhere, "Read more" stamp over links that open a story */
+@media (hover: hover) and (pointer: fine){
+.ue-paper,.ue-paper *{cursor:url(assets/cursor-pointer-paper.svg) 4 3, default}
+.ue-ink,.ue-ink *{cursor:url(assets/cursor-pointer-ink.svg) 4 3, default}
+.ue-paper a,.ue-paper button,.ue-paper [role=tab],.ue-ink a,.ue-ink button,.ue-ink [role=tab]{cursor:pointer}
+.ue-paper input,.ue-paper textarea,.ue-ink input,.ue-ink textarea{cursor:text}
+.ue-paper a[href="WebArticle.dc.html"],.ue-paper a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-paper.svg) 32 32, pointer}
+.ue-ink a[href="WebArticle.dc.html"],.ue-ink a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-ink.svg) 32 32, pointer}
+}
+*{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7);border:3px solid transparent;background-clip:padding-box}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div class="{{t.cur}}" style="min-height: 100vh; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}}; position: relative">
+  <nav aria-label="Article" style="border-bottom: 1px solid {{t.rule}};">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <a href="WebHome.dc.html" style="display: flex; align-items: center; gap: 8px; height: 44px; font-family: 'Inter', sans-serif; font-size: 14px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>Today’s edition</a>
+      <span aria-hidden="true" style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 22px; display: flex; align-items: center; line-height: 1;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 4px; margin: 0 2px; padding-top: 2px;"><span style="width: 4px; height: 4px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 4px; height: 4px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</span>
+      <div style="display: flex; gap: 4px;">
+        <button aria-label="Text size" style="width: 44px; height: 44px; background: none; border: 0; color: {{t.ink}}; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 17px; cursor: pointer;">Aa</button>
+      </div>
+    </div>
+  </nav>
+
+  <main style="max-width: 720px; margin: 0 auto; padding: 44px 24px 80px 24px; display: flex; flex-direction: column; gap: 18px; position: relative;">
+    
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: {{t.accent}};">City · Covered by 4 of your sources</span>
+    <h1 style="margin: 0; font-family: {{t.head}}; font-weight: 400; font-size: 48px; line-height: 1.06; letter-spacing: -0.7px;">{{s.headline}}</h1>
+
+    <div style="display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">SOURCE:</span>
+      <div role="tablist" aria-label="Read this story from" style="display: flex; flex-wrap: wrap; gap: 0 26px; border-bottom: 1px solid {{t.rule}};">
+        <sc-for list="{{sources}}" as="src" hint-placeholder-count="4">
+          <button role="tab" aria-selected="{{src.on}}" onClick="{{src.pick}}" style="height: 46px; padding: 0; margin-bottom: -1px; background: none; border: 0; border-bottom: 2px solid {{src.bar}}; color: {{src.color}}; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: {{src.weight}}; cursor: pointer;">{{src.name}}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; border-bottom: 1px solid {{t.rule}};">
+      <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">{{s.name}} · Tue 6 Oct, {{s.time}} · {{s.mode}}</span>
+      <span style="display: flex; align-items: center; margin-right: -10px;">
+        <button onClick="{{save.toggle}}" aria-pressed="{{save.on}}" aria-label="{{save.label}}" style="height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 7px; background: none; border: 0; color: {{save.color}}; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer;">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg>{{save.text}}</button>
+        <span aria-hidden="true" style="width: 1px; height: 20px; background: {{t.rule}};"></span>
+        <a href="MoreSheet.dc.html" aria-label="More options" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.ink}};"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor;"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></a>
+      </span>
+    </div>
+
+    <figure style="margin: 8px 0 0 0; display: flex; flex-direction: column; gap: 8px;">
+      <a href="ImageView.dc.html" aria-label="View image full screen" style="display: block; height: 400px; background-color: {{t.photo}}; background-image: {{t.hatch}}; cursor: zoom-in; position: relative"></a>
+      <figcaption style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.7px; color: {{t.muted}};">{{s.credit}}</figcaption>
+    </figure>
+
+    <sc-for list="{{s.body}}" as="para" hint-placeholder-count="3">
+      <p style="margin: 0; font-size: 21px; line-height: 1.6;">{{para}}</p>
+    </sc-for>
+
+    <a href="#source" style="margin-top: 10px; align-self: flex-start; height: 50px; padding: 0 22px; border: 1px solid {{t.ink}}; display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;">Continue on {{s.name}}
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M8 16L16 8M9 8h7v7"></path></svg>
+    </a>
+
+    <div style="margin-top: 18px; padding: 14px 0; border-top: 1px solid {{t.ink}}; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: {{t.accent}};">Primary source</span>
+      <a href="#pdf" style="font-family: {{t.head}}; font-size: 18px; text-decoration: underline; text-underline-offset: 3px;">Water board resolution on the 24-hour supply pilot (PDF)</a>
+      <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">Linked by 2 of the 4 outlets</span>
+    </div>
+
+    <h2 style="margin: 22px 0 0 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase;">Related stories</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <a href="WebArticle.dc.html" style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 8px;">
+        <span style="height: 120px; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+        <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.3;">Metering drive: how the switch to billed use will work</span>
+        <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">Civic Wire · Yesterday</span>
+      </a>
+      <a href="WebArticle.dc.html" style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 8px;">
+        <span style="height: 120px; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+        <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.3;">Lake levels at the end of monsoon, ward by ward</span>
+        <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">Morning Ledger · 2 Oct</span>
+      </a>
+      <a href="WebArticle.dc.html" style="flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 8px;">
+        <span style="height: 120px; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+        <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.3;">Ward committees to hold public hearings on the pilot</span>
+        <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">The Plateau Times · Today</span>
+      </a>
+    </div>
+    <p style="margin: 28px 0 0 0; text-align: center; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 15px; color: {{t.muted}};">Shown in the publishers’ own words. Nothing here is rewritten.</p>
+  </main>
+  <div role="status" aria-live="polite" style="position: fixed; left: 24px; bottom: 24px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"saved":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  constructor(props) {
+    super(props);
+    this.state = { idx: 0, saved: null };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const type = this.props.type ?? 'serif';
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const t = dark ? {
+      bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', photo: '#2D2924',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', photo: '#DCD2C1',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    t.cur = dark ? 'ue-ink' : 'ue-paper';
+    t.stamp = dark ? 'assets/stamp-published-ink.svg' : 'assets/stamp-published-paper.svg';
+    t.head = type === 'sans' ? sans : serif;
+    t.body = type === 'sans' ? sans : serif;
+    const list = [
+      { name: 'Morning Ledger', time: '7:42 AM', headline: 'Water board clears a 24-hour supply pilot for three wards', credit: 'PHOTO · MORNING LEDGER STAFF', mode: 'Full text from the publisher’s feed',
+        body: ['The city water board on Monday approved a six-month pilot that will move three wards from scheduled supply to round-the-clock water.', 'Officials said meters will be installed in all connections before the switch, and that billing will move to actual use from the first full month of the pilot.', 'The board said it would publish the pilot’s findings before deciding whether to extend it to other wards.'] },
+      { name: 'Deccan Courier', time: '8:15 AM', headline: 'Round-the-clock water, but only for three wards — for now', credit: 'PHOTO · A. RAO / DECCAN COURIER', mode: 'Excerpt',
+        body: ['Three wards will get water 24 hours a day under a pilot cleared on Monday, while the rest of the city stays on its current schedule.', 'Corporators from wards left out of the pilot asked how the three were chosen.'] },
+      { name: 'Civic Wire', time: '9:02 AM', headline: '24-hour water pilot: what changes for residents from November', credit: 'PHOTO · CIVIC WIRE', mode: 'Excerpt',
+        body: ['Meters first, then the switch: a step-by-step look at the timeline the board has set for the pilot wards.', 'Residents in the three wards will receive notices before meter installation begins.'] },
+      { name: 'The Plateau Times', time: '10:30 AM', headline: 'Residents ask for a public review before 24×7 water pilot expands', credit: 'PHOTO · S. DESHMUKH / THE PLATEAU TIMES', mode: 'Excerpt',
+        body: ['Residents’ groups welcomed the pilot but said its results should be reviewed in public before any expansion.', 'The board said findings would be published at the end of the six months.'] }
+    ];
+    const idx = this.state.idx;
+    const sources = list.map((s, i) => ({
+      name: s.name,
+      on: i === idx,
+      bar: i === idx ? t.accent : 'transparent',
+      color: i === idx ? t.ink : t.muted,
+      weight: i === idx ? 500 : 400,
+      pick: () => this.setState({ idx: i })
+    }));
+    const save = this.saveVals('a', this.props.saved ?? false, t, false);
+    return { t: t, s: list[idx], sources: sources, save: save, toast: this.toastVals() };
+  }
+}
+</script>
+</body>
+</html>

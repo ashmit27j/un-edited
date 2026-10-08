@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: {{h}}px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};" data-dv="{{t.dv}}">
+
+  <header style="padding: 20px 24px 0 24px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 30px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 6px; margin: 0 3px; padding-top: 3px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</div>
+      <a href="Search.dc.html" aria-label="Search" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.ink}};">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+      </a>
+    </div>
+    <div style="border-top: 2px solid {{t.ink}}; border-bottom: 1px solid {{t.ink}}; padding: 7px 0; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">
+      <span lang="{{lc}}">{{editionLabel}}</span>
+      <span lang="{{lc}}">{{L.date}}</span>
+    </div>
+  </header>
+
+  <main lang="{{lc}}" style="padding: 20px 24px 120px 24px; display: flex; flex-direction: column; gap: 32px;">
+
+    <article style="display: flex; flex-direction: column; gap: 12px;">
+      <sc-if value="{{comfy}}" hint-placeholder-val="{{ true }}">
+        <div style="height: 220px; background-color: {{t.photo}}; background-image: {{t.hatch}}; display: flex; align-items: flex-end; padding: 10px; box-sizing: border-box; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.6px; color: {{t.muted}};">{{L.photo}}</div>
+      </sc-if>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">{{L.kicker}}</div>
+      <h1 style="margin: 0; font-family: {{t.head}}; font-weight: 500; font-size: 30px; line-height: 1.12; letter-spacing: -0.4px;">{{L.headline}}</h1>
+      <p style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.muted}};">{{L.blurb}}</p>
+      <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid {{t.rule}}; padding-top: 4px;">
+        <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{L.meta}}</span>
+        <div style="display: flex;">
+          <sc-if value="{{save.guest}}" hint-placeholder-val="{{ false }}"><a href="GuestPrompt.dc.html" aria-label="Save. Sign in to save stories" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.ink}};"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg></a></sc-if><sc-if value="{{save.member}}" hint-placeholder-val="{{ true }}"><button onClick="{{save.toggle}}" aria-pressed="{{save.on}}" aria-label="{{save.label}}" style="background: none; border: 0; padding: 0; width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{save.color}}; cursor: pointer;"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg></button></sc-if>
+          <a href="MoreSheet.dc.html" aria-label="More options" style="width: 40px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.ink}};"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor;"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></a>
+        </div>
+      </div>
+    </article>
+
+    <section style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; margin-bottom: 4px;">
+        <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">{{L.mostH}}</h2>
+        <a href="Feed.dc.html" aria-label="{{L.more}}: {{L.mostH}}" style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.accent}};">{{L.more}}</a>
+      </div>
+      <sc-for list="{{most}}" as="item" hint-placeholder-count="3">
+        <a href="Article.dc.html" style="display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid {{t.rule}}; align-items: flex-start;">
+          <span style="font-family: {{t.head}}; font-weight: 500; font-size: 20px; line-height: 1.1; color: {{t.accent}}; width: 18px;">{{item.n}}</span>
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.25; font-weight: 500;">{{item.title}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{item.meta}}</span>
+          </span>
+          <sc-if value="{{comfy}}" hint-placeholder-val="{{ true }}">
+            <span style="width: 72px; height: 72px; flex-shrink: 0; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+          </sc-if>
+        </a>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; margin-bottom: 4px;">
+        <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">{{L.techH}}</h2>
+        <a href="Feed.dc.html" aria-label="{{L.more}}: {{L.techH}}" style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.accent}};">{{L.more}}</a>
+      </div>
+      <sc-for list="{{tech}}" as="item" hint-placeholder-count="2">
+        <a href="Article.dc.html" style="display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid {{t.rule}};">
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.25; font-weight: 500;">{{item.title}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{item.meta}}</span>
+          </span>
+          <sc-if value="{{comfy}}" hint-placeholder-val="{{ true }}">
+            <span style="width: 96px; height: 72px; flex-shrink: 0; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+          </sc-if>
+        </a>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}};">
+        <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">{{L.papersH}}</h2>
+        <a href="Feed.dc.html" aria-label="{{L.more}}: {{L.papersH}}" style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.accent}};">{{L.more}}</a>
+      </div>
+      <sc-for list="{{papers}}" as="p" hint-placeholder-count="2">
+        <div style="background: {{t.surface}}; border: 1px solid {{t.rule}}; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase;">
+            <span style="color: {{t.accent}};">{{p.label}}</span>
+            <span style="color: {{t.muted}};">{{p.where}}</span>
+          </div>
+          <span style="font-family: {{t.head}}; font-size: 16px; line-height: 1.3; font-weight: 500;">{{p.title}}</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{p.meta}}</span>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px dashed {{t.muted}}; margin-bottom: 2px;">
+        <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">{{L.outsideH}}</h2>
+        <a href="Feed.dc.html" aria-label="{{L.more}}: {{L.outsideH}}" style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.accent}};">{{L.more}}</a>
+      </div>
+      <p style="margin: 8px 0 2px 0; font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{L.outsideNote}}</p>
+      <sc-for list="{{outside}}" as="item" hint-placeholder-count="2">
+        <a href="Article.dc.html" style="display: flex; flex-direction: column; gap: 6px; padding: 14px 0; border-bottom: 1px solid {{t.rule}};">
+          <span style="font-family: {{t.head}}; font-size: 16px; line-height: 1.3; color: {{t.ink}};">{{item.title}}</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{item.meta}}</span>
+        </a>
+      </sc-for>
+    </section>
+
+    <div style="text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center; padding-top: 8px;">
+      <span style="width: 40px; border-top: 1px solid {{t.ink}};"></span>
+      <span style="font-family: {{t.head}}; font-style: italic; font-size: 16px;">{{L.footer}}</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">{{L.next}}</span>
+    </div>
+  </main>
+
+  <div role="status" aria-live="polite" style="position: absolute; left: 24px; right: 24px; bottom: 88px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+
+  <nav aria-label="Main" lang="{{lc}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 76px; box-sizing: border-box; padding: 6px 12px 18px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));">
+    <a href="Main.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>{{L.nav0}}</a>
+    <a href="Feed.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>{{L.nav1}}</a>
+    <a href="Library.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>{{L.nav2}}</a>
+    <a href="You.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>{{L.nav3}}</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"view":{"editor":"enum","options":["comfortable","focused"],"default":"comfortable","section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"signedIn":{"editor":"boolean","default":true,"section":"Account"},"edition":{"editor":"int","default":1,"min":1,"section":"Account"},"language":{"editor":"enum","options":["english","hindi","marathi"],"default":"english","section":"Language"},"$preview":{"width":390,"height":1900}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  theme(dark, type) {
+    const serifHead = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const serifBody = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const base = dark ? {
+      bg: '#1E1C19', bg0: 'rgba(30,28,25,0)', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D',
+      accent: '#C8705F', accentSoft: '#3A2924', photo: '#2D2924',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', bg0: 'rgba(241,235,224,0)', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4',
+      accent: '#A8372A', accentSoft: '#EBD5CC', photo: '#DCD2C1',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    base.dv = type === 'sans' ? 'sans' : 'serif';
+    base.head = type === 'sans' ? sans : serifHead;
+    base.body = type === 'sans' ? sans : serifBody;
+    return base;
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const view = this.props.view ?? 'comfortable';
+    const type = this.props.type ?? 'serif';
+    const comfy = view !== 'focused';
+    // Edition number: a signed-in reader's first-ever edition is Nº 1; it goes up by 1 each time a new edition publishes (06:00 IST), counted from their first edition. Guests see no number.
+    const signedIn = this.props.signedIn ?? true;
+    const t = this.theme(dark, type);
+    // language tweak: English, Hindi (हिंदी) or Marathi (मराठी). Devanagari text is set in Tiro Devanagari (serif) or Mukta (sans) by the lang rules in <helmet>.
+    const lang = this.props.language ?? 'english';
+    const lc = { english: 'en', hindi: 'hi', marathi: 'mr' }[lang];
+    const N = this.props.edition ?? 1;
+    const copy = {
+      en: { date: 'Tue 6 Oct 2026', kicker: 'City · Covered by 4 of your sources', headline: 'Water board clears a 24-hour supply pilot for three wards', blurb: 'Four outlets report the same decision with different emphasis. Tap to read each one in its own words.', meta: 'Morning Ledger · Courier · +2 · 2h', mostH: 'Most covered today', techH: 'Technology', papersH: 'Papers & Reports', outsideH: 'Outside your sources', more: 'See more', outsideNote: "From outlets you haven't chosen. Turn this off in You › Home.", footer: "That's today's edition.", next: 'Next edition · 6:00 AM tomorrow', nav0: 'Home', nav1: 'Feed', nav2: 'Library', nav3: 'You', photo: 'PHOTO · CREDIT FROM SOURCE', edn: signedIn ? 'Morning Edition Nº ' + N : 'Morning Edition' },
+      hi: { date: 'मंगलवार 6 अक्टूबर 2026', kicker: 'शहर · आपके 4 स्रोतों ने कवर किया', headline: 'जल बोर्ड ने तीन वार्डों में 24 घंटे जलापूर्ति के पायलट को मंज़ूरी दी', blurb: 'चार प्रकाशन एक ही फ़ैसले को अलग-अलग ज़ोर के साथ बताते हैं। हर एक को उसके अपने शब्दों में पढ़ने के लिए टैप करें।', meta: 'मॉर्निंग लेजर · कूरियर · +2 · 2 घं.', mostH: 'आज सबसे ज़्यादा कवर', techH: 'तकनीक', papersH: 'शोध-पत्र और रिपोर्ट', outsideH: 'आपके स्रोतों से बाहर', more: 'और देखें', outsideNote: 'उन प्रकाशनों से जिन्हें आपने नहीं चुना। इसे बंद करने के लिए आप › होम में जाएँ।', footer: 'यह आज का संस्करण है।', next: 'अगला संस्करण · कल सुबह 6:00 बजे', nav0: 'होम', nav1: 'फ़ीड', nav2: 'लाइब्रेरी', nav3: 'आप', photo: 'फ़ोटो · स्रोत से श्रेय', edn: signedIn ? 'सुबह का संस्करण Nº ' + N : 'सुबह का संस्करण' },
+      mr: { date: 'मंगळवार 6 ऑक्टोबर 2026', kicker: 'शहर · तुमच्या 4 स्रोतांनी कव्हर केले', headline: 'जल मंडळाने तीन प्रभागांत 24 तास पाणीपुरवठ्याच्या प्रयोगाला मंजुरी दिली', blurb: 'चार प्रकाशने एकच निर्णय वेगवेगळ्या भर देऊन सांगतात. प्रत्येक बातमी तिच्या स्वतःच्या शब्दांत वाचण्यासाठी टॅप करा.', meta: 'मॉर्निंग लेजर · कुरियर · +2 · 2 तास', mostH: 'आज सर्वाधिक कव्हर', techH: 'तंत्रज्ञान', papersH: 'शोधनिबंध आणि अहवाल', outsideH: 'तुमच्या स्रोतांबाहेर', more: 'आणखी पहा', outsideNote: 'तुम्ही न निवडलेल्या प्रकाशनांकडून. हे बंद करण्यासाठी तुम्ही › मुख्यपृष्ठ येथे जा.', footer: 'ही आजची आवृत्ती.', next: 'पुढील आवृत्ती · उद्या सकाळी 6:00', nav0: 'मुख्यपृष्ठ', nav1: 'फीड', nav2: 'ग्रंथालय', nav3: 'तुम्ही', photo: 'फोटो · स्रोतातून श्रेय', edn: signedIn ? 'सकाळची आवृत्ती Nº ' + N : 'सकाळची आवृत्ती' }
+    }[lc];
+    const lists = {
+      en: {
+        most: [
+          { n: '1', title: 'State cabinet approves new crop insurance window for rabi season', meta: 'Covered by 6 of your sources · 3h' },
+          { n: '2', title: 'Monsoon session ends with nine bills passed, four sent to committee', meta: 'Covered by 5 of your sources · 5h' },
+          { n: '3', title: 'Rail ministry lists 40 stations for platform-height upgrades', meta: 'Covered by 4 of your sources · 6h' }
+        ],
+        tech: [
+          { title: 'Open-source maps project adds street-level data for 12 Indian cities', meta: 'Civic Wire · 1h' },
+          { title: 'What a new data-protection rule means for apps that store location', meta: 'Morning Ledger · 4h' }
+        ],
+        papers: [
+          { label: 'Peer-reviewed', where: 'Journal · 3 Oct', title: 'Urban heat islands and night-time temperatures in tier-2 cities', meta: 'R. Iyer, A. Kulkarni + 3 · cited 12 times' },
+          { label: 'Official report', where: 'Ministry · 5 Oct', title: 'Quarterly report on rural road connectivity, July–September', meta: 'Primary document · PDF, 48 pages' }
+        ],
+        outside: [
+          { title: 'Opinion: the case for slower city-planning decisions', meta: 'The Evening Lantern · 2h' },
+          { title: 'Five charts on how commuting times changed this year', meta: 'Metro Daily · 7h' }
+        ]
+      },
+      hi: {
+        most: [
+          { n: '1', title: 'राज्य मंत्रिमंडल ने रबी सीज़न के लिए फ़सल बीमा की नई खिड़की मंज़ूर की', meta: 'आपके 6 स्रोतों ने कवर किया · 3 घं.' },
+          { n: '2', title: 'मानसून सत्र समाप्त: नौ विधेयक पारित, चार समिति को भेजे गए', meta: 'आपके 5 स्रोतों ने कवर किया · 5 घं.' },
+          { n: '3', title: 'रेल मंत्रालय ने प्लेटफ़ॉर्म की ऊँचाई बढ़ाने के लिए 40 स्टेशन चुने', meta: 'आपके 4 स्रोतों ने कवर किया · 6 घं.' }
+        ],
+        tech: [
+          { title: 'ओपन-सोर्स मानचित्र परियोजना ने भारत के 12 शहरों के लिए गली-स्तर का डेटा जोड़ा', meta: 'सिविक वायर · 1 घं.' },
+          { title: 'नया डेटा-सुरक्षा नियम लोकेशन स्टोर करने वाले ऐप्स के लिए क्या मायने रखता है', meta: 'मॉर्निंग लेजर · 4 घं.' }
+        ],
+        papers: [
+          { label: 'समकक्ष-समीक्षित', where: 'पत्रिका · 3 अक्टू.', title: 'छोटे शहरों में शहरी ऊष्मा द्वीप और रात का तापमान', meta: 'आर. अय्यर, ए. कुलकर्णी + 3 · 12 बार उद्धृत' },
+          { label: 'आधिकारिक रिपोर्ट', where: 'मंत्रालय · 5 अक्टू.', title: 'ग्रामीण सड़क संपर्क पर तिमाही रिपोर्ट, जुलाई–सितंबर', meta: 'मूल दस्तावेज़ · PDF, 48 पृष्ठ' }
+        ],
+        outside: [
+          { title: 'राय: शहर की योजना में धीमे फ़ैसलों के पक्ष में', meta: 'द इवनिंग लैंटर्न · 2 घं.' },
+          { title: 'पाँच चार्ट: इस साल आने-जाने का समय कैसे बदला', meta: 'मेट्रो डेली · 7 घं.' }
+        ]
+      },
+      mr: {
+        most: [
+          { n: '1', title: 'राज्य मंत्रिमंडळाने रब्बी हंगामासाठी पीकविम्याची नवी मुदत मंजूर केली', meta: 'तुमच्या 6 स्रोतांनी कव्हर केले · 3 तास' },
+          { n: '2', title: 'पावसाळी अधिवेशन संपले: नऊ विधेयके मंजूर, चार समितीकडे', meta: 'तुमच्या 5 स्रोतांनी कव्हर केले · 5 तास' },
+          { n: '3', title: 'रेल्वे मंत्रालयाने फलाटांची उंची वाढवण्यासाठी 40 स्थानके निवडली', meta: 'तुमच्या 4 स्रोतांनी कव्हर केले · 6 तास' }
+        ],
+        tech: [
+          { title: 'ओपन-सोर्स नकाशा प्रकल्पाने भारतातील 12 शहरांसाठी रस्ता-पातळीचा डेटा जोडला', meta: 'सिव्हिक वायर · 1 तास' },
+          { title: 'नवा डेटा-संरक्षण नियम लोकेशन साठवणाऱ्या अॅप्ससाठी काय बदलतो', meta: 'मॉर्निंग लेजर · 4 तास' }
+        ],
+        papers: [
+          { label: 'समीक्षित शोधनिबंध', where: 'नियतकालिक · 3 ऑक्टो.', title: 'लहान शहरांतील उष्णता-बेटे आणि रात्रीचे तापमान', meta: 'आर. अय्यर, ए. कुलकर्णी + 3 · 12 वेळा उद्धृत' },
+          { label: 'अधिकृत अहवाल', where: 'मंत्रालय · 5 ऑक्टो.', title: 'ग्रामीण रस्ते जोडणीचा त्रैमासिक अहवाल, जुलै–सप्टेंबर', meta: 'मूळ दस्तऐवज · PDF, 48 पाने' }
+        ],
+        outside: [
+          { title: 'मत: शहर नियोजनातील संथ निर्णयांची बाजू', meta: 'द इव्हनिंग लँटर्न · 2 तास' },
+          { title: 'पाच तक्ते: या वर्षी प्रवासाचा वेळ कसा बदलला', meta: 'मेट्रो डेली · 7 तास' }
+        ]
+      }
+    }[lc];
+    return {
+      t: t, L: copy, lc: lc,
+      editionLabel: copy.edn,
+      save: this.saveVals('lead', false, t, !signedIn),
+      toast: this.toastVals(),
+      comfy: comfy,
+      h: comfy ? 1900 : 1540,
+      most: lists.most, tech: lists.tech, papers: lists.papers, outside: lists.outside
+    };
+  }
+}
+</script>
+</body>
+</html>

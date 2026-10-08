@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Design tokens</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>body{margin:0}/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 1200px; height: 900px; box-sizing: border-box; padding: 56px 64px; background: #F1EBE0; color: #1C1A17; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px;">
+
+  <div style="display: flex; flex-direction: column; gap: 36px;">
+    <div style="display: flex; align-items: center; gap: 28px;">
+      <div role="img" aria-label="Un:edited app icon" style="width: 112px; height: 112px; flex-shrink: 0; background: #1C1A17; border-radius: 26px; position: relative; overflow: hidden;">
+        <span style="position: absolute; left: 15px; top: 11px; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 95px; line-height: 1; letter-spacing: -2px; color: #C8705F; white-space: nowrap;">Un</span>
+      </div>
+      <div style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 72px; letter-spacing: -1px; display: flex; align-items: center; line-height: 1;"><span style="color: #A8372A;">Un</span><span style="display: inline-flex; flex-direction: column; gap: 14px; margin: 0 6px; padding-top: 8px;"><span style="width: 13px; height: 13px; border-radius: 50%; background: #A8372A;"></span><span style="width: 13px; height: 13px; border-radius: 50%; background: #A8372A;"></span></span>edited</div>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid #1C1A17; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Paper · light</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #F1EBE0; border: 1px solid #DDD4C4;"></span>bg #F1EBE0</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #F8F3EA; border: 1px solid #DDD4C4;"></span>surface #F8F3EA</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #1C1A17;"></span>ink #1C1A17</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #A8372A;"></span>accent #A8372A</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #6B645A;"></span>muted #6B645A</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #DDD4C4;"></span>rule #DDD4C4</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #DCD2C1;"></span>photo #DCD2C1</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #EBD5CC;"></span>accent-soft #EBD5CC</div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid #1C1A17; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Ink · dark, low contrast</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #1E1C19;"></span>bg #1E1C19</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #262320;"></span>surface #262320</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #C9C0B0;"></span>ink #C9C0B0</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #C8705F;"></span>accent #C8705F</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #8E8678;"></span>muted #8E8678</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #38332D;"></span>rule #38332D</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #2D2924;"></span>photo #2D2924</div>
+        <div style="display: flex; flex-direction: column; gap: 6px;"><span style="height: 56px; background: #3A2924;"></span>accent-soft #3A2924</div>
+      </div>
+    </section>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 22px;">
+    <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid #1C1A17; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Type</h2>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">DISPLAY · BASKERVVILLE 500 · 30 / 1.15</span>
+      <span style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.15; letter-spacing: -0.3px;">Water board clears a 24-hour supply pilot</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">BODY SERIF · BASKERVVILLE 400 · 18 / 1.6 · MAX 68 CHARACTERS A LINE</span>
+      <span style="font-size: 18px; line-height: 1.6;">The city water board on Monday approved a six-month pilot that will move three wards to round-the-clock water.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">SANS OPTION + UI · INTER 400–500 · 16 / 1.5</span>
+      <span style="font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.5;">The same story, set in the sans reading option.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">LABELS · JETBRAINS MONO 500 · 10.5 / UPPERCASE / +0.8</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: #A8372A;">City · Covered by 4 of your sources</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">HINDI · TIRO DEVANAGARI HINDI / MUKTA</span>
+      <span lang="hi" style="font-family: 'Tiro Devanagari Hindi', serif; font-size: 26px; line-height: 1.3;">आज का संस्करण</span>
+      <span lang="hi" style="font-family: 'Mukta', sans-serif; font-size: 17px; line-height: 1.5;">आपके चुने हुए स्रोतों से आज की ख़बरें</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">MARATHI · TIRO DEVANAGARI MARATHI / MUKTA</span>
+      <span lang="mr" style="font-family: 'Tiro Devanagari Marathi', serif; font-size: 26px; line-height: 1.3;">आजची आवृत्ती</span>
+      <span lang="mr" style="font-family: 'Mukta', sans-serif; font-size: 17px; line-height: 1.5;">तुम्ही निवडलेल्या स्रोतांकडून आजच्या बातम्या</span>
+    </div>
+    <div style="display: flex; gap: 24px; padding-top: 8px; border-top: 1px solid #DDD4C4; font-family: 'Inter', sans-serif; font-size: 13px; color: #6B645A;">
+      <span>Rules, not shadows</span><span>Radius 0 · sheets 14</span><span>Touch ≥ 44px</span><span>Gutter 24px</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

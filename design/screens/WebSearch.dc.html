@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Web search</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+input::placeholder{color:inherit;opacity:.7}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+*{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7);border:3px solid transparent;background-clip:padding-box}
+/* Desktop cursors: stylised pointer everywhere, "Read more" stamp over links that open a story */
+@media (hover: hover) and (pointer: fine){
+.ue-paper,.ue-paper *{cursor:url(assets/cursor-pointer-paper.svg) 4 3, default}
+.ue-ink,.ue-ink *{cursor:url(assets/cursor-pointer-ink.svg) 4 3, default}
+.ue-paper a,.ue-paper button,.ue-paper [role=tab],.ue-ink a,.ue-ink button,.ue-ink [role=tab]{cursor:pointer}
+.ue-paper input,.ue-paper textarea,.ue-ink input,.ue-ink textarea{cursor:text}
+.ue-paper a[href="WebArticle.dc.html"],.ue-paper a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-paper.svg) 32 32, pointer}
+.ue-ink a[href="WebArticle.dc.html"],.ue-ink a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-ink.svg) 32 32, pointer}
+}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div class="{{t.cur}}" style="min-height: 100vh; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+  <nav aria-label="Main" style="border-bottom: 1px solid {{t.rule}};">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 68px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;">
+      <a href="WebHome.dc.html" aria-label="Un:edited home" style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1; text-decoration: none;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 5px; margin: 0 3px; padding-top: 3px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</a>
+      <div style="display: flex; gap: 28px; font-family: 'Inter', sans-serif; font-size: 14.5px;">
+        <a href="WebHome.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Home</a>
+        <a href="WebFeed.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Feed</a>
+        <a href="WebLibrary.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Library</a>
+        <a href="WebYou.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">You</a>
+      </div>
+      <a href="WebSearch.dc.html" aria-label="Search" aria-current="page" style="width: 44px; height: 44px; color: {{t.accent}}; display: flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+      </a>
+    </div>
+  </nav>
+
+  <div style="max-width: 760px; margin: 0 auto; padding: 32px 32px 72px 32px;">
+  <h1 style="margin: 0 0 18px 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 48px; letter-spacing: -0.6px; line-height: 1;">Search</h1>
+
+  <header style="padding: 0; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <label style="flex: 1; min-width: 0; height: 54px; box-sizing: border-box; padding: 0 6px 0 16px; display: flex; align-items: center; gap: 10px; background: {{t.surface}}; border: 1px solid {{t.ruleStrong}}; color: {{t.muted}};">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; flex-shrink: 0;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Search stories, papers, sources and topics</span>
+        <input type="search" value="{{q}}" onChange="{{onQ}}" placeholder="Search the news" style="flex: 1; min-width: 0; height: 40px; border: 0; outline: none; background: transparent; color: {{t.ink}}; font-family: {{t.head}}; font-size: 18px;">
+        <a href="WebHome.dc.html" aria-label="Close search" style="width: 40px; height: 40px; flex-shrink: 0; color: {{t.ink}}; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round;"><path d="M6 6l12 12M18 6L6 18"></path></svg></a>
+      </label>
+    </div>
+
+    <div role="radiogroup" aria-label="Search in" style="display: grid; grid-template-columns: 1fr 1fr; border: 1px solid {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13.5px;">
+      <sc-for list="{{scopes}}" as="s" hint-placeholder-count="2">
+        <button role="radio" aria-checked="{{s.on}}" onClick="{{s.pick}}" style="height: 36px; padding: 0; border: 0; background: {{s.bg}}; color: {{s.color}}; font-weight: {{s.weight}}; cursor: pointer;">{{s.label}}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{hasQ}}" hint-placeholder-val="{{ false }}">
+      <div role="tablist" aria-label="Show" style="display: flex; gap: 20px; border-bottom: 1px solid {{t.rule}}; font-family: 'Inter', sans-serif; font-size: 14px;">
+        <sc-for list="{{kinds}}" as="k" hint-placeholder-count="4">
+          <button role="tab" aria-selected="{{k.on}}" onClick="{{k.pick}}" style="height: 40px; padding: 0; margin-bottom: -1px; display: flex; align-items: center; gap: 5px; background: none; border: 0; border-bottom: 2px solid {{k.bar}}; color: {{k.color}}; font-weight: {{k.weight}}; cursor: pointer; white-space: nowrap;">{{k.label}}<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: {{t.muted}};">{{k.n}}</span></button>
+        </sc-for>
+      </div>
+    </sc-if>
+  </header>
+
+  <main style="padding: 0; display: flex; flex-direction: column;">
+
+    <sc-if value="{{idle}}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{hasRecent}}" hint-placeholder-val="{{ true }}">
+        <section style="margin-top: 22px; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid {{t.ink}};">
+            <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Recent searches</h2>
+            <button onClick="{{clearRecent}}" style="height: 40px; padding: 0; background: none; border: 0; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 13px; cursor: pointer;">Clear all</button>
+          </div>
+          <sc-for list="{{recent}}" as="r" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; border-bottom: 1px solid {{t.rule}};">
+              <button onClick="{{r.pick}}" style="flex: 1; min-width: 0; height: 46px; padding: 0; display: flex; align-items: center; gap: 12px; background: none; border: 0; color: {{t.ink}}; text-align: left; cursor: pointer; font-family: {{t.head}}; font-size: 17px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: {{t.muted}}; stroke-width: 1.8; stroke-linecap: round;"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>{{r.label}}</button>
+              <button aria-label="{{r.removeLabel}}" onClick="{{r.remove}}" style="width: 44px; height: 44px; margin-right: -12px; flex-shrink: 0; background: none; border: 0; color: {{t.muted}}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+            </div>
+          </sc-for>
+        </section>
+      </sc-if>
+
+      <section style="margin-top: 26px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}};">
+          <h2 style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Browse by topic</h2>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">Stories today</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); column-gap: 24px;">
+          <sc-for list="{{topicRows}}" as="c" hint-placeholder-count="8">
+            <button onClick="{{c.pick}}" style="height: 50px; padding: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; cursor: pointer; text-align: left;">
+              <span style="font-family: {{t.head}}; font-size: 17px;">{{c.label}}</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{c.n}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+
+      <a href="WebHome.dc.html" style="margin-top: 22px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; background: {{t.surface}}; border: 1px solid {{t.rule}};">
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">Papers &amp; Reports</span>
+          <span style="font-family: {{t.head}}; font-size: 16px; line-height: 1.35;">Peer-reviewed studies, preprints and official reports your sources linked to</span>
+        </span>
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 5l7 7-7 7"></path></svg>
+      </a>
+
+      <p style="margin: 20px 0 0 0; text-align: center; font-family: {{t.head}}; font-style: italic; font-size: 14px; color: {{t.muted}};">Results are listed newest first. Nothing is ranked for you.</p>
+    </sc-if>
+
+    <sc-if value="{{hasQ}}" hint-placeholder-val="{{ false }}">
+      <span style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">{{summary}}</span>
+
+      <sc-if value="{{showGoTo}}" hint-placeholder-val="{{ true }}">
+        <section style="margin-top: 12px; display: flex; flex-direction: column;">
+          <sc-for list="{{goTo}}" as="g" hint-placeholder-count="2">
+            <a href="{{g.href}}" style="height: 52px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid {{t.rule}};">
+              <span style="width: 34px; height: 34px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px solid {{t.ruleStrong}}; font-family: {{t.head}}; font-size: 15px; font-weight: 500; color: {{t.accent}};">{{g.mark}}</span>
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+                <span style="font-family: {{t.head}}; font-size: 17px;">{{g.label}}</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{g.meta}}</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: {{t.muted}}; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </sc-for>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{showStories}}" hint-placeholder-val="{{ true }}">
+        <section style="margin-top: 16px; display: flex; flex-direction: column;">
+          <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">{{storyHeading}}</h2>
+          <sc-for list="{{hits}}" as="h" hint-placeholder-count="4">
+            <div style="display: flex; align-items: flex-start; gap: 8px; border-bottom: 1px solid {{t.rule}};">
+              <a href="WebArticle.dc.html" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; padding: 12px 0;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: {{t.accent}};">{{h.kicker}}</span>
+                <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.3; font-weight: 500;">{{h.pre}}<mark style="background: {{t.mark}}; color: inherit; padding: 0 1px;">{{h.hit}}</mark>{{h.post}}</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">{{h.meta}}</span>
+              </a>
+              <button onClick="{{h.saveToggle}}" aria-pressed="{{h.saveOn}}" aria-label="{{h.saveLabel}}" style="width: 44px; height: 44px; margin: 8px -12px 0 0; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: {{h.saveColor}}; padding: 0; background: none; border: 0; cursor: pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{h.saveFill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg>
+              </button>
+            </div>
+          </sc-for>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{none}}" hint-placeholder-val="{{ false }}">
+        <div style="padding: 28px 0; display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-family: {{t.head}}; font-size: 22px;">Nothing matches “{{q}}”.</span>
+          <span style="font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5; color: {{t.muted}};">Try fewer words or a different spelling{{widenHint}}.</span>
+          <sc-if value="{{canWiden}}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{widen}}" style="align-self: flex-start; margin-top: 4px; height: 44px; padding: 0 16px; border: 1px solid {{t.ink}}; background: none; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer;">Search all sources</button>
+          </sc-if>
+        </div>
+      </sc-if>
+    </sc-if>
+  </main>
+
+  <div role="status" aria-live="polite" style="position: fixed; left: 24px; bottom: 24px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"preset":{"editor":"enum","options":["empty","results"],"default":"empty","section":"State"},"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  constructor(props) {
+    super(props);
+    this.state = {
+      q: (props.preset ?? 'empty') === 'results' ? 'water' : '',
+      scope: 'yours',
+      kind: 'all',
+      recent: ['water pilot', 'rabi crop insurance', 'Deccan Courier']
+    };
+  }
+  componentDidUpdate(prev) {
+    if (prev.preset !== this.props.preset) {
+      this.setState({ q: this.props.preset === 'results' ? 'water' : '', kind: 'all' });
+    }
+  }
+  theme(dark, type) {
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const base = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', ruleStrong: '#4A443C', accent: '#C8705F', mark: '#3A2924' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', ruleStrong: '#C9BFAE', accent: '#A8372A', mark: '#EBD5CC' };
+    base.cur = dark ? 'ue-ink' : 'ue-paper';
+    base.head = type === 'sans' ? sans : serif;
+    base.body = type === 'sans' ? sans : serif;
+    return base;
+  }
+  renderVals() {
+    const t = this.theme(this.props.dark ?? false, this.props.type ?? 'serif');
+    const q = this.state.q || '';
+    const scope = this.state.scope;
+    const kind = this.state.kind;
+    const needle = q.trim().toLowerCase();
+    const mine = ['Morning Ledger', 'Deccan Courier', 'Civic Wire', 'The Plateau Times'];
+    const others = ['The Evening Lantern', 'Metro Daily'];
+    const topicCounts = [['City', 14], ['Water', 5], ['Elections', 9], ['Transport', 7], ['Agriculture', 4], ['Technology', 6], ['Health', 3], ['Research', 8]];
+    const stories = [
+      { title: 'Water board clears a 24-hour supply pilot for three wards', src: 'Morning Ledger', topic: 'City Water', when: 'Today, 7:42 AM', kicker: 'City · 4 of your sources', saved: true },
+      { title: 'Round-the-clock water, but only for three wards — for now', src: 'Deccan Courier', topic: 'City Water', when: 'Today, 8:15 AM', kicker: 'City' },
+      { title: 'Opinion: why the water pilot should have started in the old city', src: 'The Evening Lantern', topic: 'City Water', when: 'Today, 9:30 AM', kicker: 'Opinion' },
+      { title: 'Water board resolution on the 24-hour supply pilot', src: 'City water board', topic: 'City Water Research', when: 'Today', kicker: 'Official report', paper: true },
+      { title: 'Metering drive: how the switch to billed use will work', src: 'Civic Wire', topic: 'City Water', when: 'Yesterday', kicker: 'City' },
+      { title: 'Groundwater recovery after an above-normal monsoon', src: 'Preprint', topic: 'Research Water', when: '4 Oct', kicker: 'Preprint', paper: true },
+      { title: 'Lake levels at the end of monsoon, ward by ward', src: 'Morning Ledger', topic: 'City Water', when: '2 Oct', kicker: 'City' },
+      { title: 'State cabinet approves new crop insurance window for rabi season', src: 'Deccan Courier', topic: 'Agriculture', when: 'Today', kicker: 'Agriculture · 6 of your sources' },
+      { title: 'Urban heat islands and night-time temperatures in tier-2 cities', src: 'Journal', topic: 'Research City Health', when: '3 Oct', kicker: 'Peer-reviewed', paper: true },
+      { title: 'Rail ministry lists 40 stations for platform-height upgrades', src: 'Civic Wire', topic: 'Transport', when: 'Today', kicker: 'Transport' },
+      { title: 'City bus fleet to add 120 electric buses by March', src: 'The Plateau Times', topic: 'Transport City', when: 'Today', kicker: 'Transport' },
+      { title: 'Election commission publishes revised voter rolls for two states', src: 'Deccan Courier', topic: 'Elections', when: 'Today', kicker: 'Elections', saved: true },
+      { title: 'Hospitals add beds ahead of the dengue season peak', src: 'Morning Ledger', topic: 'Health City', when: 'Today', kicker: 'Health' },
+      { title: 'Open-source maps project adds street-level data for 12 Indian cities', src: 'Civic Wire', topic: 'Technology', when: 'Today', kicker: 'Technology' }
+    ];
+    const inScope = (src, paper) => scope === 'all' || paper || mine.indexOf(src) >= 0;
+    const has = (s) => s.toLowerCase().indexOf(needle) >= 0;
+    const matched = needle ? stories.filter((s) => inScope(s.src, s.paper) && (has(s.title) || has(s.src) || has(s.topic))) : [];
+    const storyHits = matched.filter((s) => !s.paper);
+    const paperHits = matched.filter((s) => s.paper);
+    const srcPool = scope === 'all' ? mine.concat(others) : mine;
+    const srcHits = needle ? srcPool.filter(has) : [];
+    const topicHits = needle ? topicCounts.filter((c) => has(c[0])) : [];
+    const shown = kind === 'papers' ? paperHits : kind === 'stories' ? storyHits : kind === 'all' ? matched : [];
+    const split = (title) => {
+      const i = title.toLowerCase().indexOf(needle);
+      if (i < 0) return { pre: title, hit: '', post: '' };
+      return { pre: title.slice(0, i), hit: title.slice(i, i + needle.length), post: title.slice(i + needle.length) };
+    };
+    const hits = shown.map((s) => {
+      const p = split(s.title);
+      const sv = this.saveVals(s.title, s.saved, t, false);
+      return {
+        pre: p.pre, hit: p.hit, post: p.post,
+        kicker: s.kicker,
+        meta: s.src + ' · ' + s.when,
+        saveLabel: sv.label, saveFill: sv.fill, saveColor: sv.color, saveOn: sv.on, saveToggle: sv.toggle
+      };
+    });
+    const goTo = srcHits.map((s) => ({
+      label: s, mark: s.replace('The ', '').charAt(0), href: 'OB6Sources.dc.html',
+      meta: mine.indexOf(s) >= 0 ? 'Source · one of yours' : 'Source · not in your list'
+    })).concat(topicHits.map((c) => ({ label: c[0], mark: '#', href: 'Feed.dc.html', meta: 'Topic · ' + c[1] + ' stories today' })));
+    const kinds = [
+      { id: 'all', label: 'All', n: matched.length + goTo.length },
+      { id: 'stories', label: 'Stories', n: storyHits.length },
+      { id: 'papers', label: 'Papers', n: paperHits.length },
+      { id: 'more', label: 'Sources & topics', n: goTo.length }
+    ].map((k) => ({
+      label: k.label, n: k.n, on: k.id === kind,
+      bar: k.id === kind ? t.accent : 'transparent',
+      color: k.id === kind ? t.ink : t.muted,
+      weight: k.id === kind ? 500 : 400,
+      pick: () => this.setState({ kind: k.id })
+    }));
+    const scopes = [{ id: 'yours', label: 'Your sources' }, { id: 'all', label: 'All sources' }].map((s) => ({
+      label: s.label, on: s.id === scope,
+      bg: s.id === scope ? t.ink : 'transparent',
+      color: s.id === scope ? t.bg : t.ink,
+      weight: s.id === scope ? 500 : 400,
+      pick: () => this.setState({ scope: s.id })
+    }));
+    const setQ = (v) => () => this.setState({ q: v, kind: 'all' });
+    const recent = this.state.recent;
+    const total = kind === 'more' ? goTo.length : hits.length;
+    const noun = kind === 'papers' ? (total === 1 ? 'paper' : 'papers') : kind === 'more' ? (total === 1 ? 'match' : 'matches') : (total === 1 ? 'result' : 'results');
+    return {
+      t: t,
+      toast: this.toastVals(),
+      q: q,
+      onQ: (e) => this.setState({ q: e.target.value, kind: 'all' }),
+      clear: () => this.setState({ q: '' }),
+      hasQ: !!needle,
+      idle: !needle,
+      scopes: scopes,
+      kinds: kinds,
+      hasRecent: recent.length > 0,
+      clearRecent: () => this.setState({ recent: [] }),
+      recent: recent.map((r) => ({
+        label: r, pick: setQ(r), removeLabel: 'Remove ' + r,
+        remove: () => this.setState({ recent: this.state.recent.filter((x) => x !== r) })
+      })),
+      topicRows: topicCounts.map((c) => ({ label: c[0], n: c[1], pick: setQ(c[0]) })),
+      hits: hits,
+      goTo: goTo,
+      showGoTo: (kind === 'all' || kind === 'more') && goTo.length > 0,
+      showStories: kind !== 'more' && hits.length > 0,
+      storyHeading: kind === 'papers' ? 'Papers & reports' : kind === 'stories' ? 'Stories' : 'Stories & papers',
+      none: !!needle && matched.length + goTo.length === 0,
+      canWiden: scope !== 'all',
+      widenHint: scope !== 'all' ? ', or search all sources' : '',
+      widen: () => this.setState({ scope: 'all' }),
+      summary: total + ' ' + noun + ' · ' + (scope === 'all' ? 'all sources' : 'your sources') + ' · newest first'
+    };
+  }
+}
+</script>
+</body>
+</html>

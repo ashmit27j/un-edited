@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Web home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+button{font:inherit}
+/* Desktop cursors: stylised pointer everywhere, "Read more" stamp over links that open a story */
+@media (hover: hover) and (pointer: fine){
+.ue-paper,.ue-paper *{cursor:url(assets/cursor-pointer-paper.svg) 4 3, default}
+.ue-ink,.ue-ink *{cursor:url(assets/cursor-pointer-ink.svg) 4 3, default}
+.ue-paper a,.ue-paper button,.ue-paper [role=tab],.ue-ink a,.ue-ink button,.ue-ink [role=tab]{cursor:pointer}
+.ue-paper input,.ue-paper textarea,.ue-ink input,.ue-ink textarea{cursor:text}
+.ue-paper a[href="WebArticle.dc.html"],.ue-paper a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-paper.svg) 32 32, pointer}
+.ue-ink a[href="WebArticle.dc.html"],.ue-ink a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-ink.svg) 32 32, pointer}
+}
+*{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7);border:3px solid transparent;background-clip:padding-box}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div class="{{t.cur}}" style="min-height: 100vh; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+  <nav aria-label="Main" style="border-bottom: 1px solid {{t.rule}};">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 68px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;">
+      <a href="WebHome.dc.html" aria-label="Un:edited home" style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1; text-decoration: none;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 5px; margin: 0 3px; padding-top: 3px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</a>
+      <div style="display: flex; gap: 28px; font-family: 'Inter', sans-serif; font-size: 14.5px;">
+        <a href="WebHome.dc.html" aria-current="page" style="height: 66px; display: flex; align-items: center; border-bottom: 2px solid {{t.accent}}; color: {{t.accent}}; font-weight: 500; text-decoration: none;">Home</a>
+        <a href="WebFeed.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Feed</a>
+        <a href="WebLibrary.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Library</a>
+        <a href="WebYou.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">You</a>
+      </div>
+      <a href="WebSearch.dc.html" aria-label="Search" style="width: 44px; height: 44px; color: {{t.ink}}; display: flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+      </a>
+    </div>
+  </nav>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 24px 32px 64px 32px;">
+    <div style="border-top: 3px solid {{t.ink}}; border-bottom: 1px solid {{t.ink}}; padding: 8px 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: {{t.muted}};">
+      <span>{{editionLabel}} · Tuesday, 6 October 2026</span>
+      <span>Next edition 6:00 AM</span>
+    </div>
+
+    <div style="margin-top: 28px; display: flex; flex-wrap: wrap; gap: 40px;">
+      <article style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
+        <sc-if value="{{comfy}}" hint-placeholder-val="{{ true }}">
+          <a href="WebArticle.dc.html" aria-label="Open lead story" style="display: block; height: 380px; background-color: {{t.photo}}; background-image: {{t.hatch}}; position: relative;">
+            <span style="position: absolute; left: 12px; bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.6px; color: {{t.muted}};">PHOTO · CREDIT FROM SOURCE</span>
+          </a>
+        </sc-if>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: {{t.accent}};">City · Covered by 4 of your sources</span>
+        <a href="WebArticle.dc.html" style="font-family: {{t.head}}; font-size: 44px; line-height: 1.06; letter-spacing: -0.6px;">Water board clears a 24-hour supply pilot for three wards</a>
+        <p style="margin: 0; font-size: 19px; line-height: 1.5; color: {{t.muted}}; max-width: 640px;">Four outlets report the same decision with different emphasis. Open the story to read each one in its own words.</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid {{t.rule}};">
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">Morning Ledger · Deccan Courier · Civic Wire · The Plateau Times · 2h</span>
+          <span style="display: flex; align-items: center;"><sc-if value="{{save.guest}}" hint-placeholder-val="{{ false }}"><a href="GuestPrompt.dc.html" aria-label="Save. Sign in to save stories" style="height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: {{t.ink}};"><svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg>Save</a></sc-if><sc-if value="{{save.member}}" hint-placeholder-val="{{ true }}"><button onClick="{{save.toggle}}" aria-pressed="{{save.on}}" aria-label="{{save.label}}" style="height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; background: none; border: 0; color: {{save.color}}; cursor: pointer;"><svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{save.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg>{{save.text}}</button></sc-if><button aria-label="More options" style="width: 44px; height: 44px; background: none; border: 0; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor;"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></button></span>
+        </div>
+      </article>
+
+      <section style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column;">
+        <h2 style="margin: 0; padding-bottom: 10px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase;">Most covered today</h2>
+        <sc-for list="{{most}}" as="item" hint-placeholder-count="5">
+          <a href="WebArticle.dc.html" style="display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid {{t.rule}};">
+            <span style="font-family: {{t.head}}; font-weight: 500; font-size: 20px; line-height: 1.1; color: {{t.accent}}; width: 18px; flex-shrink: 0;">{{item.n}}</span>
+            <span style="display: flex; flex-direction: column; gap: 6px;">
+              <span style="font-family: {{t.head}}; font-size: 19px; line-height: 1.25;">{{item.title}}</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{item.meta}}</span>
+            </span>
+          </a>
+        </sc-for>
+      </section>
+    </div>
+
+    <div style="margin-top: 48px; display: flex; flex-wrap: wrap; gap: 0 40px; border-top: 1px solid {{t.ink}};">
+      <sc-for list="{{topics}}" as="tp" hint-placeholder-count="3">
+        <section style="flex: 1 1 280px; min-width: 0; padding-top: 12px; display: flex; flex-direction: column;">
+          <h2 style="margin: 0 0 6px 0; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase;">{{tp.name}}</h2>
+          <sc-if value="{{comfy}}" hint-placeholder-val="{{ true }}">
+            <span style="height: 150px; margin: 6px 0 4px 0; background-color: {{t.photo}}; background-image: {{t.hatch}};"></span>
+          </sc-if>
+          <sc-for list="{{tp.items}}" as="it" hint-placeholder-count="3">
+            <a href="WebArticle.dc.html" style="display: flex; flex-direction: column; gap: 5px; padding: 12px 0; border-bottom: 1px solid {{t.rule}};">
+              <span style="font-family: {{t.head}}; font-size: 18px; line-height: 1.25;">{{it.title}}</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{it.meta}}</span>
+            </a>
+          </sc-for>
+        </section>
+      </sc-for>
+    </div>
+
+    <section style="margin-top: 48px;">
+      <h2 style="margin: 0 0 14px 0; padding-bottom: 10px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase;">Papers &amp; Reports</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+        <sc-for list="{{papers}}" as="p" hint-placeholder-count="3">
+          <a href="WebArticle.dc.html" style="flex: 1 1 280px; min-width: 0; background: {{t.surface}}; border: 1px solid {{t.rule}}; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px;">
+            <span style="display: flex; justify-content: space-between; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase;"><span style="color: {{t.accent}};">{{p.label}}</span><span style="color: {{t.muted}};">{{p.where}}</span></span>
+            <span style="font-family: {{t.head}}; font-size: 18px; line-height: 1.3;">{{p.title}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{p.meta}}</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-top: 48px;">
+      <h2 style="margin: 0; padding-bottom: 10px; border-bottom: 1px dashed {{t.muted}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase; color: {{t.muted}};">Outside your sources</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 0 40px;">
+        <sc-for list="{{outside}}" as="o" hint-placeholder-count="3">
+          <a href="WebArticle.dc.html" style="flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 5px; padding: 14px 0; border-bottom: 1px solid {{t.rule}};">
+            <span style="font-family: {{t.head}}; font-size: 17px; line-height: 1.3;">{{o.title}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{o.meta}}</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
+      <span style="width: 48px; border-top: 1px solid {{t.ink}};"></span>
+      <span style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 18px;">That’s today’s edition.</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: {{t.muted}};">No AI · No algorithm · No fee</span>
+    </div>
+  </main>
+  <div role="status" aria-live="polite" style="position: fixed; left: 24px; bottom: 24px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"view":{"editor":"enum","options":["comfortable","focused"],"default":"comfortable","section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"signedIn":{"editor":"boolean","default":true,"section":"Account"},"edition":{"editor":"int","default":1,"min":1,"section":"Account"},"$preview":{"width":1440,"height":2000}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const type = this.props.type ?? 'serif';
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const t = dark ? {
+      bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', photo: '#2D2924',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', photo: '#DCD2C1',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    t.cur = dark ? 'ue-ink' : 'ue-paper';
+    t.head = type === 'sans' ? sans : serif;
+    t.body = type === 'sans' ? sans : serif;
+    // Edition number: a signed-in reader's first-ever edition is Nº 1; it goes up by 1 each time a new edition publishes (06:00 IST), counted from their first edition. Guests see no number.
+    const signedIn = this.props.signedIn ?? true;
+    return {
+      t: t,
+      editionLabel: signedIn ? 'Morning Edition Nº ' + (this.props.edition ?? 1) : 'Morning Edition',
+      save: this.saveVals('lead', false, t, !signedIn),
+      toast: this.toastVals(),
+      comfy: (this.props.view ?? 'comfortable') !== 'focused',
+      most: [
+        { n: '1', title: 'State cabinet approves new crop insurance window for rabi season', meta: '6 of your sources · 3h' },
+        { n: '2', title: 'Monsoon session ends with nine bills passed, four sent to committee', meta: '5 of your sources · 5h' },
+        { n: '3', title: 'Rail ministry lists 40 stations for platform-height upgrades', meta: '4 of your sources · 6h' },
+        { n: '4', title: 'University entrance results to be published a week earlier', meta: '3 of your sources · 7h' },
+        { n: '5', title: 'City bus fleet to add 120 electric buses by March', meta: '3 of your sources · 8h' }
+      ],
+      topics: [
+        { name: 'Technology', items: [
+          { title: 'Open-source maps project adds street-level data for 12 Indian cities', meta: 'Civic Wire · 1h' },
+          { title: 'What a new data-protection rule means for apps that store location', meta: 'Morning Ledger · 4h' }
+        ] },
+        { name: 'India', items: [
+          { title: 'Election commission publishes revised voter rolls for two states', meta: 'Deccan Courier · 2h' },
+          { title: 'Court asks for status report on river clean-up plan', meta: 'Morning Ledger · 5h' }
+        ] },
+        { name: 'World', items: [
+          { title: 'Trade talks resume after a two-month pause', meta: 'Civic Wire · 3h' },
+          { title: 'Climate summit hosts publish draft agenda', meta: 'Morning Ledger · 6h' }
+        ] }
+      ],
+      papers: [
+        { label: 'Peer-reviewed', where: 'Journal · 3 Oct', title: 'Urban heat islands and night-time temperatures in tier-2 cities', meta: 'R. Iyer, A. Kulkarni + 3 · cited 12 times' },
+        { label: 'Preprint · not yet peer-reviewed', where: 'Repository · 4 Oct', title: 'Measuring commute times with open transit data', meta: 'S. Rao + 2' },
+        { label: 'Official report', where: 'Ministry · 5 Oct', title: 'Quarterly report on rural road connectivity, July–September', meta: 'Primary document · PDF, 48 pages' }
+      ],
+      outside: [
+        { title: 'Opinion: the case for slower city-planning decisions', meta: 'The Evening Lantern · 2h' },
+        { title: 'Five charts on how commuting times changed this year', meta: 'Metro Daily · 7h' },
+        { title: 'Inside the effort to map every public tap in the old city', meta: 'Lokvarta · 9h' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

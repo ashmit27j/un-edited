@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Accessibility settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 2400px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif;">
+  <header style="padding: 12px 24px 0 24px; display: flex; flex-direction: column; gap: 6px;">
+    <a href="You.dc.html" style="align-self: flex-start; height: 44px; margin-left: -6px; display: flex; align-items: center; gap: 4px; font-size: 15px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>You</a>
+    <h1 style="margin: 4px 0 0 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 34px; letter-spacing: -0.4px;">Accessibility</h1>
+  </header>
+
+  <main style="padding: 0 24px 40px 24px; display: flex; flex-direction: column;">
+
+    <!-- Live preview: follows every setting on this page -->
+    <div aria-live="polite" style="margin: 16px 0 0 0; padding: 14px 16px; background: {{t.surface}}; border: 1px solid {{t.ruleStrong}}; display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}};">Preview · City · Covered by 4 of your sources</span>
+      <p style="margin: 0; font-family: {{p.font}}; font-weight: {{p.weight}}; font-size: {{p.size}}px; line-height: {{p.lh}}; letter-spacing: {{p.ls}}; word-spacing: {{p.ws}}; color: {{p.ink}};">The city water board on Monday approved a six-month pilot that will move three wards to <a href="#" style="color: {{t.accent}}; text-decoration: {{p.ul}}; text-underline-offset: 3px;">round-the-clock water</a>.</p>
+      <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid {{t.rule}}; padding-top: 6px;">
+        <span style="font-size: 12.5px; color: {{t.muted}};">Morning Ledger · 2h</span>
+        <span style="display: flex; align-items: center; gap: 6px; min-height: {{p.target}}px; color: {{t.accent}}; font-size: 13px; font-weight: 500;">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{t.accent}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg>
+          <sc-if value="{{p.cue}}" hint-placeholder-val="{{ true }}"><span>Saved</span></sc-if>
+        </span>
+      </div>
+    </div>
+
+    <!-- 1 · Text -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Text</h2>
+      <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 15px;">Text size</span>
+        <div role="radiogroup" aria-label="Text size" style="display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid {{t.ink}};">
+          <sc-for list="{{sizes}}" as="o" hint-placeholder-count="5">
+            <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: {{o.fs}}px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+          </sc-for>
+        </div>
+        <span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">XXL goes up to about 200% of the standard size.</span>
+      </div>
+      <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 15px;">Line spacing</span>
+        <div role="radiogroup" aria-label="Line spacing" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid {{t.ink}};">
+          <sc-for list="{{spacing}}" as="o" hint-placeholder-count="3">
+            <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+      <sc-for list="{{textRows}}" as="r" hint-placeholder-count="1">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- 2 · Colour vision -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Colour vision</h2>
+      <div role="radiogroup" aria-label="Colour mode" style="display: flex; flex-direction: column;">
+        <sc-for list="{{modes}}" as="m" hint-placeholder-count="3">
+          <button role="radio" aria-checked="{{m.on}}" onClick="{{m.pick}}" style="width: 100%; min-height: 64px; padding: 10px 0; display: flex; align-items: center; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+            <span aria-hidden="true" style="width: 22px; height: 22px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; border: 1.5px solid {{m.edge}}; display: flex; align-items: center; justify-content: center;"><sc-if value="{{m.on}}" hint-placeholder-val="{{ false }}"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{t.ink}};"></span></sc-if></span>
+            <span style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{m.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{m.desc}}</span></span>
+            <span aria-hidden="true" style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;"><span style="width: 18px; height: 18px; background: {{m.swatch}};"></span><span style="width: 18px; height: 18px; background: {{m.swatchLine}};"></span></span>
+          </button>
+        </sc-for>
+      </div>
+      <p style="margin: 10px 0 0 0; font-size: 12.5px; line-height: 1.5; color: {{t.muted}};">Blue-yellow colour blindness (tritanopia): Standard already works. Un:edited uses no blue, green or yellow. The stamps keep their print colour; they are decoration, never a signal.</p>
+      <sc-for list="{{colourRows}}" as="r" hint-placeholder-count="2">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- 3 · Low vision -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Low vision</h2>
+      <sc-for list="{{lowRows}}" as="r" hint-placeholder-count="3">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- 4 · Reading and focus -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Reading and focus</h2>
+      <sc-for list="{{readRows}}" as="r" hint-placeholder-count="3">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+      <div style="padding: 12px 0; border-bottom: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 15px;">Letter and word spacing</span>
+        <div role="radiogroup" aria-label="Letter and word spacing" style="display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid {{t.ink}};">
+          <sc-for list="{{tracking}}" as="o" hint-placeholder-count="3">
+            <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · Touch and movement -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Touch and movement</h2>
+      <sc-for list="{{touchRows}}" as="r" hint-placeholder-count="3">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- 6 · Motion -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Motion</h2>
+      <sc-for list="{{motionRows}}" as="r" hint-placeholder-count="1">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- 7 · Screen readers -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column;">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Screen readers</h2>
+      <sc-for list="{{readerRows}}" as="r" hint-placeholder-count="2">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+      <p style="margin: 12px 0 0 0; font-size: 12.5px; line-height: 1.55; color: {{t.muted}};">Un:edited works with VoiceOver and TalkBack. Stories are read in the language they were published in, and every button has a spoken label.</p>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"colour":{"editor":"enum","options":["standard","redgreen","mono"],"default":"standard","section":"State"},"$preview":{"width":390,"height":2400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      size: 'M', spacing: 'Normal', tracking: 'Normal', colour: null,
+      system: false, contrast: false, underline: false, motion: false,
+      cue: false, bold: false, targets: false, focusRing: false,
+      dyslexia: false, ruler: false, buttons: false, credits: false
+    };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    // Colour-vision modes change the accent only. Ink, paper and rules stay the same.
+    const accents = {
+      standard: dark ? '#C8705F' : '#A8372A',
+      redgreen: dark ? '#7DB0E6' : '#1F5C99',
+      mono:     dark ? '#C9C0B0' : '#1C1A17'
+    };
+    const s = this.state;
+    const colour = s.colour || (this.props.colour ?? 'standard');
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', inkHi: '#E8E1D4', muted: '#8E8678', rule: '#38332D', ruleStrong: '#4A443C' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', inkHi: '#000000', muted: '#6B645A', rule: '#DDD4C4', ruleStrong: '#C2B6A2' };
+    t.accent = accents[colour];
+    const seg = (key, opts, extra) => opts.map((o) => ({
+      label: o, on: s[key] === o,
+      bg: s[key] === o ? t.ink : 'transparent', fg: s[key] === o ? t.bg : t.ink,
+      weight: s[key] === o ? 500 : 400,
+      fs: extra ? extra[o] : 14,
+      pick: () => this.setState({ [key]: o })
+    }));
+    const sw = (id, label, desc, locked) => ({
+      label: label, desc: desc, on: !!s[id] || !!locked,
+      track: (s[id] || locked) ? t.ink : 'transparent', edge: (s[id] || locked) ? t.ink : t.muted,
+      knob: (s[id] || locked) ? t.bg : t.muted, knobX: (s[id] || locked) ? 21 : 3,
+      pick: () => this.setState({ [id]: !s[id] })
+    });
+    const sizePx = { S: 15, M: 17, L: 19.5, XL: 22, XXL: 28 };
+    const mono = colour === 'mono';
+    const mode = (id, label, desc, a, line) => ({
+      label: label, desc: desc, on: colour === id,
+      edge: colour === id ? t.ink : t.muted,
+      swatch: a, swatchLine: line,
+      pick: () => this.setState({ colour: id })
+    });
+    return {
+      t: t,
+      p: {
+        font: s.dyslexia ? "'Atkinson Hyperlegible', 'Inter', sans-serif" : "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif",
+        weight: s.bold ? 500 : 400,
+        size: s.system ? 18 : sizePx[s.size],
+        lh: { Normal: 1.55, Relaxed: 1.75, Loose: 1.95 }[s.spacing],
+        ls: { Normal: '0', Wide: '0.02em', Wider: '0.05em' }[s.tracking],
+        ws: { Normal: '0', Wide: '0.08em', Wider: '0.16em' }[s.tracking],
+        ink: s.contrast ? t.inkHi : t.ink,
+        ul: (s.underline || s.cue || mono) ? 'underline' : 'none',
+        target: (s.targets ? 56 : 44),
+        cue: (s.cue || mono)
+      },
+      sizes: seg('size', ['S', 'M', 'L', 'XL', 'XXL'], { S: 13, M: 14.5, L: 16, XL: 18, XXL: 20 }),
+      spacing: seg('spacing', ['Normal', 'Relaxed', 'Loose']),
+      tracking: seg('tracking', ['Normal', 'Wide', 'Wider']),
+      textRows: [sw('system', 'Match my phone’s text size', 'Overrides the size above with the one set on your phone.')],
+      modes: [
+        mode('standard', 'Standard', 'Oxblood accent on Paper, coral on Ink.', accents.standard, t.ink),
+        mode('redgreen', 'Red-green friendly', 'Blue accent instead of red. For protanopia and deuteranopia.', dark ? '#7DB0E6' : '#1F5C99', t.ink),
+        mode('mono', 'Black and white only', 'No accent colour. Emphasis comes from underlines, labels and icons.', dark ? '#C9C0B0' : '#1C1A17', t.ink)
+      ],
+      colourRows: [
+        sw('cue', 'Don’t rely on colour alone', 'Adds labels, underlines and shapes wherever colour carries meaning, like Saved and the active tab.', mono),
+        sw('underline', 'Underline links', 'Links stay underlined, not just coloured.', mono)
+      ],
+      lowRows: [
+        sw('contrast', 'Higher contrast', 'Darker text and stronger lines on both Paper and Ink.'),
+        sw('bold', 'Bolder text', 'Uses the medium weight for body text and labels.'),
+        sw('focusRing', 'Stronger focus outline', 'A thick outline shows where you are when using a keyboard or switch.')
+      ],
+      readRows: [
+        sw('dyslexia', 'Dyslexia-friendly font', 'Reads in Atkinson Hyperlegible, a typeface designed for low vision. Devanagari keeps Tiro or Mukta.'),
+        sw('ruler', 'Reading line', 'Dims the lines above and below the one you are reading.')
+      ],
+      touchRows: [
+        sw('targets', 'Larger touch targets', 'Buttons and rows grow from 44 to 56 pixels tall.'),
+        sw('buttons', 'Buttons instead of swiping', 'Shows Previous and Next in Feed and Article instead of relying on swipes.')
+      ],
+      motionRows: [
+        sw('motion', 'Reduce motion', 'Turns off stamps, wipes and page animations. On automatically if your phone asks for it.')
+      ],
+      readerRows: [
+        sw('credits', 'Read image credits aloud', 'Reads the photographer and agency line from the publisher before the story.')
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

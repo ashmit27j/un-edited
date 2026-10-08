@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Library, empty</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+
+  <header style="padding: 22px 24px 0 24px; display: flex; flex-direction: column; gap: 6px;">
+    <h1 style="margin: 0; font-family: {{t.head}}; font-weight: 500; font-size: 34px; letter-spacing: -0.5px;">Library</h1>
+    <div style="border-bottom: 1px solid {{t.ink}}; padding-bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">{{countLine}}</div>
+  </header>
+
+  <main style="padding: 18px 24px 100px 24px; display: flex; flex-direction: column; gap: 30px;">
+    <sc-if value="{{signedIn}}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+        <a href="FolderEmpty.dc.html" style="display: flex; flex-direction: column; gap: 8px;">
+          <span style="height: 118px; position: relative; display: block;">
+            <span style="position: absolute; left: 0; right: 16px; top: 20px; height: 96px; background: {{t.surface}}; border: 1px dashed {{t.rule}}; box-sizing: border-box;"></span>
+          </span>
+          <span style="display: flex; justify-content: space-between; align-items: baseline; gap: 6px;">
+            <span style="font-family: {{t.head}}; font-size: 17px; font-weight: 500;">Saved</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12px; color: {{t.muted}};">0</span>
+          </span>
+        </a>
+        <button style="margin-top: 20px; width: calc(100% - 16px); height: 96px; box-sizing: border-box; border: 1px dashed {{t.muted}}; background: none; color: {{t.muted}}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><path d="M12 5v14M5 12h14"></path></svg>New folder</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{guest}}" hint-placeholder-val="{{ false }}">
+      <section style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding-top: 6px;">
+        <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: {{t.muted}}; stroke-width: 1.2; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4-6 4z"></path></svg>
+        <h2 style="margin: 0; font-family: {{t.head}}; font-weight: 400; font-size: 26px; line-height: 1.15;">Keep a library of your own.</h2>
+        <p style="margin: 0; font-size: 16.5px; line-height: 1.5; color: {{t.muted}};">Sign in to save articles into folders. Your library is the same on every device you sign in to.</p>
+      </section>
+    </sc-if>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <sc-if value="{{guest}}" hint-placeholder-val="{{ false }}">
+        <a href="OB9SignIn.dc.html" style="height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Sign in</a>
+        <a href="Main.dc.html" style="height: 44px; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 14px; color: {{t.muted}}; text-decoration: underline; text-underline-offset: 3px;">Keep reading without an account</a>
+      </sc-if>
+    </div>
+  </main>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 76px; box-sizing: border-box; padding: 6px 12px 18px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-family: 'Inter', sans-serif; font-size: 11px;">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>Home</a>
+    <a href="Feed.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>Feed</a>
+    <a href="LibraryEmpty.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.accent}}; font-weight: 500;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>Library</a>
+    <a href="You.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>You</a>
+  </nav>
+<p style="margin: 0; position: absolute; left: 3px; top: 580px">Tab Navigation Bar).</p></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"guest":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  theme(dark, type) {
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const base = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A' };
+    base.head = type === 'sans' ? sans : serif;
+    base.body = type === 'sans' ? sans : serif;
+    return base;
+  }
+  renderVals() {
+    const guest = this.props.guest ?? false;
+    return {
+      t: this.theme(this.props.dark ?? false, this.props.type ?? 'serif'),
+      guest: guest,
+      signedIn: !guest,
+      countLine: guest ? 'Not signed in' : '1 folder · 0 articles'
+    };
+  }
+}
+</script>
+</body>
+</html>

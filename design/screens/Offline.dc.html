@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Offline</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}};">
+  <div style="height: 34px; background: {{t.surface}}; border-bottom: 1px solid {{t.rule}}; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}};">
+    <span style="width: 6px; height: 6px; border-radius: 50%; background: {{t.muted}};"></span>Offline · last updated 7:58 AM
+  </div>
+
+  <div style="position: absolute; left: 32px; right: 32px; top: 200px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;">
+    <svg width="56" height="56" viewBox="0 0 48 48" aria-hidden="true" style="fill: none; stroke: {{t.muted}}; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round;"><path d="M8 10h26v28H8z"></path><path d="M34 16h6v18a4 4 0 0 1-4 4H8"></path><path d="M13 17h16M13 23h16M13 29h10"></path></svg>
+    <h1 style="margin: 6px 0 0 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 30px; line-height: 1.15;">You’re offline.</h1>
+    <p style="margin: 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-size: 17px; line-height: 1.5; color: {{t.muted}};">New stories will arrive when you’re back online. Your 14 downloaded articles are on this phone.</p>
+    <a href="Library.dc.html" style="margin-top: 10px; width: 100%; height: 52px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;">Read downloaded articles</a>
+    <button onClick="{{retry}}" style="height: 44px; padding: 0 12px; background: none; border: 0; color: {{t.muted}}; font-family: 'Inter', sans-serif; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer;">{{retryLabel}}</button>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 76px; box-sizing: border-box; padding: 6px 12px 18px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-family: 'Inter', sans-serif; font-size: 11px;">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>Home</a>
+    <a href="Feed.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.accent}}; font-weight: 500;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>Feed</a>
+    <a href="Library.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>Library</a>
+    <a href="You.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>You</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tried: false };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    return {
+      t: dark
+        ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D' }
+        : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4' },
+      retryLabel: this.state.tried ? 'Still offline. Try again' : 'Try again',
+      retry: () => this.setState({ tried: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

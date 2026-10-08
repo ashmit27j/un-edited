@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Web library</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+button{font:inherit}
+/* Desktop cursors: stylised pointer everywhere, "Read more" stamp over links that open a story */
+@media (hover: hover) and (pointer: fine){
+.ue-paper,.ue-paper *{cursor:url(assets/cursor-pointer-paper.svg) 4 3, default}
+.ue-ink,.ue-ink *{cursor:url(assets/cursor-pointer-ink.svg) 4 3, default}
+.ue-paper a,.ue-paper button,.ue-paper [role=tab],.ue-ink a,.ue-ink button,.ue-ink [role=tab]{cursor:pointer}
+.ue-paper input,.ue-paper textarea,.ue-ink input,.ue-ink textarea{cursor:text}
+.ue-paper a[href="WebArticle.dc.html"],.ue-paper a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-paper.svg) 32 32, pointer}
+.ue-ink a[href="WebArticle.dc.html"],.ue-ink a[href="WebArticle.dc.html"] *{cursor:url(assets/cursor-readmore-ink.svg) 32 32, pointer}
+}
+*{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7);border:3px solid transparent;background-clip:padding-box}
+/* Save toast: fades in; no animation when the reader prefers reduced motion */
+@keyframes ue-toast{from{opacity:0}to{opacity:1}}
+.ue-toast{animation:ue-toast .2s ease both}
+@media (prefers-reduced-motion: reduce){.ue-toast{animation:none}}
+/* Devanagari: Tiro (serif) by default, Mukta when the reader picks Sans (data-dv="sans") */
+[lang="hi"],[lang="hi"] *,[lang="mr"],[lang="mr"] *{letter-spacing:0!important;text-transform:none!important}
+[lang="hi"],[lang="hi"] *{font-family:'Tiro Devanagari Hindi','Mukta',serif!important;font-style:normal}
+[lang="mr"],[lang="mr"] *{font-family:'Tiro Devanagari Marathi','Mukta',serif!important;font-style:normal}
+[data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
+</style>
+</helmet>
+<div class="{{t.cur}}" style="min-height: 100vh; background: {{t.bg}}; color: {{t.ink}}; font-family: {{t.body}};">
+  <nav aria-label="Main" style="border-bottom: 1px solid {{t.rule}};">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 68px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px;">
+      <a href="WebHome.dc.html" aria-label="Un:edited home" style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: -0.4px; display: flex; align-items: center; line-height: 1; text-decoration: none;"><span style="color: {{t.accent}};">Un</span><span style="display: inline-flex; flex-direction: column; gap: 5px; margin: 0 3px; padding-top: 3px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span><span style="width: 5px; height: 5px; border-radius: 50%; background: {{t.accent}};"></span></span>edited</a>
+      <div style="display: flex; gap: 28px; font-family: 'Inter', sans-serif; font-size: 14.5px;">
+        <a href="WebHome.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Home</a>
+        <a href="WebFeed.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">Feed</a>
+        <a href="WebLibrary.dc.html" aria-current="page" style="height: 66px; display: flex; align-items: center; border-bottom: 2px solid {{t.accent}}; color: {{t.accent}}; font-weight: 500; text-decoration: none;">Library</a>
+        <a href="WebYou.dc.html" style="height: 66px; display: flex; align-items: center; color: {{t.muted}};">You</a>
+      </div>
+      <a href="WebSearch.dc.html" aria-label="Search" style="width: 44px; height: 44px; color: {{t.ink}}; display: flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+      </a>
+    </div>
+  </nav>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 32px 32px 72px 32px; display: flex; flex-direction: column; gap: 32px;">
+    <header style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; border-bottom: 1px solid {{t.ink}}; padding-bottom: 12px;">
+      <h1 style="margin: 0; font-family: {{t.head}}; font-weight: 400; font-size: 48px; letter-spacing: -0.6px; line-height: 1;">Library</h1>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: {{t.muted}};">3 folders · 25 articles · synced with your phone</span>
+    </header>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+      <sc-for list="{{folders}}" as="f" hint-placeholder-count="3">
+        <button onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="padding: 0; background: none; border: 0; color: {{t.ink}}; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 10px;">
+          <span style="height: 128px; width: 100%; position: relative; display: block;">
+            <span style="position: absolute; left: 18px; right: 0; top: 0; height: 104px; background-color: {{t.photo2}}; border: 1px solid {{t.rule}};"></span>
+            <span style="position: absolute; left: 9px; right: 9px; top: 11px; height: 104px; background-color: {{t.photo}}; border: 1px solid {{t.rule}};"></span>
+            <span style="position: absolute; left: 0; right: 18px; top: 22px; height: 104px; background-color: {{t.surface}}; background-image: {{t.hatch}}; border: {{f.edge}};"></span>
+          </span>
+          <span style="width: 100%; display: flex; justify-content: space-between; align-items: baseline; gap: 6px;">
+            <span style="font-family: {{t.head}}; font-size: 19px; font-weight: {{f.weight}};">{{f.name}}</span>
+            <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{f.count}}</span>
+          </span>
+        </button>
+      </sc-for>
+      <button style="height: 128px; margin-top: 0; border: 1px dashed {{t.muted}}; background: none; color: {{t.muted}}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><path d="M12 5v14M5 12h14"></path></svg>New folder</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 32px 56px; align-items: flex-start;">
+      <section style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid {{t.ink}};">
+          <h2 style="margin: 0; font-family: {{t.head}}; font-weight: 400; font-size: 28px;">{{cur.name}}</h2>
+          <span style="font-family: 'Inter', sans-serif; font-size: 13px; color: {{t.muted}};">Newest saved first</span>
+        </div>
+        <sc-for list="{{cur.items}}" as="it" hint-placeholder-count="4">
+          <div style="display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid {{t.rule}};">
+            <a href="WebArticle.dc.html" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px;">
+              <sc-if value="{{it.isPaper}}" hint-placeholder-val="{{ false }}">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: {{t.accent}};">{{it.label}}</span>
+              </sc-if>
+              <span style="font-family: {{t.head}}; font-size: 21px; line-height: 1.25;">{{it.title}}</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 12.5px; color: {{t.muted}};">{{it.meta}}</span>
+            </a>
+            <button onClick="{{it.toggle}}" aria-pressed="{{it.on}}" aria-label="{{it.label2}}" style="width: 44px; height: 44px; flex-shrink: 0; padding: 0; background: none; border: 0; color: {{it.color}}; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: {{it.fill}}; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round;"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"></path></svg></button>
+            <a href="MoreSheet.dc.html" aria-label="More options" style="width: 44px; height: 44px; flex-shrink: 0; color: {{t.ink}}; display: flex; align-items: center; justify-content: center;"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor;"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></a>
+          </div>
+        </sc-for>
+      </section>
+
+      <sc-if value="{{showHint}}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1 1 260px; min-width: 0;">
+          <dc-import name="WebSyncHint" dark="{{dark}}" on-dismiss="{{dismiss}}" hint-size="100%,200px"></dc-import>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+  <div role="status" aria-live="polite" style="position: fixed; left: 24px; bottom: 24px; z-index: 20; pointer-events: none;"><sc-if value="{{toast.show}}" hint-placeholder-val="{{ false }}"><div class="ue-toast" style="pointer-events: auto; box-sizing: border-box; min-height: 44px; padding: 0 14px; display: flex; align-items: center; gap: 8px; background: {{t.surface}}; border: 1px solid {{t.rule}}; color: {{t.ink}}; font-family: 'Inter', sans-serif; font-size: 13px;"><span>{{toast.text}}</span><span aria-hidden="true" style="color: {{t.muted}};">·</span><sc-if value="{{toast.isSaved}}" hint-placeholder-val="{{ true }}"><a href="SaveSheet.dc.html" style="height: 44px; display: flex; align-items: center; color: {{t.accent}}; font-weight: 500;">Change folder</a></sc-if><sc-if value="{{toast.isRemoved}}" hint-placeholder-val="{{ false }}"><button onClick="{{toast.undo}}" style="height: 44px; padding: 0; background: none; border: 0; color: {{t.accent}}; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer;">Undo</button></sc-if></div></sc-if></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"type":{"editor":"enum","options":["serif","sans"],"default":"serif","section":"Theme"},"firstVisit":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  // Save: one tap saves to the default "Saved" folder and shows a toast (Change folder); tapping a filled bookmark removes it (toast offers Undo).
+  isSaved(key, initial) {
+    const v = ((this.state && this.state.marks) || {})[key];
+    return v === undefined ? !!initial : v;
+  }
+  toggleSave(key, initial) {
+    const now = !this.isSaved(key, initial);
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: now }), toast: now ? 'saved' : 'removed', toastKey: key });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  undoSave() {
+    const key = this.state && this.state.toastKey;
+    clearTimeout(this._toastTimer);
+    this.setState({ marks: Object.assign({}, (this.state && this.state.marks) || {}, { [key]: true }), toast: null });
+  }
+  saveVals(key, initial, t, guest) {
+    const on = guest ? false : this.isSaved(key, initial);
+    return {
+      guest: !!guest, member: !guest, on: on,
+      text: on ? 'Saved' : 'Save',
+      label: on ? 'Saved. Tap to remove' : 'Save',
+      fill: on ? t.accent : 'none',
+      color: on ? t.accent : t.ink,
+      toggle: () => this.toggleSave(key, initial)
+    };
+  }
+  toastVals() {
+    const k = this.state && this.state.toast;
+    return { show: !!k, isSaved: k === 'saved', isRemoved: k === 'removed', text: k === 'removed' ? 'Removed from Saved' : 'Saved', undo: () => this.undoSave() };
+  }
+  componentWillUnmount() { clearTimeout(this._toastTimer); }
+  constructor(props) {
+    super(props);
+    this.state = { f: 'Saved' };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const type = this.props.type ?? 'serif';
+    const serif = "'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif";
+    const sans = "'Inter', system-ui, sans-serif";
+    const t = dark ? {
+      bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', photo: '#2D2924', photo2: '#25221E',
+      hatch: 'repeating-linear-gradient(135deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 10px)'
+    } : {
+      bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', photo: '#DCD2C1', photo2: '#E6DDCE',
+      hatch: 'repeating-linear-gradient(135deg, rgba(28,26,23,0.05) 0 2px, transparent 2px 10px)'
+    };
+    t.cur = dark ? 'ue-ink' : 'ue-paper';
+    t.head = type === 'sans' ? sans : serif;
+    t.body = type === 'sans' ? sans : serif;
+    const data = {
+      'Saved': { count: '12', items: [
+        { title: 'Water board clears a 24-hour supply pilot for three wards', meta: 'Morning Ledger · saved today' },
+        { title: 'Metering drive: how the switch to billed use will work', meta: 'Civic Wire · saved yesterday' },
+        { title: 'Quarterly report on rural road connectivity, July–September', meta: 'Ministry · PDF, 48 pages · saved 5 Oct', label: 'Official report' },
+        { title: 'Rail ministry lists 40 stations for platform-height upgrades', meta: 'The Plateau Times · saved 4 Oct' }
+      ] },
+      'Weekend reads': { count: '4', items: [
+        { title: 'Urban heat islands and night-time temperatures in tier-2 cities', meta: 'Journal · saved 3 Oct', label: 'Peer-reviewed' },
+        { title: 'Inside the effort to map every public tap in the old city', meta: 'Lokvarta · saved 2 Oct' },
+        { title: 'Measuring commute times with open transit data', meta: 'Repository · saved 1 Oct', label: 'Preprint · not yet peer-reviewed' }
+      ] },
+      'Elections': { count: '9', items: [
+        { title: 'Election commission publishes revised voter rolls for two states', meta: 'Deccan Courier · saved today' },
+        { title: 'How ward boundaries were redrawn, in five maps', meta: 'Civic Wire · saved 30 Sep' },
+        { title: 'Candidates file nominations as the deadline nears', meta: 'Morning Ledger · saved 28 Sep' }
+      ] }
+    };
+    const cur = this.state.f;
+    const folders = Object.keys(data).map((name) => ({
+      name: name, count: data[name].count, on: name === cur,
+      weight: name === cur ? 500 : 400,
+      edge: name === cur ? '1.5px solid ' + t.ink : '1px solid ' + t.rule,
+      pick: () => this.setState({ f: name })
+    }));
+    return {
+      t: t, folders: folders, dark: dark,
+      showHint: (this.props.firstVisit ?? false) && !this.state.hintDismissed,
+      dismiss: () => this.setState({ hintDismissed: true }),
+      toast: this.toastVals(),
+      cur: { name: cur, items: data[cur].items.map((it, i) => {
+        const sv = this.saveVals(cur + i, true, t, false);
+        return { title: it.title, meta: it.meta, isPaper: !!it.label, label: it.label || '', label2: sv.label, fill: sv.fill, color: sv.color, on: sv.on, toggle: sv.toggle };
+      }) }
+    };
+  }
+}
+</script>
+</body>
+</html>
