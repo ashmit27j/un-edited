@@ -2,6 +2,8 @@
 
 Newest first. One line per change: date — what changed — why (if known). Update `current-config.md` alongside.
 
+- 2026-10-09 — Stack settled for the app: Expo, one repository for Android (APK) and web (PWA); iPhone uses the installable website, no native iOS build. Backend and hosting (Supabase, fetch job, Cloudflare Pages) still proposed.
+- 2026-10-09 — Started a fresh Expo app (SDK 57, Expo Router) at the repo root, not from `uneditd-app.zip`. Renamed to Un:edited (slug/scheme `unedited`), Paper splash and icon colours. Supabase confirmed for DB and auth.
 - 2026-10-09 — Downloads, Save, language, accessibility, notifications, edition number (Ashmit's change list):
   - Saving no longer downloads. ⋯ menu has Download / Remove download; new You › Storage setting "Auto-download saved articles" (off by default; turning it off keeps existing downloads) and "Clear all downloads". All "kept offline automatically" copy replaced (You, WebYou, SaveSheet, Library, FolderEmpty, LibraryEmpty, Offline, Tour, WebSyncHint). Library folders show "N downloaded".
   - Save is its own icon next to ⋯ on every story (Save first); "Save to folder" removed from ⋯. One tap saves to "Saved" with a toast (Change folder / Undo). Guests get the sign-in prompt. `Article-ptmb`: ⋯ stays top-right, Save in the bottom bar. Guests moved from proposed to current.

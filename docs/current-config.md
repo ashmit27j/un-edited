@@ -108,7 +108,8 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
 | Grouping upgrade | Small open-source model on own server (cross-language), only if v1 testing falls short. No hosted AI APIs. | proposed |
 | Refresh | Fetch every 30 min with conditional requests. Home = Morning Edition built 06:00 IST, fixed for the day. Feed = live, with a "12 new stories" pill. Delete stored articles after 30 days unless saved. | proposed |
 | Research | Papers & Reports as a Home block + Research category in Feed. Labels: Peer-reviewed / Preprint / Official report. Linked only when the article links them. | proposed |
-| Stack | One Expo codebase (Android APK + web PWA), Supabase (DB + auth), scheduled fetch job (Supabase cron or GitHub Actions), Cloudflare Pages. | proposed |
+| Stack: app | **Expo, one repository, one codebase.** It builds the Android APK and the web PWA. iPhone has no native build: readers install the website to the Home Screen from Safari. | current (confirmed 2026-10-09) |
+| Stack: backend and hosting | Supabase (DB + auth), scheduled fetch job (Supabase cron or GitHub Actions), Cloudflare Pages for the web build. | proposed |
 | Sign-in | Google + email. No Sign in with Apple. | proposed |
 | Notifications (delivery) | Web Push (browsers and installed PWA) and the Android app. Edition notification built from the 06:00 IST edition. Topic and source alerts are opt-in and reader-picked, never chosen by an algorithm. | proposed |
 | Android | Register as a verified developer early. | proposed |
@@ -119,7 +120,9 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
 - Expo app started 2026-10-06 (Expo SDK 57, Expo Router, Supabase). Done: login-based routing at `/` and the web landing page.
   - `/`: signed in or guest → `/feed`; signed out on web → landing; signed out in app → `/welcome`.
   - Landing is pre-rendered in the HTML for search engines; a head script sends returning readers to `/feed`.
-- That code (`uneditd-app.zip`) is **not in this folder** and still uses the old name, fonts and landing layout. It was built ahead of the design.
+- **2026-10-09: fresh Expo app started at the repo root** (SDK 57, Expo Router, routes in `src/app/`), alongside `docs/` and `design/`. It is the default template with the name, slug, scheme and splash/icon colours changed to Un:edited; the template's example screens are still in place. `npm install`, `expo-doctor` (21/21) and a web export all pass. Not yet done: fonts, Paper/Ink tokens, the four tabs, Supabase, the landing page, and the old routing logic.
+- Backend: Supabase confirmed for DB and auth (2026-10-09).
+- The older code (`uneditd-app.zip`) is **not in this folder** and still uses the old name, fonts and landing layout. It was built ahead of the design.
 
 ## 7. Where the history disagrees
 
@@ -142,5 +145,5 @@ These came up because older planning notes and later design passes say different
 - Fill landing placeholders: funding, contact email, store links.
 - Web onboarding and a web tour.
 - Handles and domain.
-- Bring the Expo code up to date with the current design (name, motto, fonts, patterns).
+- Bring the Expo code up to date with the current design (name, motto, fonts, patterns). Expo as the stack is settled (2026-10-09); where the code lives and whether to reuse `uneditd-app.zip` is not.
 - `Article-ptmb.dc.html` is Ashmit's experiment ("Article by" byline; its layout now matches Article). Decide whether to merge it into Article or drop it.
