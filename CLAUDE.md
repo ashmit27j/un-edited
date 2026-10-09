@@ -23,7 +23,7 @@ The project has had five design passes on a claude.ai design canvas and an early
 | `design/screens/canvas.json` | Board titles, sizes and positions on the original canvas. |
 | `design/screens/index.html` | Gallery of every board. |
 | `design/screens/support.js` | The runtime that renders `.dc.html` files. Don't edit. |
-| `design/screens/assets/` | Stamp and cursor SVGs (see the README there — they may need adding). |
+| `design/screens/assets/` | The 16 stamp and cursor SVGs (added 2026-10-09). Copies for the app live in `assets/stamps/` and `assets/cursors/`. |
 | `design/README.md` | How the screen files work and how to preview/edit them. |
 
 ## Previewing screens

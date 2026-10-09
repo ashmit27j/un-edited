@@ -20,6 +20,6 @@ uneditd-handoff/
 
 **Preview the screens:** `cd design/screens && python3 -m http.server 8000`, then open `http://localhost:8000/index.html`.
 
-**Missing:** stamp and cursor SVGs (see `design/screens/assets/README.md`) and the Expo app code (`uneditd-app.zip`).
+**Stamps and cursors:** the 16 SVGs are in `design/screens/assets/`. **App:** a fresh Expo app now lives at the repo root (`src/`, `app.json`); it does not use the old `uneditd-app.zip`.
 
 Original canvas: https://claude.ai/artifact/KBgcFxZShLJtR21cxHsr67

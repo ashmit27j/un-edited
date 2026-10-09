@@ -1,65 +1,65 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Design tokens. Source of truth: docs/current-config.md §3.
+ * Paper = light, Ink = dark (low contrast).
  */
 
-import '@/global.css';
-
-import { Platform } from 'react-native';
-
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
+export const Palettes = {
+  paper: {
+    bg: '#F1EBE0',
+    surface: '#F8F3EA',
+    ink: '#1C1A17',
+    muted: '#6B645A',
+    rule: '#DDD4C4',
+    accent: '#A8372A',
+    accentSoft: '#EBD5CC',
+    photo: '#DCD2C1',
   },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+  ink: {
+    bg: '#1E1C19',
+    surface: '#262320',
+    ink: '#C9C0B0',
+    muted: '#8E8678',
+    rule: '#38332D',
+    accent: '#C8705F',
+    accentSoft: '#3A2924',
+    photo: '#2D2924',
   },
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export type ThemeName = keyof typeof Palettes;
+export type Colors = { [K in keyof typeof Palettes.paper]: string };
+export type ThemePreference = 'system' | ThemeName;
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
+/**
+ * Font family names as registered by useFonts in the root layout.
+ * Weights are 400 and 500 only (700 for the wordmark). Custom fonts get one
+ * family per weight, so never pair these with fontWeight.
+ */
+export const Fonts = {
+  serif: 'Baskervville_400Regular',
+  serifMedium: 'Baskervville_500Medium',
+  wordmark: 'Baskervville_700Bold',
+  sans: 'Inter_400Regular',
+  sansMedium: 'Inter_500Medium',
+  mono: 'JetBrainsMono_400Regular',
+  monoMedium: 'JetBrainsMono_500Medium',
+  hindi: 'TiroDevanagariHindi_400Regular',
+  marathi: 'TiroDevanagariMarathi_400Regular',
+  devanagariSans: 'Mukta_400Regular',
+  devanagariSansMedium: 'Mukta_500Medium',
+} as const;
 
 export const Spacing = {
   half: 2,
   one: 4,
   two: 8,
   three: 16,
-  four: 24,
+  four: 24, // phone margin
   five: 32,
   six: 64,
 } as const;
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+export const TouchTarget = 44;
+export const MaxContentWidth = 1200;
+/** Web switches from a bottom tab bar to a top nav at this width. */
+export const WideBreakpoint = 768;
