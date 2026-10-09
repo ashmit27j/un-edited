@@ -3,11 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { BackHeader, Chip, Screen, SectionHeader, SettingRow } from '@/components/ui';
-import { REGIONS, SOURCES, TOPICS } from '@/data/sample';
+import { REGIONS, TOPICS } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 
 /** You › Your news: the topics and outlets that build the front page. */
 export default function Manage() {
+  const { sources: SOURCES } = useNews();
   const toast = useToast();
   const { prefs, setPrefs } = useReader();
 

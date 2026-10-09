@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { Linking, Platform } from 'react-native';
 
 import { useToast } from '@/components/toast';
-import { SOURCES } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { permissionState, requestPermission, scheduleEdition, type Permission } from '@/lib/notifications';
+import { pushToken } from '@/lib/push';
+import { supabase } from '@/lib/supabase';
 import { useSession } from '@/session/session-provider';
 import { useReader, type NotifyPrefs } from '@/store/reader-provider';
 
@@ -31,6 +33,7 @@ export const DAYS: { short: string; full: string }[] = [
  * the web You page. "Allow notifications" asks the phone or browser once; if it's blocked there, the screen says so.
  */
 export function useNotificationSettings() {
+  const { sources: SOURCES } = useNews();
   const { prefs, setPrefs } = useReader();
   const { status } = useSession();
   const toast = useToast();
@@ -80,14 +83,37 @@ export function useNotificationSettings() {
   };
 }
 
-/** Keeps the phone's scheduled edition reminder in step with the settings (no-op on web). */
+/**
+ * Keeps delivery in step with You › Notifications. With a push token (Web Push, or Expo on Android builds with
+ * an EAS project) the settings are sent to the server (register-push), which sends everything. Without one,
+ * Android schedules the edition reminder on the phone; the web can't notify without push.
+ */
 export function useEditionSchedule() {
-  const { prefs, ready } = useReader();
+  const { prefs, ready, firstSeen } = useReader();
+  const { status } = useSession();
   const n = prefs.notify;
+  const key = JSON.stringify([n, prefs.sources, prefs.appLanguage, status]);
   useEffect(() => {
-    if (!ready || Platform.OS === 'web') return;
-    scheduleEdition(n).catch(() => {});
-    // Only the fields that change the schedule.
+    if (!ready) return;
+    let cancelled = false;
+    (async () => {
+      // Also when notifications are off, so the server stops sending (the token is only there once allowed).
+      const token = await pushToken().catch(() => null);
+      if (cancelled) return;
+      if (token && supabase) {
+        await supabase.functions
+          .invoke('register-push', {
+            body: { ...token, notify: n, sources: prefs.sources, lang: prefs.appLanguage, first_seen: firstSeen },
+          })
+          .catch(() => {});
+        // The server delivers; don't double up with a local reminder.
+        if (Platform.OS !== 'web') await scheduleEdition({ ...n, all: false }).catch(() => {});
+      } else if (Platform.OS !== 'web') await scheduleEdition(n).catch(() => {});
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // `key` covers every input that changes what is delivered.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, n.all, n.edition, n.time, n.days.join(), n.quiet, n.sound]);
+  }, [ready, key]);
 }

@@ -9,7 +9,8 @@ import { useToast } from '@/components/toast';
 import { Photo } from '@/components/ui';
 import { Wordmark } from '@/components/wordmark';
 import { Fonts, MaxContentWidth } from '@/constants/theme';
-import { REGIONS, SOURCES, TOPICS, type LanguageCode } from '@/data/sample';
+import { REGIONS, TOPICS, type LanguageCode } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
@@ -30,6 +31,7 @@ const LANG_NAME: Record<LanguageCode, string> = { en: 'English', hi: 'हिं�
  * Same choices as the phone flow, saved to the reader store as they are made.
  */
 export function WideOnboarding() {
+  const { sources: SOURCES } = useNews();
   const { colors, name, preference, setPreference } = useTheme();
   const router = useRouter();
   const toast = useToast();

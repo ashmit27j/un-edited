@@ -11,6 +11,7 @@ import { useToast } from '@/components/toast';
 import { TwoColumn, WidePage, WideSectionTitle } from '@/components/wide/page';
 import { Fonts } from '@/constants/theme';
 import type { LanguageCode } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useT } from '@/lib/i18n';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
@@ -56,6 +57,7 @@ export function WideYou({ onClearDownloads }: { onClearDownloads: () => void }) 
   const [signingOut, setSigningOut] = useState(false);
   const a11y = useAccessibilitySections();
   const notify = useNotificationSettings();
+  const { live } = useNews();
   const t = useT();
 
   const signedIn = status === 'signedIn';
@@ -401,7 +403,7 @@ export function WideYou({ onClearDownloads }: { onClearDownloads: () => void }) 
                 router.replace('/onboarding');
               }}
             />
-            <LinkRow label="Sample data" desc="Stories come from made-up outlets. Live feeds are not connected yet." />
+            {live ? null : <LinkRow label="Sample data" desc="Stories come from made-up outlets. Live feeds are not connected yet." />}
           </Section>
 
           <View style={styles.footer}>

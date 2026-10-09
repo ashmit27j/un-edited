@@ -21,6 +21,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useEditionSchedule } from '@/components/notification-settings';
 import { ToastProvider } from '@/components/toast';
+import { useAccountSync } from '@/session/account-sync';
+import { NewsProvider } from '@/data/news';
 import { TourProvider } from '@/tour/tour';
 import { useWebScrollMemory } from '@/hooks/use-web-scroll-memory';
 import { SessionProvider } from '@/session/session-provider';
@@ -33,6 +35,7 @@ function Shell() {
   const { name, colors } = useTheme();
   useWebScrollMemory();
   useEditionSchedule();
+  useAccountSync();
   return (
     <>
       <StatusBar style={name === 'ink' ? 'light' : 'dark'} />
@@ -75,11 +78,13 @@ export default function RootLayout() {
       {/* Reader settings come first: the theme reads its accessibility colour options. */}
       <ReaderProvider>
         <ThemeProvider>
+          <NewsProvider>
           <SessionProvider>
             <ToastProvider>
               <Shell />
             </ToastProvider>
           </SessionProvider>
+          </NewsProvider>
         </ThemeProvider>
       </ReaderProvider>
     </SafeAreaProvider>

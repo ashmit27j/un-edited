@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import type { ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BackIcon, ChevronIcon } from '@/components/icons';
@@ -177,7 +177,18 @@ export function Chip({
 }
 
 /** Photo placeholder with a mono credit line. Real images arrive with the live feeds. */
-export function Photo({ credit, height = 200, style }: { credit?: string; height?: number; style?: StyleProp<ViewStyle> }) {
+export function Photo({
+  credit,
+  height = 200,
+  style,
+  uri,
+}: {
+  credit?: string;
+  height?: number;
+  style?: StyleProp<ViewStyle>;
+  /** The publisher's photo (live stories). Without it, the grey placeholder. */
+  uri?: string;
+}) {
   const { colors } = useTheme();
   // "Read image credits aloud" (You › Accessibility): screen readers hear the publisher's credit line.
   const { prefs } = useReader();
@@ -187,8 +198,9 @@ export function Photo({ credit, height = 200, style }: { credit?: string; height
       accessibilityRole="image"
       accessibilityLabel={credit && prefs.readCredits ? `Photo. ${credit}` : 'Photo'}
       style={[styles.photo, { height, backgroundColor: colors.photo }, style]}>
+      {uri ? <Image source={{ uri }} style={StyleSheet.absoluteFill} resizeMode="cover" accessibilityIgnoresInvertColors /> : null}
       {credit ? (
-        <Text variant="label" color="muted" style={styles.credit} numberOfLines={1}>
+        <Text variant="label" color="muted" style={[styles.credit, uri && { backgroundColor: colors.bg, alignSelf: 'flex-start', paddingVertical: 4 }]} numberOfLines={1}>
           {credit}
         </Text>
       ) : null}

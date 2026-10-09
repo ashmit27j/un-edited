@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text as RNText, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text as RNText, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CloseIcon } from '@/components/icons';
@@ -23,7 +23,9 @@ export default function ImageView() {
       <Pressable accessibilityRole="button" accessibilityLabel="Close image" onPress={close} style={[styles.close, { top: insets.top + 12 }]}>
         <CloseIcon size={22} color="#D6CEC0" />
       </Pressable>
-      <View accessible accessibilityRole="image" accessibilityLabel={story ? `Photo. ${story.credit}` : 'Photo'} style={styles.photo} />
+      <View accessible accessibilityRole="image" accessibilityLabel={story ? `Photo. ${story.credit}` : 'Photo'} style={styles.photo}>
+        {story?.imageUrl ? <Image source={{ uri: story.imageUrl }} style={StyleSheet.absoluteFill} resizeMode="contain" /> : null}
+      </View>
       {story ? (
         <View style={[styles.caption, { paddingBottom: insets.bottom + 34 }]}>
           <Text variant="label" style={{ color: '#C8705F' }}>

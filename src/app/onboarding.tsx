@@ -11,7 +11,8 @@ import { WideOnboarding } from '@/components/wide/onboarding';
 import { Wordmark } from '@/components/wordmark';
 import { useLayout } from '@/hooks/use-layout';
 import { Fonts } from '@/constants/theme';
-import { REGIONS, SOURCES, TOPICS, type LanguageCode } from '@/data/sample';
+import { REGIONS, TOPICS, type LanguageCode } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useReducedMotion } from '@/components/stamp';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
@@ -30,6 +31,7 @@ export default function Onboarding() {
 }
 
 function PhoneOnboarding() {
+  const { sources: SOURCES } = useNews();
   const { colors, preference, setPreference } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();

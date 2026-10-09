@@ -10,6 +10,7 @@ import { useLayout } from '@/hooks/use-layout';
 import { useReader } from '@/store/reader-provider';
 import { coverage, useStories } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
+import { useNews } from '@/data/news';
 import { useT } from '@/lib/i18n';
 
 const TODAY = 'Today';
@@ -28,6 +29,7 @@ export function WideFeed() {
   const [older, setOlder] = useState(false);
   // 768–1023px: one column, so sections become a row of tabs above the stories.
   const compact = useLayout() === 'web';
+  const { live } = useNews();
   const t = useT();
 
   const base = mode === 'mine' ? mine : outside;
@@ -173,9 +175,11 @@ export function WideFeed() {
                 </Text>
               </Pressable>
             </View>
-            <Text variant="meta" color="muted" style={{ marginTop: 12 }}>
-              Sample stories from made-up outlets. Live feeds are not connected yet.
-            </Text>
+            {live ? null : (
+              <Text variant="meta" color="muted" style={{ marginTop: 12 }}>
+                Sample stories from made-up outlets. Live feeds are not connected yet.
+              </Text>
+            )}
           </View>
         </View>
       </TwoColumn>
@@ -195,7 +199,7 @@ function WideStory({ story, sources }: { story: Story; sources: number }) {
   return (
     <View style={[styles.story, { borderBottomColor: colors.rule }]}>
       <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel={`Open story: ${story.headline}`} onPress={() => open(story.id)}>
-        <Photo credit={story.credit} height={320} />
+        <Photo uri={story.imageUrl} credit={story.credit} height={320} />
       </Pressable>
       <Text variant="label" color="accent">
         {kicker}

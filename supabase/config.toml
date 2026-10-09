@@ -1,0 +1,13 @@
+# Supabase project settings for the functions in this folder (the rest lives in the dashboard).
+# The functions check credentials themselves: fetch-news and send-notifications need CRON_SECRET
+# (sent by pg_cron from the Vault), register-push reads the reader's session token if there is one.
+project_id = "unedited"
+
+[functions.fetch-news]
+verify_jwt = false
+
+[functions.send-notifications]
+verify_jwt = false
+
+[functions.register-push]
+verify_jwt = false

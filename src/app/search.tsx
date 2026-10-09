@@ -8,7 +8,8 @@ import { Text } from '@/components/text';
 import { BackHeader, Chip, Rule, Screen, Segmented, SectionHeader } from '@/components/ui';
 import { WideSearch } from '@/components/wide/search';
 import { Fonts, TouchTarget } from '@/constants/theme';
-import { PAPERS, SOURCES, STORIES, TOPICS } from '@/data/sample';
+import { TOPICS } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useLayout } from '@/hooks/use-layout';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
@@ -17,6 +18,7 @@ import { useT } from '@/lib/i18n';
 const norm = (s: string) => s.toLowerCase();
 
 export default function Search() {
+  const { stories: STORIES, sources: SOURCES, papers: PAPERS } = useNews();
   const { colors } = useTheme();
   const params = useLocalSearchParams<{ q?: string }>();
   const { prefs, searches, addSearch, clearSearches, hidden } = useReader();
@@ -33,7 +35,7 @@ export default function Search() {
       .filter((s) => scope === 'all' || prefs.sources.includes(s.sourceId))
       .filter((s) => norm(`${s.headline} ${s.topic} ${s.body.join(' ')}`).includes(q))
       .sort((a, b) => a.minsAgo - b.minsAgo);
-  }, [q, scope, prefs.sources, hidden]);
+  }, [q, scope, prefs.sources, hidden, STORIES]);
   const papers = q ? PAPERS.filter((p) => norm(`${p.title} ${p.label}`).includes(q) || 'paper'.includes(q) && q.length > 2) : [];
   const sources = q ? SOURCES.filter((s) => norm(s.name).includes(q)) : [];
 

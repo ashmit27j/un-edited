@@ -8,7 +8,8 @@ import { SaveButton, storyLink, useOpenStory } from '@/components/story';
 import { Text } from '@/components/text';
 import { WebNav } from '@/components/web-nav';
 import { Fonts } from '@/constants/theme';
-import { PAPERS, SOURCES, STORIES, TOPICS, ago, sourceById, type Story } from '@/data/sample';
+import { TOPICS, ago, sourceById, type Story } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
@@ -18,6 +19,7 @@ const norm = (s: string) => s.toLowerCase();
 
 /** Search on web at 768px and wider (WebSearch): one 760px column under the web nav. */
 export function WideSearch({ initial }: { initial: string }) {
+  const { stories: STORIES, sources: SOURCES, papers: PAPERS } = useNews();
   const { colors, name } = useTheme();
   const router = useRouter();
   const open = useOpenStory();

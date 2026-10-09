@@ -13,7 +13,8 @@ import { Wordmark } from '@/components/wordmark';
 import { useLayout } from '@/hooks/use-layout';
 import { useTour, useTourTarget } from '@/tour/tour';
 import { WideBreakpoint } from '@/constants/theme';
-import { PAPERS, editionNumber, sourceById } from '@/data/sample';
+import { editionNumber, sourceById } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 import { coverage, onePerEvent, useStories } from '@/store/selectors';
@@ -24,6 +25,7 @@ const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default function Home() {
+  const { papers: PAPERS, live } = useNews();
   const { colors } = useTheme();
   const router = useRouter();
   const { width } = useWindowDimensions();
@@ -143,7 +145,7 @@ export default function Home() {
               accessibilityLabel={lead.headline}
               onPress={() => open(lead.id)}
               style={{ gap: 10, paddingTop: 20 }}>
-              {comfortable ? <Photo credit={lead.credit} height={wide ? 340 : 210} /> : null}
+              {comfortable ? <Photo uri={lead.imageUrl} credit={lead.credit} height={wide ? 340 : 210} /> : null}
               <Text variant="label" color="accent">
                 {lead.topic} ·{' '}
                 {coverage(lead, mine) > 1 ? `${coverage(lead, mine)} of your sources` : sourceById(lead.sourceId).name}
@@ -252,9 +254,11 @@ export default function Home() {
         <Text variant="meta" color="muted">
           Next edition · 6:00 AM tomorrow
         </Text>
-        <Text variant="meta" color="muted" style={{ marginTop: 12, textAlign: 'center', paddingHorizontal: gutter }}>
-          Sample stories from made-up outlets. Live feeds are not connected yet.
-        </Text>
+        {live ? null : (
+          <Text variant="meta" color="muted" style={{ marginTop: 12, textAlign: 'center', paddingHorizontal: gutter }}>
+            Sample stories from made-up outlets. Live feeds are not connected yet.
+          </Text>
+        )}
       </View>
     </Screen>
   );

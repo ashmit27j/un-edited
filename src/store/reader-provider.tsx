@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Platform } from 'react-native';
 
-import { SOURCES, type LanguageCode } from '@/data/sample';
+import { newsData, type LanguageCode } from '@/data/sample';
 
 const STORAGE_KEY = 'unedited.reader.v1';
 export const DEFAULT_FOLDER = 'Saved';
@@ -175,7 +175,12 @@ type ReaderValue = Data & {
   clearSearches: () => void;
   removeSearch: (q: string) => void;
   resetAll: () => void;
+  /** Account sync: replace what the account keeps (settings, folders, folder downloads, first edition). */
+  importSynced: (synced: Synced) => void;
 };
+
+/** What follows a signed-in reader between devices. Downloads stay on each device. */
+export type Synced = { prefs: Prefs; folders: Record<string, string[]>; downloadedFolders: string[]; firstSeen: number | null };
 
 const ReaderContext = createContext<ReaderValue | null>(null);
 
@@ -242,7 +247,12 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
         firstSeen: d.firstSeen ?? Date.now(),
         prefs: {
           ...d.prefs,
-          sources: d.prefs.sources.length ? d.prefs.sources : SOURCES.slice(0, 3).map((s) => s.id),
+          sources: d.prefs.sources.length
+            ? d.prefs.sources
+            : newsData()
+                .sources.filter((s) => !s.journal && d.prefs.sourceLanguages.includes(s.lang))
+                .slice(0, 3)
+                .map((s) => s.id),
           topics: d.prefs.topics.length ? d.prefs.topics : ['India', 'Cities', 'Technology'],
         },
       })),
@@ -319,6 +329,19 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
     [data.downloadedFolders, update],
   );
 
+  const importSynced = useCallback(
+    (synced: Synced) =>
+      update((d) => ({
+        ...d,
+        prefs: merge({ version: DEFAULT_DATA.version, prefs: synced.prefs }).prefs,
+        folders: { [DEFAULT_FOLDER]: [], ...synced.folders },
+        downloadedFolders: synced.downloadedFolders,
+        firstSeen: synced.firstSeen ?? d.firstSeen,
+        onboarded: true,
+      })),
+    [update],
+  );
+
   const clearDownloads = useCallback(() => update((d) => ({ ...d, downloaded: [], downloadedFolders: [] })), [update]);
 
   const markViewed = useCallback(
@@ -369,10 +392,11 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
       clearSearches,
       removeSearch,
       resetAll,
+      importSynced,
     }),
     [
       data, ready, setPrefs, finishOnboarding, isSaved, folderOf, toggleSaved, moveToFolder, createFolder,
-      toggleDownload, toggleFolderDownload, clearDownloads, markViewed, hide, addSearch, clearSearches, removeSearch, resetAll,
+      toggleDownload, toggleFolderDownload, clearDownloads, markViewed, hide, addSearch, clearSearches, removeSearch, resetAll, importSynced,
     ],
   );
 

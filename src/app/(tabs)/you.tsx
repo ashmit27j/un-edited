@@ -10,7 +10,8 @@ import { useToast } from '@/components/toast';
 import { Screen, SettingRow } from '@/components/ui';
 import { WideYou } from '@/components/wide/you';
 import { Fonts } from '@/constants/theme';
-import { SOURCES, type LanguageCode } from '@/data/sample';
+import { type LanguageCode } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useTarget } from '@/hooks/use-a11y';
 import { useLayout } from '@/hooks/use-layout';
 import { useT } from '@/lib/i18n';
@@ -24,6 +25,7 @@ const FONT_NAMES = { match: 'Match Font', serif: 'Serif', sans: 'Sans' };
 
 /** You (You board): account, then rows that open each settings screen. Web 768px+ uses WideYou. */
 export default function You() {
+  const { sources: SOURCES, live } = useNews();
   const { colors, preference } = useTheme();
   const router = useRouter();
   const toast = useToast();
@@ -189,9 +191,11 @@ export default function You() {
       <Text variant="headline" color="muted" style={{ marginTop: 20, fontSize: 14, lineHeight: 20, fontStyle: 'italic', textAlign: 'center' }}>
         Un:edited 1.0 · No AI, no algorithm, no fee.
       </Text>
-      <Text variant="meta" color="muted" style={{ marginTop: 4, textAlign: 'center' }}>
-        Sample stories from made-up outlets. Live feeds are not connected yet.
-      </Text>
+      {live ? null : (
+        <Text variant="meta" color="muted" style={{ marginTop: 4, textAlign: 'center' }}>
+          Sample stories from made-up outlets. Live feeds are not connected yet.
+        </Text>
+      )}
 
       <SignOutPrompt visible={signingOut} onClose={() => setSigningOut(false)} />
     </Screen>

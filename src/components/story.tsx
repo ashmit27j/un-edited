@@ -332,7 +332,7 @@ export function StoryRow({ story, thumb, number }: { story: Story; thumb?: boole
             {story.headline}
           </Text>
         </View>
-        {thumb ? <Photo height={64} style={{ width: 84 }} /> : null}
+        {thumb ? <Photo uri={story.imageUrl} height={64} style={{ width: 84 }} /> : null}
       </Pressable>
       <Byline story={story} />
     </View>

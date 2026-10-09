@@ -8,7 +8,8 @@ import { ChevronIcon } from '@/components/icons';
 import { Text } from '@/components/text';
 import { Photo } from '@/components/ui';
 import { WidePage } from '@/components/wide/page';
-import { PAPERS, ago, sourceById, type Story } from '@/data/sample';
+import { useNews } from '@/data/news';
+import { ago, sourceById, type Story } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { coverage } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
@@ -41,6 +42,7 @@ export function WideHome({
   const open = useOpenStory();
   const { prefs } = useReader();
   const comfortable = prefs.homeView === 'comfortable';
+  const { papers: PAPERS, live } = useNews();
   const t = useT();
 
   return (
@@ -67,7 +69,7 @@ export function WideHome({
           <View style={styles.lead}>
             {comfortable ? (
               <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel="Open lead story" onPress={() => open(lead.id)}>
-                <Photo credit={lead.credit} height={380} />
+                <Photo uri={lead.imageUrl} credit={lead.credit} height={380} />
               </Pressable>
             ) : null}
             <Text variant="label" color="accent">
@@ -136,7 +138,7 @@ export function WideHome({
                 </Text>
                 <More onPress={() => router.push({ pathname: '/search', params: { q: tp.name } })} />
               </View>
-              {comfortable ? <Photo height={150} style={{ marginTop: 6, marginBottom: 4 }} /> : null}
+              {comfortable ? <Photo uri={tp.items.find((s) => s.imageUrl)?.imageUrl} height={150} style={{ marginTop: 6, marginBottom: 4 }} /> : null}
               {tp.items.map((s) => (
                 <SmallStory key={s.id} story={s} size={18} />
               ))}
@@ -219,9 +221,11 @@ export function WideHome({
         <Text variant="label" color="muted">
           No AI · No algorithm · No fee
         </Text>
-        <Text variant="meta" color="muted" style={{ marginTop: 8 }}>
-          Sample stories from made-up outlets. Live feeds are not connected yet.
-        </Text>
+        {live ? null : (
+          <Text variant="meta" color="muted" style={{ marginTop: 8 }}>
+            Sample stories from made-up outlets. Live feeds are not connected yet.
+          </Text>
+        )}
       </View>
     </WidePage>
   );

@@ -1,6 +1,7 @@
 /**
- * Sample content. Every outlet here is fictional (brand rule). Live feeds are not connected yet,
- * so Home, Feed, Search and Article read from this file. Replace with the Supabase tables later.
+ * Sample content: every outlet here is fictional (brand rule). It is what the app shows when the live news
+ * (src/data/news.tsx, from Supabase) isn't available. The lookups below (sourceById, storyById, groupOf) read
+ * whichever is current, live or sample.
  */
 
 export type LanguageCode = 'en' | 'hi' | 'mr';
@@ -14,6 +15,9 @@ export type Source = {
   owner: string;
   funding: string;
   journal?: boolean;
+  /** Live outlets: the outlet's site, and the label for Papers & Reports sources. */
+  siteUrl?: string;
+  paperLabel?: Paper['label'];
 };
 
 export const SOURCES: Source[] = [
@@ -50,6 +54,7 @@ export const REGIONS: { name: string; kind: string }[] = [
 export type Story = {
   id: string;
   sourceId: string;
+  /** One of TOPICS (live stories are filed by keyword rules on the server). */
   topic: Topic;
   /** Stories about the same event share a group. */
   group?: string;
@@ -61,6 +66,9 @@ export type Story = {
   minsAgo: number;
   credit: string;
   lang?: LanguageCode;
+  /** Live stories: the publisher's page and photo. */
+  url?: string;
+  imageUrl?: string;
 };
 
 export type Paper = {
@@ -251,10 +259,30 @@ export const PAPERS: Paper[] = [
   },
 ];
 
-export const sourceById = (id: string): Source => SOURCES.find((s) => s.id === id) ?? SOURCES[0];
-export const storyById = (id: string): Story | undefined => STORIES.find((s) => s.id === id);
+export type NewsData = {
+  sources: Source[];
+  stories: Story[];
+  papers: Paper[];
+  live: boolean;
+  /** Saved or recently viewed stories older than the live window: found by id, never listed on Home or Feed. */
+  archive?: Story[];
+};
+
+const SAMPLE: NewsData = { sources: SOURCES, stories: STORIES, papers: PAPERS, live: false };
+let current: NewsData = SAMPLE;
+
+/** Set by NewsProvider when live news loads (or null to go back to the sample). */
+export function setNewsData(data: NewsData | null) {
+  current = data ?? SAMPLE;
+}
+export const newsData = () => current;
+
+const UNKNOWN: Source = { id: 'unknown', name: 'Unknown outlet', lang: 'en', kind: '', place: '', owner: 'Not yet listed', funding: 'Not yet listed' };
+export const sourceById = (id: string): Source => current.sources.find((s) => s.id === id) ?? SOURCES.find((s) => s.id === id) ?? UNKNOWN;
+export const storyById = (id: string): Story | undefined =>
+  current.stories.find((s) => s.id === id) ?? current.archive?.find((s) => s.id === id) ?? STORIES.find((s) => s.id === id);
 export const groupOf = (story: Story): Story[] =>
-  story.group ? STORIES.filter((s) => s.group === story.group) : [story];
+  story.group ? current.stories.filter((s) => s.group === story.group) : [story];
 
 export function ago(mins: number): string {
   if (mins < 60) return `${Math.max(1, mins)}m`;

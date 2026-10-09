@@ -7,6 +7,7 @@ import { Button } from '@/components/button';
 import { BackIcon, ChevronIcon } from '@/components/icons';
 import { ReadingBody } from '@/components/reading-line';
 import { Stamp } from '@/components/stamp';
+import { openOriginal as openUrl } from '@/lib/open-original';
 import { MoreButton, SaveButton, SITE_URL, useOpenStory } from '@/components/story';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
@@ -14,12 +15,14 @@ import { Photo, Rule, Screen, useGutter } from '@/components/ui';
 import { WideArticle } from '@/components/wide/article';
 import { useLayout } from '@/hooks/use-layout';
 import { WideBreakpoint } from '@/constants/theme';
-import { PRIMARY_SOURCE, STORIES, ago, groupOf, sourceById, storyById } from '@/data/sample';
+import { PRIMARY_SOURCE, ago, groupOf, sourceById, storyById } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
 
 export default function Article() {
+  const { stories: STORIES } = useNews();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
   const router = useRouter();
@@ -60,7 +63,8 @@ export default function Article() {
   const hasPrimary = story.group === 'water';
 
   const openOriginal = () => {
-    toast.show('This is a sample story, so there is no original to open.');
+    if (story.url) openUrl(story.url);
+    else toast.show('This is a sample story, so there is no original to open.');
   };
 
   return (
@@ -72,7 +76,7 @@ export default function Article() {
             accessibilityRole="imagebutton"
             accessibilityLabel="View image full screen"
             onPress={() => router.push({ pathname: '/image/[id]', params: { id: story.id } })}>
-            <Photo credit={story.credit} height={wide ? 300 : 240} />
+            <Photo uri={story.imageUrl} credit={story.credit} height={wide ? 300 : 240} />
           </Pressable>
           <View style={[styles.imageBar, { top: insets.top + 8, paddingHorizontal: 8 }]}>
             <Pressable

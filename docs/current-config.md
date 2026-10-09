@@ -105,15 +105,16 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
 
 | Topic | Setting | Status |
 |---|---|---|
+| Sources | Starting list of 24 real outlets with verified RSS (`supabase/migrations/*_sources.sql`); fallbacks NewsData.io → NewsAPI.org → GNews. Owners/funding partly "Not yet listed". | proposed (needs review) |
 | Story grouping v1 | No AI: Postgres full-text similarity on headline + excerpt; match needs ≥ 2 shared strong words (names, places, numbers); 36-hour window; alias list; same language only; lean towards not merging. | proposed |
 | Grouping upgrade | Small open-source model on own server (cross-language), only if v1 testing falls short. No hosted AI APIs. | proposed |
 | Refresh | Fetch every 30 min with conditional requests. Home = Morning Edition built 06:00 IST, fixed for the day. Feed = live, with a "12 new stories" pill. Delete stored articles after 30 days unless saved. | proposed |
 | Research | Papers & Reports as a Home block + Research category in Feed. Labels: Peer-reviewed / Preprint / Official report. Linked only when the article links them. | proposed |
 | Stack: app | **Expo, one repository, one codebase.** It builds the Android APK and the web PWA. iPhone has no native build: readers install the website to the Home Screen from Safari. | current (confirmed 2026-10-09) |
-| Stack: backend and hosting | Supabase (DB + auth), scheduled fetch job (Supabase cron or GitHub Actions), Cloudflare Pages for the web build. | proposed |
+| Stack: backend and hosting | Supabase (DB, auth, Edge Functions, pg_cron every 30 min); web on Vercel. Code in `supabase/`; setup steps in `docs/backend-setup.md`. | current (code written 2026-10-09; not deployed until `supabase login`) |
 | Sign-in | Google + email. No Sign in with Apple. | proposed |
 | Notifications (delivery) | Web Push (browsers and installed PWA) and the Android app. Edition notification built from the 06:00 IST edition. Topic and source alerts are opt-in and reader-picked, never chosen by an algorithm. | proposed |
-| Android | Register as a verified developer early. | proposed |
+| Android | Package `app.unedited`. EAS `preview` profile builds an APK. Register as a verified developer early. | current (package) |
 | iPhone install guide | One-time Safari screen after onboarding: Share → Add to Home Screen. | proposed |
 
 ## 6. Build status

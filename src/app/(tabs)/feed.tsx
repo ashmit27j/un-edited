@@ -14,6 +14,7 @@ import { sourceById, type Story } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { coverage, useStories } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
+import { useNews } from '@/data/news';
 import { useT } from '@/lib/i18n';
 
 const TODAY = 'Today';
@@ -34,6 +35,7 @@ export default function Feed() {
   const storyRef = useTourTarget('feedStory');
   const layout = useLayout();
   const online = useOnline();
+  const { live } = useNews();
   const t = useT();
 
   const categories = [TODAY, ...prefs.topics];
@@ -104,9 +106,11 @@ export default function Feed() {
           }}
         />
       </View>
-      <Text variant="meta" color="muted" style={{ marginTop: 16, textAlign: 'center' }}>
-        Sample stories from made-up outlets.
-      </Text>
+      {live ? null : (
+        <Text variant="meta" color="muted" style={{ marginTop: 16, textAlign: 'center' }}>
+          Sample stories from made-up outlets.
+        </Text>
+      )}
     </View>
   );
 
@@ -201,7 +205,7 @@ function FeedCard({
     <View style={{ flex: 1, paddingTop: 16 }}>
       <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel={story.headline} onPress={onOpen} style={{ flex: 1, gap: 10 }}>
         <View ref={tourRef} style={{ gap: 10 }}>
-          <Photo credit={story.credit} height={Math.min(260, (pageHeight ?? 600) * 0.34)} />
+          <Photo uri={story.imageUrl} credit={story.credit} height={Math.min(260, (pageHeight ?? 600) * 0.34)} />
           <Text variant="label" color="accent">
             {kicker}
           </Text>

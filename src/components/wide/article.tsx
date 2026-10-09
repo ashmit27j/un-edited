@@ -6,13 +6,15 @@ import Svg, { Path } from 'react-native-svg';
 import { BackIcon } from '@/components/icons';
 import { ReadingBody } from '@/components/reading-line';
 import { Stamp } from '@/components/stamp';
+import { openOriginal } from '@/lib/open-original';
 import { MoreButton, SaveButton, SITE_URL, storyLink, useOpenStory } from '@/components/story';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { Photo } from '@/components/ui';
 import { Wordmark } from '@/components/wordmark';
 import { MaxContentWidth } from '@/constants/theme';
-import { PRIMARY_SOURCE, STORIES, ago, groupOf, sourceById, type Story } from '@/data/sample';
+import { PRIMARY_SOURCE, ago, groupOf, sourceById, type Story } from '@/data/sample';
+import { useNews } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
@@ -23,6 +25,7 @@ const STAMP_MIN_WIDTH = 1080;
 
 /** Article on web at 768px and wider (WebArticle): web top bar, one 720px column, source tabs. */
 export function WideArticle({ story }: { story: Story }) {
+  const { stories: STORIES } = useNews();
   const { colors } = useTheme();
   const router = useRouter();
   const toast = useToast();
@@ -147,7 +150,7 @@ export function WideArticle({ story }: { story: Story }) {
             accessibilityRole="imagebutton"
             accessibilityLabel="View image full screen"
             onPress={() => router.push({ pathname: '/image/[id]', params: { id: story.id } })}>
-            <Photo height={400} />
+            <Photo uri={story.imageUrl} height={400} />
           </Pressable>
           <Text variant="label" color="muted" style={{ letterSpacing: 0.7 }}>
             {story.credit}
@@ -158,7 +161,7 @@ export function WideArticle({ story }: { story: Story }) {
 
         <Pressable
           accessibilityRole="link"
-          onPress={() => toast.show('This is a sample story, so there is no original to open.')}
+          onPress={() => (story.url ? openOriginal(story.url) : toast.show('This is a sample story, so there is no original to open.'))}
           style={[styles.continue, { borderColor: colors.ink }]}>
           <Text variant="ui" medium>
             {t('story.continueOn', { source: source.name })}
@@ -192,7 +195,7 @@ export function WideArticle({ story }: { story: Story }) {
             <View style={styles.related}>
               {related.map((s) => (
                 <Pressable key={s.id} {...storyLink} accessibilityRole="link" onPress={() => open(s.id)} style={styles.relatedItem}>
-                  <Photo height={120} />
+                  <Photo uri={s.imageUrl} height={120} />
                   <Text variant="headline" lang={s.lang !== 'en' ? s.lang : undefined} style={{ fontSize: 17, lineHeight: 22 }}>
                     {s.headline}
                   </Text>
