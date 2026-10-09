@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FeedIcon, HomeIcon, LibraryIcon, YouIcon, type IconProps } from '@/components/icons';
 import { Text } from '@/components/text';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Wordmark } from '@/components/wordmark';
 import { MaxContentWidth, TouchTarget, WideBreakpoint } from '@/constants/theme';
 import { useTheme } from '@/theme/theme-provider';
@@ -87,7 +88,14 @@ export default function TabsLayout() {
             <Wordmark size={28} />
           </View>
           {triggers}
+          <View style={styles.toggleSpace} />
         </TabList>
+      ) : null}
+      {wide ? (
+        // Outside TabList: expo-router/ui only expects triggers (and plain views) in there.
+        <View style={[styles.toggle, { right: topPadding }]}>
+          <ThemeToggle />
+        </View>
       ) : null}
 
       <View style={styles.slot}>
@@ -130,6 +138,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   wordmark: { marginRight: 'auto' },
+  toggleSpace: { width: 44 },
+  toggle: { position: 'absolute', top: 12 },
   topTab: {
     height: 66,
     justifyContent: 'center',

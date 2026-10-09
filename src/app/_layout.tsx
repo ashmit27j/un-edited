@@ -1,6 +1,9 @@
+import { AtkinsonHyperlegible_400Regular, AtkinsonHyperlegible_700Bold } from '@expo-google-fonts/atkinson-hyperlegible';
 import {
   Baskervville_400Regular,
+  Baskervville_400Regular_Italic,
   Baskervville_500Medium,
+  Baskervville_500Medium_Italic,
   Baskervville_700Bold,
 } from '@expo-google-fonts/baskervville';
 import { Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
@@ -36,8 +39,12 @@ function Shell() {
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     Baskervville_400Regular,
+    Baskervville_400Regular_Italic,
     Baskervville_500Medium,
+    Baskervville_500Medium_Italic,
     Baskervville_700Bold,
+    AtkinsonHyperlegible_400Regular,
+    AtkinsonHyperlegible_700Bold,
     Inter_400Regular,
     Inter_500Medium,
     JetBrainsMono_400Regular,

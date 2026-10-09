@@ -38,6 +38,8 @@ export type ThemePreference = 'system' | ThemeName;
 export const Fonts = {
   serif: 'Baskervville_400Regular',
   serifMedium: 'Baskervville_500Medium',
+  serifItalic: 'Baskervville_400Regular_Italic',
+  serifMediumItalic: 'Baskervville_500Medium_Italic',
   wordmark: 'Baskervville_700Bold',
   sans: 'Inter_400Regular',
   sansMedium: 'Inter_500Medium',
@@ -47,6 +49,9 @@ export const Fonts = {
   marathi: 'TiroDevanagariMarathi_400Regular',
   devanagariSans: 'Mukta_400Regular',
   devanagariSansMedium: 'Mukta_500Medium',
+  /** Dyslexia-friendly option (You › Accessibility; the setting itself is not built yet). */
+  dyslexic: 'AtkinsonHyperlegible_400Regular',
+  dyslexicBold: 'AtkinsonHyperlegible_700Bold',
 } as const;
 
 export const Spacing = {

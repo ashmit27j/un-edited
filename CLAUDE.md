@@ -24,7 +24,13 @@ The project has had five design passes on a claude.ai design canvas and an early
 | `design/screens/index.html` | Gallery of every board. |
 | `design/screens/support.js` | The runtime that renders `.dc.html` files. Don't edit. |
 | `design/screens/assets/` | The 16 stamp and cursor SVGs (added 2026-10-09). Copies for the app live in `assets/stamps/` and `assets/cursors/`. |
+| `design/motion/MOTION.md` | **Every animation, with exact delays, durations, easing and reduced-motion fallbacks.** Read it before building any animated screen. |
+| `design/motion/filmstrips/` | Frame-by-frame PNGs of each animation (numbered, timestamped). Look at these, since you can't play the animations. |
 | `design/README.md` | How the screen files work and how to preview/edit them. |
+
+## Animations
+
+You can't play the animations in the `.dc.html` files, and several run on JS timers. **Don't guess motion from the static markup.** Use `design/motion/MOTION.md` for timings and the matching image in `design/motion/filmstrips/` for what it looks like. If a screen animates and isn't covered there, say so and ask Ashmit; don't invent the motion. To capture new filmstrips, see `design/motion/tools/README.md`.
 
 ## Previewing screens
 

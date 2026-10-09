@@ -35,6 +35,13 @@ export function Text({ variant = 'body', color = 'ink', medium, lang, style, ...
   const reading = READING.includes(variant);
   if (reading && prefs.readFont === 'sans') family = medium ? Fonts.sansMedium : Fonts.sans;
 
+  // Custom fonts have one family per style: italic serif text needs the italic cut, not a slanted regular.
+  // fontStyle goes back to normal so web doesn't slant the italic cut a second time.
+  let italic: { fontFamily: string; fontStyle: 'normal' } | null = null;
+  if ((family === Fonts.serif || family === Fonts.serifMedium) && StyleSheet.flatten(style)?.fontStyle === 'italic') {
+    italic = { fontFamily: family === Fonts.serif ? Fonts.serifItalic : Fonts.serifMediumItalic, fontStyle: 'normal' };
+  }
+
   let spacing: { letterSpacing?: number; textTransform?: 'none' } | null = null;
   if (lang === 'hi' || lang === 'mr') {
     const sans = prefs.devanagariFont === 'match' ? prefs.readFont === 'sans' : prefs.devanagariFont === 'sans';
@@ -51,6 +58,7 @@ export function Text({ variant = 'body', color = 'ink', medium, lang, style, ...
         scale !== 1 ? { fontSize: Math.round(base.fontSize * scale * 10) / 10, lineHeight: Math.round(base.lineHeight * scale) } : null,
         spacing,
         style,
+        italic,
       ]}
       {...rest}
     />
