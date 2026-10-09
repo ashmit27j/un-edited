@@ -10,7 +10,7 @@ import { OfflineScreen, useOnline } from '@/components/states';
 import { WideFeed } from '@/components/wide/feed';
 import { useLayout } from '@/hooks/use-layout';
 import { useTourTarget } from '@/tour/tour';
-import { sourceById, type Story } from '@/data/sample';
+import { type Story } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { coverage, useStories } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
@@ -197,6 +197,7 @@ function FeedCard({
   /** The first story is the tour's "Swipe left or right" target: photo, kicker and headline. */
   tourRef?: RefObject<View | null>;
 }) {
+  const { sourceById } = useNews();
   const { colors } = useTheme();
   const lang = story.lang !== 'en' ? story.lang : undefined;
   const kicker = `${story.topic} · ${sources > 1 ? `${sources} of your sources` : sourceById(story.sourceId).name}`;

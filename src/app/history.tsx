@@ -3,9 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { StoryRow } from '@/components/story';
 import { Text } from '@/components/text';
 import { BackHeader, Screen } from '@/components/ui';
-import { storyById, type Story } from '@/data/sample';
+import { type Story } from '@/data/sample';
 import { HISTORY_LIMIT, useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
+import { useStoryList } from '@/data/news';
 
 const DAY = 86_400_000;
 
@@ -13,7 +14,7 @@ const DAY = 86_400_000;
 export default function History() {
   const { colors } = useTheme();
   const { recent, viewedAt } = useReader();
-  const stories = recent.map((id) => storyById(id)).filter((s): s is Story => !!s);
+  const stories = useStoryList(recent);
 
   const midnight = new Date();
   midnight.setHours(0, 0, 0, 0);

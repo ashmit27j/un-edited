@@ -11,11 +11,12 @@ import { Photo } from '@/components/ui';
 import { Fonts, TouchTarget } from '@/constants/theme';
 import { REASONS, sendReport, type ReportReason } from '@/lib/reports';
 import { useColourCues, useTarget } from '@/hooks/use-a11y';
-import { ago, sourceById, type Story } from '@/data/sample';
+import { ago, type Story } from '@/data/sample';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
+import { useNews } from '@/data/news';
 
 export const SITE_URL = 'https://unedited-six.vercel.app';
 
@@ -297,6 +298,7 @@ function ReportPanel({
 
 /** Source, time and the Save + ⋯ pair. */
 export function Byline({ story, showSource = true }: { story: Story; showSource?: boolean }) {
+  const { sourceById } = useNews();
   const source = sourceById(story.sourceId);
   return (
     <View style={styles.byline}>

@@ -9,7 +9,7 @@ import { Text } from '@/components/text';
 import { Photo } from '@/components/ui';
 import { WidePage } from '@/components/wide/page';
 import { useNews } from '@/data/news';
-import { ago, sourceById, type Story } from '@/data/sample';
+import { ago, type Story } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { coverage } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
@@ -37,12 +37,15 @@ export function WideHome({
   continueReading: Story[];
   outside: Story[];
 }) {
+  const { sourceById } = useNews();
   const { colors } = useTheme();
   const router = useRouter();
   const open = useOpenStory();
   const { prefs } = useReader();
   const comfortable = prefs.homeView === 'comfortable';
-  const { papers: PAPERS, live } = useNews();
+  const { papers: allPapers, live, sources: allSources } = useNews();
+  const PAPERS = allPapers.filter((p) => !p.lang || prefs.sourceLanguages.includes(p.lang)).slice(0, 3);
+  const staleSources = live && prefs.sources.length > 0 && !prefs.sources.some((id) => allSources.some((s) => s.id === id));
   const t = useT();
 
   return (
@@ -59,9 +62,11 @@ export function WideHome({
 
       {!lead ? (
         <View style={{ paddingVertical: 48, gap: 8 }}>
-          <Text variant="display">Nothing from your sources yet.</Text>
+          <Text variant="display">{staleSources ? 'Choose your outlets again.' : 'Nothing from your sources yet.'}</Text>
           <Text variant="body" color="muted">
-            Pick outlets in You › Your news and your front page will fill in.
+            {staleSources
+              ? 'The outlets you picked were sample ones. Live news is here now: pick real outlets in You › Your news.'
+              : 'Pick outlets in You › Your news and your front page will fill in.'}
           </Text>
         </View>
       ) : (
@@ -88,9 +93,9 @@ export function WideHome({
             </Text>
             <View style={[styles.leadByline, { borderTopColor: colors.rule }]}>
               <Text variant="meta" color="muted" style={{ fontSize: 13, flexShrink: 1 }} numberOfLines={1}>
-                {(lead.group ? mine.filter((s) => s.group === lead.group) : [lead])
-                  .map((s) => sourceById(s.sourceId).name)
-                  .join(' · ')}{' '}
+                {[...new Set((lead.group ? mine.filter((s) => s.group === lead.group) : [lead]).map((s) => sourceById(s.sourceId).name))].join(
+                  ' · ',
+                )}{' '}
                 · {ago(lead.minsAgo)}
               </Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -159,7 +164,7 @@ export function WideHome({
         </Block>
       ) : null}
 
-      {prefs.front.papers ? (
+      {prefs.front.papers && PAPERS.length ? (
         <Block title="Papers & Reports" onMore={() => router.push({ pathname: '/search', params: { q: 'paper' } })}>
           <View style={[styles.row3, { gap: 16 }]}>
             {PAPERS.map((p) => (
@@ -271,6 +276,7 @@ function Block({ title, onMore, children }: { title: string; onMore?: () => void
 }
 
 function SmallStory({ story, size }: { story: Story; size: number }) {
+  const { sourceById } = useNews();
   const { colors } = useTheme();
   const open = useOpenStory();
   return (

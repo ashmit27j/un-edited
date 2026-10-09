@@ -10,7 +10,9 @@ What's in the repo and what still needs doing by hand. The code is done; these s
 - **`supabase/functions/register-push`**: the app sends its push token and notification settings here.
 - **The app** reads live stories (`src/data/news.tsx`), caches them for offline, and falls back to the sample stories when nothing live is available. Signed-in readers' settings, folders and folder downloads sync to `reader_state` (`src/session/account-sync.ts`).
 
-## 1. Supabase (one time)
+## 1. Supabase (one time) — done 2026-10-09
+
+Already run: link, `db push`, `secrets set`, the three function deploys, and the Vault secrets. Still to do by hand: **Sign-in** below, and the optional API keys.
 
 Project: `pqouqidkhpxtblpwfhea`.
 

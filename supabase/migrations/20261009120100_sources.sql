@@ -30,6 +30,7 @@ insert into public.sources (id, name, lang, kind, place, owner, funding, site_ur
 ('bbc-marathi', 'बीबीसी मराठी', 'mr', 'Broadcaster', 'Mumbai', 'BBC', 'UK licence fee and commercial income', 'https://www.bbc.com/marathi', 'https://feeds.bbci.co.uk/marathi/rss.xml', 'India', null, null),
 ('tv9-marathi', 'टीव्ही 9 मराठी', 'mr', 'Broadcaster', 'Mumbai', 'TV9 Network', 'Not yet listed', 'https://www.tv9marathi.com', 'https://www.tv9marathi.com/feed', 'India', null, 'tv9marathi.com'),
 -- Papers & Reports
+-- PIB: moved to Hindi news in 20261009130000_pib_hindi.sql (its feed is Hindi press releases).
 ('pib', 'Press Information Bureau', 'en', 'Government', 'New Delhi', 'Government of India', 'Government of India', 'https://pib.gov.in', 'https://pib.gov.in/RssMain.aspx?ModId=6&Lang=1&Regid=3', 'India', 'Official report', null),
 ('arxiv-soc', 'arXiv · Physics and Society', 'en', 'Preprint server', 'Ithaca, NY', 'Cornell University', 'Cornell, member institutions and donors', 'https://arxiv.org/list/physics.soc-ph/recent', 'https://rss.arxiv.org/rss/physics.soc-ph', 'Research', 'Preprint · not yet peer-reviewed', null)
 on conflict (id) do update set

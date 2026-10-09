@@ -12,10 +12,11 @@ import { Screen, SectionHeader } from '@/components/ui';
 import { WideLibrary } from '@/components/wide/library';
 import { Fonts, TouchTarget } from '@/constants/theme';
 import { useLayout } from '@/hooks/use-layout';
-import { storyById } from '@/data/sample';
+
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
+import { useStoryList } from '@/data/news';
 
 export default function Library() {
   const { colors } = useTheme();
@@ -28,10 +29,7 @@ export default function Library() {
   const wide = useLayout() !== 'phone';
 
   const total = Object.values(folders).reduce((n, ids) => n + ids.length, 0);
-  const recentStories = recent
-    .slice(0, 5)
-    .map((id) => storyById(id))
-    .filter((s): s is NonNullable<typeof s> => !!s);
+  const recentStories = useStoryList(recent.slice(0, 5));
 
   const newFolderSheet = (
     <Sheet visible={creating} title="New folder" onClose={() => setCreating(false)}>

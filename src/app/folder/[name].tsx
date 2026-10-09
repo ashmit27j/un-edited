@@ -7,10 +7,11 @@ import { StoryRow } from '@/components/story';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { BackHeader, Screen } from '@/components/ui';
-import { storyById } from '@/data/sample';
+
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
+import { useStoryList } from '@/data/news';
 
 /** A Library folder (FolderEmpty board): status line with ↓ Download / Remove, then the saved stories. */
 export default function Folder() {
@@ -20,7 +21,7 @@ export default function Folder() {
   const toast = useToast();
   const { folders, downloaded, downloadedFolders, toggleFolderDownload } = useReader();
   const ids = folders[name] ?? [];
-  const stories = ids.map((id) => storyById(id)).filter((s): s is NonNullable<typeof s> => !!s);
+  const stories = useStoryList(ids);
   const on = downloadedFolders.includes(name);
   const offline = stories.filter((s) => downloaded.includes(s.id)).length;
   const status = on ? 'downloaded' : offline ? `${offline} downloaded` : 'online only';

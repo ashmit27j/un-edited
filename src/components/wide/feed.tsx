@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { MoreButton, SaveButton, useOpenStory, storyLink } from '@/components/story';
 import { Text } from '@/components/text';
 import { Fade, Photo } from '@/components/ui';
 import { PeekPapers, TwoColumn, WidePage } from '@/components/wide/page';
-import { ago, sourceById, type Story } from '@/data/sample';
+import { ago, type Story } from '@/data/sample';
 import { useLayout } from '@/hooks/use-layout';
 import { useReader } from '@/store/reader-provider';
 import { coverage, useStories } from '@/store/selectors';
@@ -15,6 +15,7 @@ import { useT } from '@/lib/i18n';
 
 const TODAY = 'Today';
 const DAY_MINS = 24 * 60;
+const PAGE = 20;
 const EXCERPT_HEIGHT = 132;
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -40,6 +41,16 @@ export function WideFeed() {
     return { today: list.filter((s) => s.minsAgo < DAY_MINS), earlier: list.filter((s) => s.minsAgo >= DAY_MINS) };
   }, [base, category]);
   const items = older ? [...today, ...earlier] : today;
+  // Full story cards with photos: render 20 at a time, adding more as the reader nears the end.
+  const [shown, setShown] = useState(PAGE);
+  const more = useRef<View>(null);
+  useEffect(() => {
+    const node = more.current as unknown as Element | null;
+    if (!node || typeof IntersectionObserver === 'undefined' || shown >= items.length) return;
+    const io = new IntersectionObserver((e) => e.some((x) => x.isIntersecting) && setShown((n) => n + PAGE), { rootMargin: '1200px' });
+    io.observe(node);
+    return () => io.disconnect();
+  }, [shown, items.length]);
 
   const now = new Date();
   const date = `${DAYS[now.getDay()]} ${now.getDate()} ${MONTHS[now.getMonth()]}`;
@@ -47,6 +58,7 @@ export function WideFeed() {
     if (next.mode) setMode(next.mode);
     if (next.category) setCategory(next.category);
     setOlder(false);
+    setShown(PAGE);
   };
 
   const side = (
@@ -141,7 +153,12 @@ export function WideFeed() {
             </Text>
           </View>
         ) : (
-          items.map((s) => <WideStory key={s.id} story={s} sources={coverage(s, base)} />)
+          <>
+            {items.slice(0, shown).map((s) => (
+              <WideStory key={s.id} story={s} sources={coverage(s, base)} />
+            ))}
+            {shown < items.length ? <View ref={more} style={{ height: 1 }} /> : null}
+          </>
         )}
 
         <View style={{ maxWidth: 560, marginTop: 96 }}>
@@ -188,6 +205,7 @@ export function WideFeed() {
 }
 
 function WideStory({ story, sources }: { story: Story; sources: number }) {
+  const { sourceById } = useNews();
   const { colors } = useTheme();
   const open = useOpenStory();
   const lang = story.lang !== 'en' ? story.lang : undefined;

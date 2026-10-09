@@ -1,11 +1,12 @@
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Linking, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
 import { BackIcon, ChevronIcon } from '@/components/icons';
 import { ReadingBody } from '@/components/reading-line';
+import { Skeleton } from '@/components/states';
 import { Stamp } from '@/components/stamp';
 import { openOriginal as openUrl } from '@/lib/open-original';
 import { MoreButton, SaveButton, SITE_URL, useOpenStory } from '@/components/story';
@@ -15,13 +16,14 @@ import { Photo, Rule, Screen, useGutter } from '@/components/ui';
 import { WideArticle } from '@/components/wide/article';
 import { useLayout } from '@/hooks/use-layout';
 import { WideBreakpoint } from '@/constants/theme';
-import { PRIMARY_SOURCE, ago, groupOf, sourceById, storyById } from '@/data/sample';
-import { useNews } from '@/data/news';
+import { PRIMARY_SOURCE, ago } from '@/data/sample';
+import { useNews, useStory, useStoryBody } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
 
 export default function Article() {
+  const { groupOf, sourceById } = useNews();
   const { stories: STORIES } = useNews();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { colors } = useTheme();
@@ -32,14 +34,35 @@ export default function Article() {
   const { markViewed } = useReader();
   const toast = useToast();
   const open = useOpenStory();
-  const story = storyById(id);
+  const story = useStory(id);
   const wide = width >= WideBreakpoint;
   const layout = useLayout();
+  const body = useStoryBody(story);
+  const { status, ensure } = useNews();
+  const [looking, setLooking] = useState(!story);
+  useEffect(() => {
+    if (story) return;
+    let gone = false;
+    ensure(id)
+      .catch(() => {})
+      .finally(() => !gone && setLooking(false));
+    return () => {
+      gone = true;
+    };
+  }, [id, story, ensure]);
   const t = useT();
 
   useEffect(() => {
     if (story) markViewed(story.id);
   }, [story, markViewed]);
+
+  if (!story && (status === 'loading' || looking)) {
+    return (
+      <Screen maxWidth={720}>
+        <Skeleton rows={2} />
+      </Screen>
+    );
+  }
 
   if (!story) {
     return (
@@ -103,7 +126,7 @@ export default function Article() {
             {source.name} · {ago(story.minsAgo)}
           </Text>
           <Rule style={{ marginVertical: 4 }} />
-          <ReadingBody paragraphs={story.body} lang={lang} style={{ fontSize: 18, lineHeight: 29 }} />
+          <ReadingBody paragraphs={body} lang={lang} style={{ fontSize: 18, lineHeight: 29 }} />
           {story.excerptOnly ? (
             <Text variant="meta" color="muted">
               Only an excerpt is available here. The full story is on {source.name}.

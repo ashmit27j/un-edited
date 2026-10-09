@@ -8,7 +8,7 @@ import { SaveButton, storyLink, useOpenStory } from '@/components/story';
 import { Text } from '@/components/text';
 import { WebNav } from '@/components/web-nav';
 import { Fonts } from '@/constants/theme';
-import { TOPICS, ago, sourceById, type Story } from '@/data/sample';
+import { TOPICS, ago, type Story } from '@/data/sample';
 import { useNews } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
@@ -337,6 +337,7 @@ function Highlighted({ text, q, mark, lang }: { text: string; q: string; mark: s
 }
 
 function Hit({ story, q, mark, onOpen }: { story: Story; q: string; mark: string; onOpen: () => void }) {
+  const { sourceById } = useNews();
   const { colors } = useTheme();
   return (
     <View style={[styles.hit, { borderBottomColor: colors.rule }]}>

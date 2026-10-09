@@ -2,7 +2,13 @@
 
 Newest first. One line per change: date — what changed — why (if known). Update `current-config.md` alongside.
 
-- 2026-10-09 — **News backend written** (not deployed yet: needs `supabase login`, see `docs/backend-setup.md`):
+- 2026-10-09 — **Backend deployed and live news on.** Supabase project `pqouqidkhpxtblpwfhea`: tables, outlets and schedule pushed; `fetch-news`, `send-notifications`, `register-push` deployed; Vault secrets set; cron every 30 min verified end to end (200). First fetch: 24 outlets, ~1,200 stories, 49 multi-outlet groups.
+  - PIB moved to Hindi news (its feed is Hindi press releases; "Official report" would mislabel them). ABP News serves a stale cached feed to the function's region: stale feeds now count as failed and try the API fallbacks (none set yet).
+  - Home is the **Morning Edition** (stories from the 24h before the latest 06:00 IST, fixed for the day), led by the event most of the reader's outlets covered; until the first full edition exists (fewer than 10 stories) it uses the last 24 hours. Coverage counts different outlets, not stories.
+  - Lists load without article text (up to 4,000 stories, paged); the full text loads when a story opens. Web Feed renders 20 cards at a time.
+  - Story lookups in components go through `useStory()` / `useStoryList()` / `useNews()`: React Compiler memoized plain lookups and kept a stale "not found" for stories that arrived later.
+  - Opening a story link directly waits for the news and fetches the story if it isn't in the list.
+- 2026-10-09 — **News backend written** (deployed the same day, see above):
   - Supabase tables with row-level security, a **starting outlet list of 24 real outlets** (English, Hindi, Marathi, world, science, papers; every feed checked live; owners and funding only where well documented, otherwise "Not yet listed"; needs Ashmit's review), and a 30-minute schedule.
   - `fetch-news`: outlets' own RSS first; **fallbacks NewsData.io → NewsAPI.org → GNews** filtered to the outlet's domain (Ashmit's call). Publisher's words only; full text only where the feed carries it. Topic by keyword rules; grouping by shared names/numbers (≥2 shared and ≥50% of the shorter headline's names, 36h, same language), tested on the live feeds.
   - `send-notifications` + `register-push`: Morning Edition, Big stories, topic/source alerts, Sunday papers, via Web Push (service worker `public/sw.js`, VAPID) and Expo push on Android.

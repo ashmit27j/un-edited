@@ -127,8 +127,10 @@ async function read(src: Source): Promise<{ items: FeedItem[]; via: string; erro
   if (src.feed_url) {
     try {
       const items = parseFeed(await (await get(src.feed_url)).text());
-      if (items.length) return { items, via: 'rss', error: null };
-      error = 'Feed had no stories';
+      const newest = Math.max(0, ...items.map((i) => new Date(i.publishedAt).getTime()));
+      if (items.length && Date.now() - newest < MAX_AGE) return { items, via: 'rss', error: null };
+      // Some outlets serve a stale cached copy to some regions: treat it like a failed feed.
+      error = items.length ? `Feed is stale (newest ${new Date(newest).toISOString().slice(0, 10)})` : 'Feed had no stories';
     } catch (e) {
       error = (e as Error).message;
     }
@@ -194,11 +196,13 @@ Deno.serve(async (req) => {
         published_at: i.publishedAt,
       }));
       let added = 0;
+      let saveError: string | null = null;
       if (rows.length) {
-        const { data: inserted } = await db
+        const { data: inserted, error: insertError } = await db
           .from('articles')
           .upsert(rows, { onConflict: 'url', ignoreDuplicates: true })
           .select('id, source_id, lang, keys, published_at');
+        saveError = insertError?.message ?? null;
         for (const a of inserted ?? []) await group(a);
         added = inserted?.length ?? 0;
       }
@@ -206,7 +210,7 @@ Deno.serve(async (req) => {
         .from('sources')
         .update(items.length ? { last_ok_at: new Date().toISOString(), last_error: error } : { last_error: error })
         .eq('id', src.id);
-      report[src.id] = `${via}: ${items.length} read, ${added} new${error ? ` (${error})` : ''}`;
+      report[src.id] = `${via}: ${items.length} read, ${fresh.length} recent, ${added} new${error ? ` (${error})` : ''}${saveError ? ` [not saved: ${saveError}]` : ''}`;
     }
   });
   await Promise.all(workers);

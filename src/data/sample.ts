@@ -78,6 +78,9 @@ export type Paper = {
   note: string;
   where: string;
   minsAgo: number;
+  /** Live papers: the source's language and the paper's page. */
+  lang?: LanguageCode;
+  url?: string;
 };
 
 const WATER_RES = 'Water board resolution on the 24-hour supply pilot (PDF)';
@@ -281,8 +284,14 @@ const UNKNOWN: Source = { id: 'unknown', name: 'Unknown outlet', lang: 'en', kin
 export const sourceById = (id: string): Source => current.sources.find((s) => s.id === id) ?? SOURCES.find((s) => s.id === id) ?? UNKNOWN;
 export const storyById = (id: string): Story | undefined =>
   current.stories.find((s) => s.id === id) ?? current.archive?.find((s) => s.id === id) ?? STORIES.find((s) => s.id === id);
-export const groupOf = (story: Story): Story[] =>
-  story.group ? current.stories.filter((s) => s.group === story.group) : [story];
+/** The other versions of a story: one per outlet (the reader's own story stands for its outlet). */
+export function groupOf(story: Story): Story[] {
+  if (!story.group) return [story];
+  const bySource = new Map<string, Story>();
+  for (const s of current.stories) if (s.group === story.group && !bySource.has(s.sourceId)) bySource.set(s.sourceId, s);
+  bySource.set(story.sourceId, story);
+  return [...bySource.values()];
+}
 
 export function ago(mins: number): string {
   if (mins < 60) return `${Math.max(1, mins)}m`;

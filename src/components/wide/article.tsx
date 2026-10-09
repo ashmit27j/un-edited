@@ -13,8 +13,8 @@ import { useToast } from '@/components/toast';
 import { Photo } from '@/components/ui';
 import { Wordmark } from '@/components/wordmark';
 import { MaxContentWidth } from '@/constants/theme';
-import { PRIMARY_SOURCE, ago, groupOf, sourceById, type Story } from '@/data/sample';
-import { useNews } from '@/data/news';
+import { PRIMARY_SOURCE, ago, type Story } from '@/data/sample';
+import { useNews, useStoryBody } from '@/data/news';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
@@ -25,6 +25,7 @@ const STAMP_MIN_WIDTH = 1080;
 
 /** Article on web at 768px and wider (WebArticle): web top bar, one 720px column, source tabs. */
 export function WideArticle({ story }: { story: Story }) {
+  const { groupOf, sourceById } = useNews();
   const { stories: STORIES } = useNews();
   const { colors } = useTheme();
   const router = useRouter();
@@ -33,6 +34,7 @@ export function WideArticle({ story }: { story: Story }) {
   const { width } = useWindowDimensions();
   const { prefs, setPrefs } = useReader();
   const [sizing, setSizing] = useState(false);
+  const body = useStoryBody(story);
   const t = useT();
 
   const source = sourceById(story.sourceId);
@@ -157,7 +159,7 @@ export function WideArticle({ story }: { story: Story }) {
           </Text>
         </View>
 
-        <ReadingBody paragraphs={story.body} lang={lang} style={styles.para} />
+        <ReadingBody paragraphs={body} lang={lang} style={styles.para} />
 
         <Pressable
           accessibilityRole="link"

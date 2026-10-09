@@ -5,17 +5,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CloseIcon } from '@/components/icons';
 import { Text } from '@/components/text';
 import { Fonts } from '@/constants/theme';
-import { ago, sourceById, storyById } from '@/data/sample';
+import { ago } from '@/data/sample';
+import { useNews, useStory } from '@/data/news';
 
 /**
  * Full image view (ImageView board). Always dark, whatever the theme, so the photo reads as a photo.
  * Shows the publisher's credit and caption exactly as published (sample stories have no caption).
  */
 export default function ImageView() {
+  const { sourceById } = useNews();
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const story = storyById(id);
+  const story = useStory(id);
   const close = () => (router.canGoBack() ? router.back() : router.replace({ pathname: '/article/[id]', params: { id } }));
 
   return (

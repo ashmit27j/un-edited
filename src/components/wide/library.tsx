@@ -10,10 +10,11 @@ import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { SectionHeader } from '@/components/ui';
 import { WidePage } from '@/components/wide/page';
-import { ago, sourceById, storyById, type Story } from '@/data/sample';
+import { ago, type Story } from '@/data/sample';
 import { useSession } from '@/session/session-provider';
 import { DEFAULT_FOLDER, useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
+import { useNews, useStoryList } from '@/data/news';
 
 const HINT_KEY = 'unedited.syncHintSeen';
 const GRID_GAP = 20;
@@ -44,13 +45,8 @@ export function WideLibrary({ onNewFolder }: { onNewFolder: () => void }) {
   const open = folders[current] ? current : DEFAULT_FOLDER;
   const total = Object.values(folders).reduce((n, ids) => n + ids.length, 0);
   // Folders keep the newest save first.
-  const items = (folders[open] ?? [])
-    .map((id) => storyById(id))
-    .filter((s): s is Story => !!s);
-  const recentStories = recent
-    .slice(0, 5)
-    .map((id) => storyById(id))
-    .filter((s): s is Story => !!s);
+  const items = useStoryList(folders[open] ?? []);
+  const recentStories = useStoryList(recent.slice(0, 5));
 
   const columns = Math.max(1, Math.floor((gridWidth + GRID_GAP) / (TILE_MIN + GRID_GAP)));
   const tileWidth = gridWidth ? (gridWidth - GRID_GAP * (columns - 1)) / columns : TILE_MIN;
@@ -196,6 +192,7 @@ function FolderStack({ on }: { on: boolean }) {
 }
 
 function LibraryRow({ story, downloaded }: { story: Story; downloaded: boolean }) {
+  const { sourceById } = useNews();
   const { colors } = useTheme();
   const open = useOpenStory();
   const lang = story.lang !== 'en' ? story.lang : undefined;

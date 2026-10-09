@@ -13,11 +13,11 @@ import { Wordmark } from '@/components/wordmark';
 import { useLayout } from '@/hooks/use-layout';
 import { useTour, useTourTarget } from '@/tour/tour';
 import { WideBreakpoint } from '@/constants/theme';
-import { editionNumber, sourceById } from '@/data/sample';
+import { editionNumber } from '@/data/sample';
 import { useNews } from '@/data/news';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
-import { coverage, onePerEvent, useStories } from '@/store/selectors';
+import { coverage, onePerEvent, useEdition, useStories } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
 
@@ -25,14 +25,17 @@ const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export default function Home() {
-  const { papers: PAPERS, live } = useNews();
+  const { sourceById } = useNews();
+  const { papers: allPapers, live, sources: allSources } = useNews();
   const { colors } = useTheme();
   const router = useRouter();
   const { width } = useWindowDimensions();
   const gutter = useGutter();
   const { status } = useSession();
   const { prefs, firstSeen, recent } = useReader();
-  const { mine, outside, all } = useStories();
+  const { all } = useStories();
+  // The Morning Edition (fixed at 6:00 IST once live news is on).
+  const { mine, outside } = useEdition();
   const open = useOpenStory();
   const t = useT();
   const wide = width >= WideBreakpoint;
@@ -44,17 +47,19 @@ export default function Home() {
     status === 'signedIn' && firstSeen ? `${t('home.edition')} Nº ${editionNumber(firstSeen)}` : t('home.edition');
 
   const events = onePerEvent(mine);
-  const lead = events[0];
-  const mostCovered = [...events]
-    .sort((a, b) => coverage(b, mine) - coverage(a, mine) || a.minsAgo - b.minsAgo)
-    .filter((s) => s.id !== lead?.id)
-    .slice(0, 4);
+  // Lead: the event most of the reader's outlets covered (newest first on a tie), as on the WebHome board.
+  const byCoverage = [...events].sort((a, b) => coverage(b, mine) - coverage(a, mine) || a.minsAgo - b.minsAgo);
+  const lead = byCoverage[0];
+  const mostCovered = byCoverage.filter((s) => s.id !== lead?.id).slice(0, 4);
   const topics = prefs.topics.slice(0, 3);
   const continueReading = recent
     .map((id) => all.find((s) => s.id === id))
     .filter((s): s is NonNullable<typeof s> => !!s)
     .slice(0, 3);
   const layout = useLayout();
+  const PAPERS = allPapers.filter((p) => !p.lang || prefs.sourceLanguages.includes(p.lang)).slice(0, 3);
+  // Outlets picked before live news (sample ones) no longer exist: say so instead of an empty front page.
+  const staleSources = live && prefs.sources.length > 0 && !prefs.sources.some((id) => allSources.some((s) => s.id === id));
   const stripRef = useTourTarget('strip');
   const leadRef = useTourTarget('lead');
   const searchRef = useTourTarget('search');
@@ -83,10 +88,7 @@ export default function Home() {
         date={`${FULL_DAYS[now.getDay()]}, ${now.getDate()} ${FULL_MONTHS[now.getMonth()]} ${now.getFullYear()}`}
         lead={lead}
         mine={mine}
-        mostCovered={[...events]
-          .sort((a, b) => coverage(b, mine) - coverage(a, mine) || a.minsAgo - b.minsAgo)
-          .filter((s) => s.id !== lead?.id)
-          .slice(0, 5)}
+        mostCovered={byCoverage.filter((s) => s.id !== lead?.id).slice(0, 5)}
         topics={topics
           .map((name) => ({ name, items: onePerEvent(mine.filter((s) => s.topic === name && !used.has(s.id))).slice(0, 3) }))
           .filter((t) => t.items.length)}
@@ -131,9 +133,11 @@ export default function Home() {
 
       {!lead ? (
         <View style={{ paddingVertical: 48, gap: 8 }}>
-          <Text variant="display">Nothing from your sources yet.</Text>
+          <Text variant="display">{staleSources ? 'Choose your outlets again.' : 'Nothing from your sources yet.'}</Text>
           <Text variant="body" color="muted">
-            Pick outlets in You › Your news and your front page will fill in.
+            {staleSources
+              ? 'The outlets you picked were sample ones. Live news is here now: pick real outlets in You › Your news.'
+              : 'Pick outlets in You › Your news and your front page will fill in.'}
           </Text>
         </View>
       ) : (
@@ -201,7 +205,7 @@ export default function Home() {
         </View>
       ) : null}
 
-      {prefs.front.papers ? (
+      {prefs.front.papers && PAPERS.length ? (
         <View>
           <SectionHeader
             title="Papers & Reports"
