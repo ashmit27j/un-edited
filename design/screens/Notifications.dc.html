@@ -22,11 +22,12 @@ button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offs
 [data-dv="sans"] [lang="hi"],[data-dv="sans"] [lang="hi"] *,[data-dv="sans"] [lang="mr"],[data-dv="sans"] [lang="mr"] *,[data-dv="sans"][lang="hi"],[data-dv="sans"][lang="mr"]{font-family:'Mukta',sans-serif!important}
 </style>
 </helmet>
-<div style="width: 390px; height: 1700px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif;">
+<div style="width: 390px; height: 2050px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Inter', sans-serif;">
   <header style="padding: 12px 24px 0 24px; display: flex; flex-direction: column; gap: 6px;">
     <a href="You.dc.html" style="align-self: flex-start; height: 44px; margin-left: -6px; display: flex; align-items: center; gap: 4px; font-size: 15px;">
       <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;"><path d="M15 5l-7 7 7 7"></path></svg>You</a>
     <h1 style="margin: 4px 0 0 0; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-weight: 400; font-size: 34px; letter-spacing: -0.4px;">Notifications</h1>
+    <p style="margin: 0; font-size: 13px; line-height: 1.5; color: {{t.muted}};">Never ads, never “you might like”. Nothing is picked for you.</p>
   </header>
 
   <main style="padding: 0 24px 40px 24px; display: flex; flex-direction: column;">
@@ -48,6 +49,24 @@ button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offs
       </span>
     </div>
 
+    <!-- Master switch (Pass 6) -->
+    <div style="margin-top: 14px;">
+      <sc-for list="{{all}}" as="r" hint-placeholder-count="1">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 64px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-top: 1px solid {{t.ink}}; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px; font-weight: 500;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{allOff}}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top: 22px; padding: 16px; border: 1px solid {{t.rule}}; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-family: 'Baskervville', Baskerville, Georgia, serif; font-size: 20px;">Notifications are off.</span>
+        <span style="font-size: 13.5px; line-height: 1.5; color: {{t.muted}};">Your edition is still printed at 6:00 every morning. Open the app whenever you like.</span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{allOn}}" hint-placeholder-val="{{ true }}">
     <!-- Edition -->
     <section style="margin-top: 26px; display: flex; flex-direction: column;">
       <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">New edition</h2>
@@ -98,6 +117,17 @@ button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offs
       </sc-if>
     </section>
 
+    <!-- During the day (Pass 6) -->
+    <section style="margin-top: 26px; display: flex; flex-direction: column; opacity: {{dim}};">
+      <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">During the day</h2>
+      <sc-for list="{{day}}" as="r" hint-placeholder-count="3">
+        <button role="switch" aria-checked="{{r.on}}" onClick="{{r.pick}}" style="width: 100%; min-height: 60px; padding: 10px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; background: none; border: 0; border-bottom: 1px solid {{t.rule}}; color: {{t.ink}}; text-align: left; cursor: pointer;">
+          <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 15px;">{{r.label}}</span><span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">{{r.desc}}</span></span>
+          <span style="width: 44px; height: 26px; flex-shrink: 0; box-sizing: border-box; border-radius: 13px; background: {{r.track}}; border: 1.5px solid {{r.edge}}; position: relative;"><span style="position: absolute; top: 3px; left: {{r.knobX}}px; width: 17px; height: 17px; border-radius: 50%; background: {{r.knob}};"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
     <!-- Topic and source alerts -->
     <section style="margin-top: 26px; display: flex; flex-direction: column; opacity: {{dim}};">
       <h2 style="margin: 0; padding-bottom: 8px; border-bottom: 1px solid {{t.ink}}; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Topic and source alerts</h2>
@@ -129,21 +159,23 @@ button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offs
               <button role="radio" aria-checked="{{o.on}}" onClick="{{o.pick}}" style="height: 44px; padding: 0; border: 0; background: {{o.bg}}; color: {{o.fg}}; font-size: 14px; font-weight: {{o.weight}}; cursor: pointer;">{{o.label}}</button>
             </sc-for>
           </div>
-          <span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">Alerts follow your sound and quiet-hour choices above. The edition notification never counts towards this number.</span>
+          <span style="font-size: 12.5px; line-height: 1.4; color: {{t.muted}};">Counts topic, source and Big story alerts together. Alerts follow your sound and quiet-hour choices above. The edition and Downloads finished never count towards this number.</span>
         </div>
       </sc-if>
     </section>
+
+    </sc-if>
 
     <p style="margin: 22px 0 0 0; font-size: 12.5px; line-height: 1.55; color: {{t.muted}};">On iPhone, notifications only work once Un:edited is on your Home Screen (Share, then Add to Home Screen). In a browser tab they aren’t available. On Android and desktop browsers, allow notifications when asked.</p>
   </main>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"signedIn":{"editor":"boolean","default":true,"section":"State"},"edition":{"editor":"number","default":12,"section":"State"},"blocked":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":390,"height":1700}}'>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"signedIn":{"editor":"boolean","default":true,"section":"State"},"edition":{"editor":"number","default":12,"section":"State"},"blocked":{"editor":"boolean","default":false,"section":"State"},"$preview":{"width":390,"height":2050}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = {
-      master: true, time: '6:00', days: { M: true, T: true, W: true, Th: true, F: true, S: true, Su: true },
+      all: true, master: true, time: '6:00', big: false, papers: false, folder: true, days: { M: true, T: true, W: true, Th: true, F: true, S: true, Su: true },
       sound: true, vibrate: true, quiet: true, alerts: false,
       topics: { City: true, Technology: false, Finance: false, Research: false, World: false },
       outlets: { 'Morning Ledger': true, 'Deccan Courier': false, 'Civic Wire': false, 'The Plateau Times': false },
@@ -197,10 +229,17 @@ class Component extends DCLogic {
     return {
       t: t,
       blocked: blocked,
-      dim: (!s.master || blocked) ? 0.45 : 1,
+      dim: blocked ? 0.45 : 1,
+      all: [sw('all', 'Allow notifications', 'Your phone asks once. You can change it here or in your phone’s settings.')],
+      allOn: s.all, allOff: !s.all,
+      day: [
+        sw('big', 'Big stories', 'Off by default. Only when at least 5 of your sources (or 60%, whichever is lower) cover the same story within 6 hours. Once per story.'),
+        sw('papers', 'Papers & Reports', 'A Sunday note when your sources linked new research or official reports.'),
+        sw('folder', 'Downloads finished', 'When a folder you downloaded is ready to read offline.')
+      ],
       master: master, masterOn: s.master,
       alerts: sw('alerts'), alertsOn: s.alerts,
-      shownTime: s.master ? timeLabel : 'off',
+      shownTime: s.all && s.master ? timeLabel : 'off',
       // Plain text only. The title never carries a headline, so nothing in the notification is written for the reader.
       headline: signedIn ? ('Morning Edition Nº ' + edition + ' is ready') : 'Your morning edition is ready',
       times: seg(s.time, timeOpts, 'time'),

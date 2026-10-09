@@ -1,42 +1,27 @@
-import { useMemo, useState } from 'react';
-import { FlatList, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useMemo, useRef, useState, type RefObject } from 'react';
+import { FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
-import { Byline, StoryRow, useOpenStory } from '@/components/story';
+import { Byline, useOpenStory, storyLink } from '@/components/story';
 import { Text } from '@/components/text';
-import { Photo, Rule, Segmented, useGutter } from '@/components/ui';
-import { WideBreakpoint } from '@/constants/theme';
+import { Fade, Photo, Rule, Screen, Segmented, useGutter } from '@/components/ui';
+import { OfflineScreen, useOnline } from '@/components/states';
+import { WideFeed } from '@/components/wide/feed';
+import { useLayout } from '@/hooks/use-layout';
+import { useTourTarget } from '@/tour/tour';
 import { sourceById, type Story } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { coverage, useStories } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
+import { useT } from '@/lib/i18n';
 
 const TODAY = 'Today';
-
-function withAlpha(hex: string, alpha: number) {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${alpha})`;
-}
-
-/** Text that fades into the page, so a story reads as a taste, not a wall. */
-function Fade({ height = 90 }: { height?: number }) {
-  const { colors } = useTheme();
-  const steps = 9;
-  return (
-    <View pointerEvents="none" style={[styles.fade, { height }]}>
-      {Array.from({ length: steps }, (_, i) => (
-        <View key={i} style={{ flex: 1, backgroundColor: withAlpha(colors.bg, (i + 1) / steps) }} />
-      ))}
-    </View>
-  );
-}
 
 export default function Feed() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const gutter = useGutter();
-  const { width } = useWindowDimensions();
   const { prefs } = useReader();
   const { mine, outside } = useStories();
   const open = useOpenStory();
@@ -44,7 +29,12 @@ export default function Feed() {
   const [category, setCategory] = useState(TODAY);
   const [pageHeight, setPageHeight] = useState(0);
   const [index, setIndex] = useState(0);
-  const wide = width >= WideBreakpoint;
+  const list = useRef<FlatList<Story | 'end'>>(null);
+  const modeRef = useTourTarget('feedMode');
+  const storyRef = useTourTarget('feedStory');
+  const layout = useLayout();
+  const online = useOnline();
+  const t = useT();
 
   const categories = [TODAY, ...prefs.topics];
   const base = mode === 'mine' ? mine : outside;
@@ -54,8 +44,9 @@ export default function Feed() {
   );
 
   const header = (
-    <View style={{ paddingTop: wide ? 24 : insets.top + 8, paddingHorizontal: gutter, backgroundColor: colors.bg }}>
-      <View style={{ maxWidth: wide ? 720 : undefined, width: '100%', alignSelf: 'center' }}>
+    <View style={{ paddingTop: insets.top + 8, paddingHorizontal: gutter, backgroundColor: colors.bg }}>
+      <View style={{ width: '100%', alignSelf: 'center' }}>
+        <View ref={modeRef}>
         <Segmented
           value={mode}
           onChange={(m) => {
@@ -63,10 +54,11 @@ export default function Feed() {
             setIndex(0);
           }}
           options={[
-            { value: 'mine', label: 'My Feed' },
-            { value: 'explore', label: 'Explore' },
+            { value: 'mine', label: t('feed.mine') },
+            { value: 'explore', label: t('feed.explore') },
           ]}
         />
+        </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 8 }}>
           {categories.map((c) => {
             const on = c === category;
@@ -96,7 +88,7 @@ export default function Feed() {
     <View style={styles.caughtUp}>
       <Rule style={{ width: 48, backgroundColor: colors.ink }} />
       <Text variant="display" style={{ fontStyle: 'italic', textAlign: 'center' }}>
-        You’re all caught up.
+        {t('feed.caughtUp')}
       </Text>
       <Text variant="body" color="muted" style={{ textAlign: 'center', maxWidth: 420 }}>
         {mode === 'mine'
@@ -118,29 +110,28 @@ export default function Feed() {
     </View>
   );
 
-  if (wide) {
+  if (!online)
     return (
-      <View style={{ flex: 1, backgroundColor: colors.bg }}>
-        {header}
-        <ScrollView contentContainerStyle={{ paddingHorizontal: gutter, paddingBottom: 64 }}>
-          <View style={{ maxWidth: 720, width: '100%', alignSelf: 'center' }}>
-            {items.map((s) => (
-              <FeedCard key={s.id} story={s} sources={coverage(s, base)} onOpen={() => open(s.id)} wide />
-            ))}
-            {caughtUp}
-          </View>
-        </ScrollView>
-      </View>
+      <Screen>
+        <OfflineScreen />
+      </Screen>
     );
-  }
+  if (layout !== 'phone') return <WideFeed />;
 
   const data: (Story | 'end')[] = [...items, 'end'];
+  // "Buttons instead of swiping" (You › Accessibility): Previous / Next under the story.
+  const go = (to: number) => {
+    const i = Math.max(0, Math.min(data.length - 1, to));
+    list.current?.scrollToIndex({ index: i, animated: !prefs.reduceMotion });
+    setIndex(i);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       {header}
       <View style={{ flex: 1 }} onLayout={(e) => setPageHeight(e.nativeEvent.layout.height)}>
         {pageHeight > 0 ? (
           <FlatList
+            ref={list}
             data={data}
             keyExtractor={(item) => (item === 'end' ? 'end' : item.id)}
             pagingEnabled
@@ -158,13 +149,14 @@ export default function Feed() {
                     onOpen={() => open(item.id)}
                     position={`${items.indexOf(item) + 1} of ${items.length} today`}
                     pageHeight={pageHeight}
+                    tourRef={items.indexOf(item) === 0 ? storyRef : undefined}
                   />
                 )}
               </View>
             )}
           />
         ) : null}
-        {index === 0 && items.length > 0 ? (
+        {!prefs.swipeButtons && index === 0 && items.length > 0 ? (
           <Text variant="label" color="muted" style={styles.swipe} pointerEvents="none">
             Swipe up ↑
           </Text>
@@ -175,6 +167,12 @@ export default function Feed() {
           </View>
         ) : null}
       </View>
+      {prefs.swipeButtons && items.length > 0 ? (
+        <View style={[styles.stepper, { backgroundColor: colors.bg, borderTopColor: colors.rule, paddingHorizontal: gutter - 8 }]}>
+          <Button label="Previous" kind="link" disabled={index === 0} onPress={() => go(index - 1)} />
+          <Button label="Next" kind="link" disabled={index >= data.length - 1} onPress={() => go(index + 1)} />
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -185,36 +183,32 @@ function FeedCard({
   onOpen,
   position,
   pageHeight,
-  wide,
+  tourRef,
 }: {
   story: Story;
   sources: number;
   onOpen: () => void;
   position?: string;
   pageHeight?: number;
-  wide?: boolean;
+  /** The first story is the tour's "Swipe left or right" target: photo, kicker and headline. */
+  tourRef?: RefObject<View | null>;
 }) {
   const { colors } = useTheme();
   const lang = story.lang !== 'en' ? story.lang : undefined;
   const kicker = `${story.topic} · ${sources > 1 ? `${sources} of your sources` : sourceById(story.sourceId).name}`;
 
-  if (wide) {
-    return (
-      <View style={{ paddingTop: 24 }}>
-        <StoryRow story={story} thumb />
-      </View>
-    );
-  }
   return (
     <View style={{ flex: 1, paddingTop: 16 }}>
-      <Pressable accessibilityRole="link" accessibilityLabel={story.headline} onPress={onOpen} style={{ flex: 1, gap: 10 }}>
-        <Photo credit={story.credit} height={Math.min(260, (pageHeight ?? 600) * 0.34)} />
-        <Text variant="label" color="accent">
-          {kicker}
-        </Text>
-        <Text variant="display" lang={lang} numberOfLines={4}>
-          {story.headline}
-        </Text>
+      <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel={story.headline} onPress={onOpen} style={{ flex: 1, gap: 10 }}>
+        <View ref={tourRef} style={{ gap: 10 }}>
+          <Photo credit={story.credit} height={Math.min(260, (pageHeight ?? 600) * 0.34)} />
+          <Text variant="label" color="accent">
+            {kicker}
+          </Text>
+          <Text variant="display" lang={lang} numberOfLines={4}>
+            {story.headline}
+          </Text>
+        </View>
         <View style={{ flex: 1, overflow: 'hidden' }}>
           <Text variant="body" color="muted" lang={lang}>
             {story.body.join(' ')}
@@ -234,7 +228,7 @@ function FeedCard({
 
 const styles = StyleSheet.create({
   category: { minHeight: 44, paddingHorizontal: 14, justifyContent: 'center', borderBottomWidth: 2 },
-  fade: { position: 'absolute', left: 0, right: 0, bottom: 0 },
   caughtUp: { flex: 1, minHeight: 360, alignItems: 'center', justifyContent: 'center', gap: 16, paddingVertical: 32 },
   swipe: { position: 'absolute', bottom: 12, alignSelf: 'center' },
+  stepper: { flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: StyleSheet.hairlineWidth },
 });

@@ -174,3 +174,25 @@ Tab switches, Feed category tabs, Save toggle, the Article prev/next source swit
 ### Seeing the motion live
 - **In a browser:** `cd design/screens && python3 -m http.server 8000`, then open e.g. `http://localhost:8000/OB1Welcome.dc.html`. Reload to replay. The Tour advances with Next. Other steps: `TourDark.dc.html` is step 5.
 - **Capture new filmstrips** (e.g. after changing a design): `tools/capture.js` + `tools/strip.py`. See `tools/README.md`.
+
+## 12. Light / dark switch (web; added 2026-10-09, no design board)
+
+Asked for by Ashmit: switching Paper ↔ Ink should fade, not jump.
+
+- **Where:** the theme toggle in the web top nav and landing header, and You › Reading › Theme.
+- **Motion:** whole-page cross-fade, **600ms, ease-in-out**, via the View Transitions API (`::view-transition-old/new(root)`). Browsers without it get the same 600ms on `background-color`, `color`, `border-color`, `fill` and `stroke` (class `theme-fade` on `<html>`).
+- **Reduced motion:** instant (system setting or You › Reduce motion).
+- **Code:** `src/theme/fade-theme.web.ts`, CSS in `src/app/+html.tsx`. The Android app switches instantly.
+
+## 13. Web onboarding (`WebOnboarding.dc.html`, helmet CSS; added to this file 2026-10-09)
+
+Taken from the board's own CSS (it wasn't covered here before):
+- **Step change:** each step's content fades in and rises 10px, **0.35s ease-out** (`wo-in`).
+- **Progress bar** under the header: width eases to the new step over **0.35s**.
+- **Printing bar** ("Your edition is ready."): fills 0 → 100% over **2.4s ease-in-out** (`wo-bar`).
+- Reduced motion: all three are static.
+- Code: `src/components/wide/onboarding.tsx`.
+
+## 14. Tour as built (`src/tour/tour.tsx`)
+
+Follows §4–5. The spotlight is drawn as four scrim panels around the target plus a 2px accent ring 3px out, all animated together over 0.35s `cubic-bezier(.3,.7,.3,1)`; the card's `top` uses the same timing. Targets are the real screens' views, measured after the screen lays out.

@@ -8,7 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 body{margin:0}
 a{color:inherit;text-decoration:none}
@@ -144,7 +144,7 @@ button{font:inherit}
       </sc-for>
 
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
-        <button style="height: 46px; padding: 0 22px; border: 1px solid {{t.rule}}; background: none; color: {{t.accent}}; font-size: 15px; cursor: pointer;">Sign out</button>
+        <a href="WebSignOut.dc.html" style="height: 46px; padding: 0 22px; border: 1px solid {{t.rule}}; color: {{t.accent}}; font-size: 15px; display: flex; align-items: center;">Sign out</a>
         <span style="font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 14px; color: {{t.muted}};">Un:edited 1.0 · No AI, no algorithm, no fee.</span>
       </div>
     </main>
@@ -162,7 +162,7 @@ class Component extends DCLogic {
       autoDl: false, ask: false, cleared: false,
       uiLang: 'English', dvFont: 'Match Font', srcEn: true, srcHi: false, srcMr: true,
       colour: 'Standard', cue: false, bold: false, targets: false, focusRing: false, dyslexia: false, tracking: 'Normal', ruler: false, buttons: false, credits: false,
-      ednOn: true, ednTime: '6:00 AM', sound: true, vibrate: true, quiet: true, alerts: false
+      ednOn: true, ednTime: '6:00 AM', sound: true, vibrate: true, quiet: true, nBig: false, nPapers: false, alerts: false
     };
   }
   renderVals() {
@@ -231,6 +231,8 @@ class Component extends DCLogic {
           rowSeg('ednTime', 'When', 'An edition can’t arrive before it is printed, so 6:00 AM is the earliest.', ['6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM']),
           sw('sound', 'Sound', 'Plays your system’s notification sound.'),
           sw('quiet', 'Quiet hours, 10:00 PM to 7:00 AM', 'Notifications wait until quiet hours end. Nothing is lost.'),
+          sw('nBig', 'Big stories', 'Off by default. Only when at least 5 of your sources (or 60%, whichever is lower) cover the same story within 6 hours. Once per story.'),
+          sw('nPapers', 'Papers & Reports', 'Off by default. A Sunday note when your sources linked new research.'),
           sw('alerts', 'Topic and source alerts', 'Off by default. Alerts only for the topics and outlets you pick, with the publisher’s own headline. Pick them in Your news.')
         ] },
         { id: 'front', title: 'Front page', rows: [sw('trending', 'Trending', 'Five stories the most outlets are covering.'), sw('papers', 'Papers & Reports', 'Research and official documents.'), sw('outside', 'Outside your sources', 'A few stories from outlets you haven’t chosen.'), sw('cont', 'Continue reading', 'Articles you started.')] },

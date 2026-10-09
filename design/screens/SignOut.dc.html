@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Sign out</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+@keyframes so-up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.so-toast{animation:so-up .3s ease-out both}
+@media (prefers-reduced-motion: reduce){.so-toast{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: {{t.bg}}; font-family: 'Inter', sans-serif;">
+
+  <sc-if value="{{confirm}}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: -560px; width: 390px; height: 1700px;"><dc-import name="You" dark="{{dark}}" hint-size="390px,1700px"></dc-import></div>
+    <a href="You.dc.html" aria-label="Cancel" style="position: absolute; inset: 0; background: {{t.scrim}};"></a>
+    <section role="alertdialog" aria-labelledby="so-title" aria-describedby="so-body" style="position: absolute; left: 0; right: 0; bottom: 0; background: {{t.surface}}; border-top: 1px solid {{t.rule}}; border-radius: 14px 14px 0 0; padding: 10px 24px 30px 24px; color: {{t.ink}}; display: flex; flex-direction: column; gap: 12px;">
+      <span style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: {{t.rule}};"></span>
+      <h2 id="so-title" style="margin: 8px 0 0 0; font-family: 'Baskervville', Baskerville, Georgia, serif; font-weight: 500; font-size: 26px; line-height: 1.15;">Sign out of Un:edited?</h2>
+      <div id="so-body" style="display: flex; flex-direction: column; border-top: 1px solid {{t.rule}};">
+        <span style="padding: 10px 0; border-bottom: 1px solid {{t.rule}}; display: flex; gap: 10px; font-size: 14px; line-height: 1.45;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.muted}}; width: 92px; flex-shrink: 0; padding-top: 2px;">Kept</span><span>Your sources, topics, folders and settings stay in your account.</span></span>
+        <span style="padding: 10px 0; border-bottom: 1px solid {{t.rule}}; display: flex; gap: 10px; font-size: 14px; line-height: 1.45;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: {{t.accent}}; width: 92px; flex-shrink: 0; padding-top: 2px;">Removed</span><span>Downloaded articles on this phone (18 MB). You can download them again after signing in.</span></span>
+      </div>
+      <button onClick="{{signOut}}" style="margin-top: 6px; height: 52px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 16px; font-weight: 500; cursor: pointer;">Sign out</button>
+      <a href="You.dc.html" style="height: 48px; border: 1px solid {{t.ink}}; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500;">Cancel</a>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 1900px;"><dc-import name="Main" dark="{{dark}}" hint-size="390px,1900px"></dc-import></div>
+    <div role="status" class="so-toast" style="position: absolute; left: 16px; right: 16px; bottom: 92px; padding: 14px 16px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <span style="font-size: 14px; line-height: 1.4;">You’re signed out. Keep reading as a guest.</span>
+      <a href="OB9SignIn.dc.html" style="height: 40px; padding: 0 4px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: {{t.toastAccent}}; text-decoration: underline; text-underline-offset: 3px;">Sign in</a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"stage":{"editor":"enum","options":["confirm","signed-out"],"default":"confirm","section":"State"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { stage: null };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', onAccent: '#1C1A17', scrim: 'rgba(0,0,0,0.55)', toastAccent: '#A8372A' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', onAccent: '#F8F3EA', scrim: 'rgba(28,26,23,0.36)', toastAccent: '#E08A78' };
+    const stage = this.state.stage ?? (this.props.stage ?? 'confirm');
+    return {
+      t: t, dark: dark,
+      confirm: stage === 'confirm', done: stage === 'signed-out',
+      signOut: () => this.setState({ stage: 'signed-out' })
+    };
+  }
+}
+</script>
+</body>
+</html>

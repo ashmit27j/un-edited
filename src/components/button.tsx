@@ -1,7 +1,7 @@
 import { ActivityIndicator, Pressable, StyleSheet, type PressableProps } from 'react-native';
 
 import { Text } from '@/components/text';
-import { TouchTarget } from '@/constants/theme';
+import { useTarget } from '@/hooks/use-a11y';
 import { useTheme } from '@/theme/theme-provider';
 
 type ButtonProps = Omit<PressableProps, 'children' | 'style'> & {
@@ -15,13 +15,14 @@ type ButtonProps = Omit<PressableProps, 'children' | 'style'> & {
 export function Button({ label, kind = 'primary', busy, disabled, ...rest }: ButtonProps) {
   const { colors } = useTheme();
   const off = disabled || busy;
+  const target = useTarget();
 
   const container =
     kind === 'primary'
-      ? { backgroundColor: colors.ink, height: 52 }
+      ? { backgroundColor: colors.ink, height: Math.max(52, target) }
       : kind === 'secondary'
-        ? { borderColor: colors.ink, borderWidth: 1, height: 52 }
-        : { height: TouchTarget };
+        ? { borderColor: colors.ink, borderWidth: 1, height: Math.max(52, target) }
+        : { height: target };
   const textColor = kind === 'primary' ? colors.bg : kind === 'link' ? colors.muted : colors.ink;
 
   return (

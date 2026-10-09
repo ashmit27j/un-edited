@@ -8,7 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 body{margin:0}
 a{color:inherit;text-decoration:none}
@@ -47,6 +47,15 @@ button{font:inherit}
   </sc-if>
   <sc-if value="{{scr.you}}" hint-placeholder-val="{{ false }}">
     <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 390px; height: 1700px;"><dc-import name="You" dark="{{dark}}" hint-size="390px,1700px"></dc-import></div>
+  </sc-if>
+
+  <sc-if value="{{tabbar.show}}" hint-placeholder-val="{{ true }}">
+    <nav aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 76px; box-sizing: border-box; padding: 6px 12px 18px 12px; background: {{t.bg}}; border-top: 1px solid {{t.rule}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-size: 11px;">
+      <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{tabbar.home}}; font-weight: {{tabbar.homeW}};"><svg width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>Home</span>
+      <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>Feed</span>
+      <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.muted}};"><svg width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>Library</span>
+      <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{tabbar.you}}; font-weight: {{tabbar.youW}};"><svg width="22" height="22" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>You</span>
+    </nav>
   </sc-if>
 
   <div aria-hidden="true" style="position: absolute; inset: 0;"></div>
@@ -109,11 +118,11 @@ class Component extends DCLogic {
   renderVals() {
     const dark = this.props.dark ?? false;
     const t = dark
-      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', body: '#B5AC9C', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', scrim: 'rgba(10,9,8,0.72)', onScrim: '#C9C0B0', dotFill: 'rgba(38,35,32,0.9)', stamp: 'assets/stamp-brand-ink-capped.svg' }
-      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', body: '#3F3A33', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', scrim: 'rgba(28,26,23,0.62)', onScrim: '#F8F3EA', dotFill: 'rgba(248,243,234,0.92)', stamp: 'assets/stamp-brand-paper-capped.svg' };
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', body: '#B5AC9C', muted: '#8E8678', rule: '#38332D', accent: '#C8705F', scrim: 'rgba(10,9,8,0.72)', onScrim: '#C9C0B0', dotFill: 'rgba(38,35,32,0.9)', stamp: 'assets/stamp-brand-capped-ink.svg' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', body: '#3F3A33', muted: '#6B645A', rule: '#DDD4C4', accent: '#A8372A', scrim: 'rgba(28,26,23,0.62)', onScrim: '#F8F3EA', dotFill: 'rgba(248,243,234,0.92)', stamp: 'assets/stamp-brand-capped-paper.svg' };
     const steps = [
       { scr: 'home', x: 24, y: 74, w: 342, h: 32, cardY: 128, title: 'This is today’s edition.', text: 'Home is put together at 6:00 every morning from the sources you chose. It stays the same all day, so you can actually finish it.' },
-      { scr: 'home', x: 14, y: 114, w: 362, h: 500, cardY: 630, title: 'Tap a story to read it.', text: 'When several outlets cover the same news, you can read each one’s version in its own words. The ⋯ under a story lets you save, share or see less of a topic.' },
+      { scr: 'home', x: 14, y: 114, w: 362, h: 452, cardY: 588, title: 'Tap a story to read it.', text: 'When several outlets cover the same news, you can read each one’s version in its own words. The ⋯ under a story lets you save, share or see less of a topic.' },
       { scr: 'home', x: 320, y: 18, w: 48, h: 48, cardY: 86, title: 'Search anything.', text: 'Find stories, papers, outlets and topics, in your sources or across all of them.' },
       { scr: 'home', x: 0, y: 768, w: 390, h: 76, cardY: 520, title: 'Four places, always here.', text: 'Home for today’s edition. Feed for stories as they arrive. Library for what you save. You for settings.', nextLabel: 'Show me Feed' },
       { scr: 'feed', x: 12, y: 52, w: 366, h: 430, cardY: 512, swipe: true, title: 'Swipe left or right to switch sections.', text: 'Move between Today, World, India and the rest without reaching for the tabs. Swipe up for the next story.' },
@@ -136,6 +145,7 @@ class Component extends DCLogic {
     };
     return {
       t: t, dark: dark, s: s,
+      tabbar: { show: st.scr === 'home' || st.scr === 'you', home: st.scr === 'home' ? t.accent : t.muted, homeW: st.scr === 'home' ? 500 : 400, you: st.scr === 'you' ? t.accent : t.muted, youW: st.scr === 'you' ? 500 : 400 },
       scr: { home: st.scr === 'home', feed: st.scr === 'feed', library: st.scr === 'library', you: st.scr === 'you' },
       dots: steps.slice(0, n - 1).map((_, k) => ({ w: k === i ? 16 : 6, c: k <= i ? t.accent : t.rule })),
       next: () => this.setState({ i: Math.min(n - 1, i + 1) }),

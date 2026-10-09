@@ -7,13 +7,16 @@ import { Button } from '@/components/button';
 import { BackIcon, CheckIcon } from '@/components/icons';
 import { Text } from '@/components/text';
 import { Chip, Segmented, SettingRow, useGutter } from '@/components/ui';
+import { WideOnboarding } from '@/components/wide/onboarding';
 import { Wordmark } from '@/components/wordmark';
+import { useLayout } from '@/hooks/use-layout';
 import { Fonts } from '@/constants/theme';
 import { REGIONS, SOURCES, TOPICS, type LanguageCode } from '@/data/sample';
 import { useReducedMotion } from '@/components/stamp';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
+import { useT } from '@/lib/i18n';
 
 /** Welcome → 6 steps → "Getting your edition ready". Every choice is saved as it is made. */
 const LANGUAGES: { code: LanguageCode; native: string; english: string }[] = [
@@ -23,6 +26,10 @@ const LANGUAGES: { code: LanguageCode; native: string; english: string }[] = [
 ];
 
 export default function Onboarding() {
+  return useLayout() === 'phone' ? <PhoneOnboarding /> : <WideOnboarding />;
+}
+
+function PhoneOnboarding() {
   const { colors, preference, setPreference } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -31,6 +38,7 @@ export default function Onboarding() {
   const { prefs, setPrefs, finishOnboarding } = useReader();
   const [step, setStep] = useState(0); // 0 welcome, 1-6 steps, 7 printing
   const [place, setPlace] = useState('');
+  const t = useT();
 
   const toggle = <T,>(list: T[], item: T) => (list.includes(item) ? list.filter((x) => x !== item) : [...list, item]);
 
@@ -97,7 +105,7 @@ export default function Onboarding() {
           Step {step} of 6
         </Text>
         <Pressable accessibilityRole="button" onPress={next} style={[styles.barBtn, { width: 64 }]}>
-          <Text variant="ui" color="muted">Skip</Text>
+          <Text variant="ui" color="muted">{t('common.skip')}</Text>
         </Pressable>
       </View>
 
@@ -264,7 +272,7 @@ export default function Onboarding() {
             </Text>
           ) : null}
           <Button
-            label={step === 6 ? 'Print my first edition' : 'Continue'}
+            label={step === 6 ? 'Print my first edition' : t('common.continue')}
             disabled={!!g && !g.ok}
             onPress={() => (step === 6 ? setStep(7) : next())}
           />

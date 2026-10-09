@@ -1,0 +1,165 @@
+{
+  "_note": "Draft translations for interface chrome only. Have a native Hindi and Marathi speaker review before launch. Headlines and article text are never translated.",
+  "strings": {
+    "nav.home": {
+      "en": "Home",
+      "hi": "होम",
+      "mr": "मुख्यपृष्ठ"
+    },
+    "nav.feed": {
+      "en": "Feed",
+      "hi": "फ़ीड",
+      "mr": "फीड"
+    },
+    "nav.library": {
+      "en": "Library",
+      "hi": "लाइब्रेरी",
+      "mr": "संग्रह"
+    },
+    "nav.you": {
+      "en": "You",
+      "hi": "आप",
+      "mr": "तुम्ही"
+    },
+    "feed.mine": {
+      "en": "My Feed",
+      "hi": "मेरी फ़ीड",
+      "mr": "माझी फीड"
+    },
+    "feed.explore": {
+      "en": "Explore",
+      "hi": "एक्सप्लोर",
+      "mr": "एक्सप्लोर"
+    },
+    "home.edition": {
+      "en": "Morning Edition",
+      "hi": "सुबह का संस्करण",
+      "mr": "सकाळची आवृत्ती"
+    },
+    "home.mostCovered": {
+      "en": "Most covered today",
+      "hi": "आज सबसे ज़्यादा कवर हुई ख़बरें",
+      "mr": "आज सर्वाधिक कव्हर झालेल्या बातम्या"
+    },
+    "home.seeMore": {
+      "en": "See more",
+      "hi": "और देखें",
+      "mr": "अधिक पाहा"
+    },
+    "home.endOfEdition": {
+      "en": "That’s today’s edition.",
+      "hi": "आज का संस्करण यहीं तक।",
+      "mr": "आजची आवृत्ती इथेच संपली."
+    },
+    "story.save": {
+      "en": "Save",
+      "hi": "सहेजें",
+      "mr": "जतन करा"
+    },
+    "story.saved": {
+      "en": "Saved",
+      "hi": "सहेजा गया",
+      "mr": "जतन केले"
+    },
+    "story.share": {
+      "en": "Share link",
+      "hi": "लिंक शेयर करें",
+      "mr": "लिंक शेअर करा"
+    },
+    "story.notInterested": {
+      "en": "Not interested",
+      "hi": "दिलचस्पी नहीं",
+      "mr": "रस नाही"
+    },
+    "story.report": {
+      "en": "Report a problem",
+      "hi": "समस्या बताएँ",
+      "mr": "समस्या कळवा"
+    },
+    "story.continueOn": {
+      "en": "Continue on {source}",
+      "hi": "{source} पर आगे पढ़ें",
+      "mr": "{source} वर पुढे वाचा"
+    },
+    "feed.caughtUp": {
+      "en": "You’re all caught up.",
+      "hi": "आपने सब पढ़ लिया।",
+      "mr": "तुम्ही सगळं वाचलंत."
+    },
+    "search.placeholder": {
+      "en": "Search the news",
+      "hi": "ख़बरें खोजें",
+      "mr": "बातम्या शोधा"
+    },
+    "common.continue": {
+      "en": "Continue",
+      "hi": "आगे बढ़ें",
+      "mr": "पुढे चला"
+    },
+    "common.back": {
+      "en": "Back",
+      "hi": "पीछे",
+      "mr": "मागे"
+    },
+    "common.skip": {
+      "en": "Skip",
+      "hi": "छोड़ें",
+      "mr": "वगळा"
+    },
+    "common.cancel": {
+      "en": "Cancel",
+      "hi": "रद्द करें",
+      "mr": "रद्द करा"
+    },
+    "you.reading": {
+      "en": "Reading",
+      "hi": "पढ़ना",
+      "mr": "वाचन"
+    },
+    "you.theme": {
+      "en": "Theme",
+      "hi": "थीम",
+      "mr": "थीम"
+    },
+    "you.textSize": {
+      "en": "Text size",
+      "hi": "अक्षरों का आकार",
+      "mr": "अक्षरांचा आकार"
+    },
+    "you.notifications": {
+      "en": "Notifications",
+      "hi": "सूचनाएँ",
+      "mr": "सूचना"
+    },
+    "you.accessibility": {
+      "en": "Accessibility",
+      "hi": "सुगम्यता",
+      "mr": "सुलभता"
+    },
+    "you.signOut": {
+      "en": "Sign out",
+      "hi": "साइन आउट करें",
+      "mr": "साइन आउट करा"
+    },
+    "library.download": {
+      "en": "Download",
+      "hi": "डाउनलोड करें",
+      "mr": "डाउनलोड करा"
+    },
+    "library.remove": {
+      "en": "Remove",
+      "hi": "हटाएँ",
+      "mr": "काढून टाका"
+    },
+    "tour.skip": {
+      "en": "Skip tour",
+      "hi": "टूर छोड़ें",
+      "mr": "टूर वगळा"
+    },
+    "tour.next": {
+      "en": "Next",
+      "hi": "आगे",
+      "mr": "पुढे"
+    }
+  }
+}

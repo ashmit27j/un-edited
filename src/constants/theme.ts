@@ -66,5 +66,9 @@ export const Spacing = {
 
 export const TouchTarget = 44;
 export const MaxContentWidth = 1200;
-/** Web switches from a bottom tab bar to a top nav at this width. */
+/** Web switches from a bottom tab bar to a top nav at this width (768–1023: one column, max 720). */
 export const WideBreakpoint = 768;
+/** Web multi-column layouts (sidebars, side-by-side lead, card grids) from this width. */
+export const FullBreakpoint = 1024;
+/** One-column web pages between WideBreakpoint and FullBreakpoint. */
+export const NarrowColumn = 720;

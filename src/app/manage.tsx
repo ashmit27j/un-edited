@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { BackHeader, Chip, Screen, SectionHeader, SettingRow } from '@/components/ui';
-import { SOURCES, TOPICS } from '@/data/sample';
+import { REGIONS, SOURCES, TOPICS } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 
 /** You › Your news: the topics and outlets that build the front page. */
@@ -30,7 +30,23 @@ export default function Manage() {
         ))}
       </View>
 
-      <SectionHeader title="Sources" />
+      <SectionHeader title="Places" />
+      <View style={styles.wrap}>
+        {REGIONS.map((r) => (
+          <Chip
+            key={r.name}
+            label={r.name}
+            on={prefs.regions.includes(r.name)}
+            onPress={() =>
+              setPrefs({
+                regions: prefs.regions.includes(r.name) ? prefs.regions.filter((x) => x !== r.name) : [...prefs.regions, r.name],
+              })
+            }
+          />
+        ))}
+      </View>
+
+      <SectionHeader title="Who you trust" />
       <Text variant="meta" color="muted" style={{ marginBottom: 4 }}>
         My Feed shows only these. {prefs.sources.length} chosen.
       </Text>

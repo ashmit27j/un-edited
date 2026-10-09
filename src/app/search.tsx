@@ -6,10 +6,13 @@ import { CloseIcon, SearchIcon } from '@/components/icons';
 import { StoryRow } from '@/components/story';
 import { Text } from '@/components/text';
 import { BackHeader, Chip, Rule, Screen, Segmented, SectionHeader } from '@/components/ui';
+import { WideSearch } from '@/components/wide/search';
 import { Fonts, TouchTarget } from '@/constants/theme';
 import { PAPERS, SOURCES, STORIES, TOPICS } from '@/data/sample';
+import { useLayout } from '@/hooks/use-layout';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
+import { useT } from '@/lib/i18n';
 
 const norm = (s: string) => s.toLowerCase();
 
@@ -20,6 +23,8 @@ export default function Search() {
   const [typed, setQuery] = useState<string | null>(null);
   const query = typed ?? params.q ?? '';
   const [scope, setScope] = useState<'mine' | 'all'>('mine');
+  const layout = useLayout();
+  const t = useT();
 
   const q = norm(query.trim());
   const stories = useMemo(() => {
@@ -32,6 +37,8 @@ export default function Search() {
   const papers = q ? PAPERS.filter((p) => norm(`${p.title} ${p.label}`).includes(q) || 'paper'.includes(q) && q.length > 2) : [];
   const sources = q ? SOURCES.filter((s) => norm(s.name).includes(q)) : [];
 
+  if (layout !== 'phone') return <WideSearch initial={params.q ?? ''} />;
+
   const input = (
     <View style={[styles.field, { borderColor: colors.ink, backgroundColor: colors.surface }]}>
       <SearchIcon size={20} color={colors.muted} />
@@ -39,7 +46,7 @@ export default function Search() {
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={() => addSearch(query)}
-        placeholder="Search stories, papers, sources and topics"
+        placeholder={t('search.placeholder')}
         placeholderTextColor={colors.muted}
         returnKeyType="search"
         autoFocus={!params.q}

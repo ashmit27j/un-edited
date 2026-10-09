@@ -1,4 +1,3 @@
-import { ScrollViewStyleReset } from 'expo-router/html';
 import type { PropsWithChildren } from 'react';
 
 const FONTS =
@@ -13,7 +12,44 @@ const BASE_CSS = `
 :root,:root[data-theme="paper"]{--bg:#F1EBE0;--surface:#F8F3EA;--ink:#1C1A17;--muted:#6B645A;--rule:#DDD4C4;--accent:#A8372A;--line:#C2B6A2;--body:#3F3A33;color-scheme:light}
 :root[data-theme="ink"]{--bg:#1E1C19;--surface:#262320;--ink:#C9C0B0;--muted:#8E8678;--rule:#38332D;--accent:#C8705F;--line:#4A443C;--body:#B5AC9C;color-scheme:dark}
 body{background:var(--bg);color:var(--ink)}
-html{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.6s;animation-timing-function:ease-in-out}
+html.theme-fade,html.theme-fade *{transition:background-color .6s ease-in-out,color .6s ease-in-out,border-color .6s ease-in-out,fill .6s ease-in-out,stroke .6s ease-in-out!important}
+
+/* Phones and narrow windows: the app shell fills the screen and scrolls inside (bottom tab bar, one story per screen). */
+html,body,#root{height:100%}
+body{overflow:hidden}
+#root{display:flex;flex-direction:column}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none}
+
+/* 768px and wider: the document scrolls (wheel, keyboard, browser scrollbar), with a thin thumb-only scrollbar. */
+@media (min-width:768px){
+  html,body{height:auto;min-height:100%}
+  body{overflow-y:auto}
+  #root{height:auto;min-height:100vh}
+  *{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+  *::-webkit-scrollbar{display:block;width:10px;height:10px;background:transparent}
+  *::-webkit-scrollbar-track,*::-webkit-scrollbar-corner{background:transparent}
+  *::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+  *::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7)}
+}
+
+/* Keyboard focus. "Stronger focus outline" (You › Accessibility) makes it thick. */
+:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+:root[data-focus-strong] :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+/* "Underline links": links stay underlined, not just coloured. */
+:root[data-underline-links] [data-link-text]{text-decoration:underline;text-underline-offset:3px}
+
+/* Desktop cursors (MOTION.md §10): ink pointer by default, native hand on controls, text cursor in fields,
+   and the Read more stamp on anything that opens a story (dataSet={{ storyLink: '' }}). */
+@media (hover:hover) and (pointer:fine){
+  :root[data-theme="paper"],:root[data-theme="paper"] *{cursor:url(/cursors/cursor-pointer-paper.svg) 4 3, default}
+  :root[data-theme="ink"],:root[data-theme="ink"] *{cursor:url(/cursors/cursor-pointer-ink.svg) 4 3, default}
+  :root :is(a,button,[role=button],[role=tab],[role=link],[role=switch],[role=radio],[role=checkbox]),:root :is(a,button,[role=button],[role=tab],[role=link],[role=switch],[role=radio],[role=checkbox]) *{cursor:pointer}
+  :root :is(input,textarea),:root :is(input,textarea) *{cursor:text}
+  :root[data-theme="paper"] [data-story-link],:root[data-theme="paper"] [data-story-link] *{cursor:url(/cursors/cursor-readmore-paper.svg) 32 32, pointer}
+  :root[data-theme="ink"] [data-story-link],:root[data-theme="ink"] [data-story-link] *{cursor:url(/cursors/cursor-readmore-ink.svg) 32 32, pointer}
+}
 `;
 
 /** Root HTML for the web build: PWA tags, fonts, theme colour and page background (no flash). */
@@ -38,7 +74,6 @@ export default function Root({ children }: PropsWithChildren) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href={FONTS} />
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-        <ScrollViewStyleReset />
         <style dangerouslySetInnerHTML={{ __html: BASE_CSS }} />
       </head>
       <body>{children}</body>

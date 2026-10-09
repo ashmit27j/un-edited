@@ -1,727 +1,772 @@
 {
-  "v": 3,
-  "attachments": {},
-  "boards": {
-    "Article-ptmb.dc.html": {
-      "h": 1640,
-      "is_interactive": true,
-      "title": "Article · source switcher · Paper copy",
-      "w": 390,
-      "x": 4795,
-      "y": 0
-    },
-    "Article.dc.html": {
-      "h": 1640,
-      "is_interactive": true,
-      "title": "Article · source switcher · Paper",
-      "w": 390,
-      "x": 1880,
-      "y": 0
-    },
-    "ArticleDark.dc.html": {
-      "h": 1640,
-      "is_interactive": true,
-      "title": "Article · source switcher · Ink",
-      "w": 390,
-      "x": 1880,
-      "y": 2200
-    },
-    "Components.dc.html": {
-      "h": 1820,
-      "is_interactive": true,
-      "title": "Components",
-      "w": 1440,
-      "x": 3840,
-      "y": 9850
-    },
-    "Feed.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Feed · Paper",
-      "w": 390,
-      "x": 940,
-      "y": 0
-    },
-    "FeedCaughtUp.dc.html": {
-      "h": 844,
-      "title": "Feed · Caught up · Paper",
-      "w": 390,
-      "x": 1410,
-      "y": 0
-    },
-    "FeedCaughtUpDark.dc.html": {
-      "h": 844,
-      "title": "Feed · Caught up · Ink",
-      "w": 390,
-      "x": 1410,
-      "y": 2200
-    },
-    "FeedDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Feed · Ink",
-      "w": 390,
-      "x": 940,
-      "y": 2200
-    },
-    "FolderEmpty.dc.html": {
-      "h": 844,
-      "title": "Folder · Empty · Paper",
-      "w": 390,
-      "x": 3760,
-      "y": 0
-    },
-    "FolderEmptyDark.dc.html": {
-      "h": 844,
-      "title": "Folder · Empty · Ink",
-      "w": 390,
-      "x": 3760,
-      "y": 2200
-    },
-    "GuestPrompt.dc.html": {
-      "h": 844,
-      "title": "Guest · sign-in prompt",
-      "w": 390,
-      "x": 940,
-      "y": 5650
-    },
-    "GuestPromptDark.dc.html": {
-      "h": 844,
-      "title": "Guest · sign-in prompt · Ink",
-      "w": 390,
-      "x": 940,
-      "y": 11250
-    },
-    "History.dc.html": {
-      "h": 1780,
-      "title": "Recently viewed · Paper",
-      "w": 390,
-      "x": 4230,
-      "y": 0
-    },
-    "HistoryDark.dc.html": {
-      "h": 1780,
-      "title": "Recently viewed · Ink",
-      "w": 390,
-      "x": 4230,
-      "y": 2200
-    },
-    "HomeDark.dc.html": {
-      "h": 1900,
-      "is_interactive": true,
-      "title": "Home · Comfortable · Ink",
-      "w": 390,
-      "x": 0,
-      "y": 2200
-    },
-    "HomeFocused.dc.html": {
-      "h": 1540,
-      "title": "Home · Focused · Paper",
-      "w": 390,
-      "x": 470,
-      "y": 0
-    },
-    "HomeFocusedDark.dc.html": {
-      "h": 1540,
-      "title": "Home · Focused · Ink",
-      "w": 390,
-      "x": 470,
-      "y": 2200
-    },
-    "ImageView.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Image · full view",
-      "w": 390,
-      "x": 1410,
-      "y": 5650
-    },
-    "Landing.dc.html": {
-      "expand": "fill",
-      "h": 4600,
-      "is_interactive": true,
-      "title": "Landing page",
-      "w": 1440,
-      "x": 0,
-      "y": 13200
-    },
-    "Library.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Library · Paper",
-      "w": 390,
-      "x": 2350,
-      "y": 0
-    },
-    "LibraryDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Library · Ink",
-      "w": 390,
-      "x": 2350,
-      "y": 2200
-    },
-    "LibraryEmpty.dc.html": {
-      "h": 844,
-      "title": "Library · Empty · Paper",
-      "w": 390,
-      "x": 2820,
-      "y": 0
-    },
-    "LibraryEmptyDark.dc.html": {
-      "h": 844,
-      "title": "Library · Empty · Ink",
-      "w": 390,
-      "x": 2820,
-      "y": 2200
-    },
-    "Logo.dc.html": {
-      "h": 760,
-      "title": "Logo & app icon",
-      "w": 1200,
-      "x": 0,
-      "y": 9850
-    },
-    "Main.dc.html": {
-      "h": 1900,
-      "is_interactive": true,
-      "title": "Home · Comfortable · Paper",
-      "w": 390,
-      "x": 0,
-      "y": 0
-    },
-    "MoreSheet.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "⋯ menu",
-      "w": 390,
-      "x": 0,
-      "y": 5650
-    },
-    "MoreSheetDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "⋯ menu · Ink",
-      "w": 390,
-      "x": 0,
-      "y": 11250
-    },
-    "OB1Welcome.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 1 · Welcome",
-      "w": 390,
-      "x": 0,
-      "y": 4400
-    },
-    "OB2Language.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 2 · Language",
-      "w": 390,
-      "x": 470,
-      "y": 4400
-    },
-    "OB3Reading.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 3 · Reading",
-      "w": 390,
-      "x": 940,
-      "y": 4400
-    },
-    "OB4Topics.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 4 · Topics",
-      "w": 390,
-      "x": 1410,
-      "y": 4400
-    },
-    "OB5Regions.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 5 · Regions",
-      "w": 390,
-      "x": 1880,
-      "y": 4400
-    },
-    "OB6Sources.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 6 · Choose who you trust",
-      "w": 390,
-      "x": 2350,
-      "y": 4400
-    },
-    "OB7Front.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 7 · Your front page",
-      "w": 390,
-      "x": 2820,
-      "y": 4400
-    },
-    "OB8Printing.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 8 · Printing",
-      "w": 390,
-      "x": 3290,
-      "y": 4400
-    },
-    "OB9SignIn.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Onboarding 9 · Sign in",
-      "w": 390,
-      "x": 3760,
-      "y": 4400
-    },
-    "Offline.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Offline",
-      "w": 390,
-      "x": 2350,
-      "y": 5650
-    },
-    "OfflineDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Offline · Ink",
-      "w": 390,
-      "x": 1880,
-      "y": 11250
-    },
-    "SaveSheet.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Save to folder",
-      "w": 390,
-      "x": 470,
-      "y": 5650
-    },
-    "SaveSheetDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Save to folder · Ink",
-      "w": 390,
-      "x": 470,
-      "y": 11250
-    },
-    "Search.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Search · Paper",
-      "w": 390,
-      "x": 3290,
-      "y": 0
-    },
-    "SearchDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "Search · Ink",
-      "w": 390,
-      "x": 3290,
-      "y": 2200
-    },
-    "Skeleton.dc.html": {
-      "h": 844,
-      "title": "Loading · skeleton",
-      "w": 390,
-      "x": 1880,
-      "y": 5650
-    },
-    "SkeletonDark.dc.html": {
-      "h": 844,
-      "title": "Loading · skeleton · Ink",
-      "w": 390,
-      "x": 1410,
-      "y": 11250
-    },
-    "Stamps.dc.html": {
-      "h": 1000,
-      "title": "Stamps",
-      "w": 1200,
-      "x": 2560,
-      "y": 9850
-    },
-    "Tokens.dc.html": {
-      "h": 900,
-      "title": "Design tokens",
-      "w": 1200,
-      "x": 1280,
-      "y": 9850
-    },
-    "Tour.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "First-run tour · after sign-in",
-      "w": 390,
-      "x": 4230,
-      "y": 4400
-    },
-    "TourDark.dc.html": {
-      "h": 844,
-      "is_interactive": true,
-      "title": "First-run tour · Ink (swipe step)",
-      "w": 390,
-      "x": 4700,
-      "y": 4400
-    },
-    "WebArticle.dc.html": {
-      "expand": "fill",
-      "h": 1700,
-      "is_interactive": true,
-      "title": "Web · Article",
-      "w": 1440,
-      "x": 1520,
-      "y": 7450
-    },
-    "WebArticleDark.dc.html": {
-      "expand": "fill",
-      "h": 1700,
-      "is_interactive": true,
-      "title": "Web · Article · Ink",
-      "w": 1440,
-      "x": 1520,
-      "y": 18300
-    },
-    "WebFeed.dc.html": {
-      "expand": "fill",
-      "h": 2700,
-      "is_interactive": true,
-      "title": "Web · Feed",
-      "w": 1440,
-      "x": 3040,
-      "y": 7450
-    },
-    "WebFeedDark.dc.html": {
-      "expand": "fill",
-      "h": 2700,
-      "is_interactive": true,
-      "title": "Web · Feed · Ink",
-      "w": 1440,
-      "x": 3040,
-      "y": 18300
-    },
-    "WebHome.dc.html": {
-      "expand": "fill",
-      "h": 2000,
-      "is_interactive": true,
-      "title": "Web · Home",
-      "w": 1440,
-      "x": 0,
-      "y": 7450
-    },
-    "WebHomeDark.dc.html": {
-      "expand": "fill",
-      "h": 2000,
-      "is_interactive": true,
-      "title": "Web · Home · Ink",
-      "w": 1440,
-      "x": 0,
-      "y": 18300
-    },
-    "WebLibrary.dc.html": {
-      "expand": "fill",
-      "h": 1300,
-      "is_interactive": true,
-      "title": "Web · Library",
-      "w": 1440,
-      "x": 4560,
-      "y": 7450
-    },
-    "WebLibraryDark.dc.html": {
-      "expand": "fill",
-      "h": 1300,
-      "is_interactive": true,
-      "title": "Web · Library · Ink",
-      "w": 1440,
-      "x": 4560,
-      "y": 18300
-    },
-    "WebSearch.dc.html": {
-      "expand": "fill",
-      "h": 1300,
-      "is_interactive": true,
-      "title": "Web · Search",
-      "w": 1440,
-      "x": 7600,
-      "y": 7450
-    },
-    "WebSearchDark.dc.html": {
-      "expand": "fill",
-      "h": 1300,
-      "is_interactive": true,
-      "title": "Web · Search · Ink",
-      "w": 1440,
-      "x": 7600,
-      "y": 18300
-    },
-    "WebSyncHint.dc.html": {
-      "h": 200,
-      "is_interactive": true,
-      "title": "Web · Library hint (first visit only)",
-      "w": 320,
-      "x": 4560,
-      "y": 8830
-    },
-    "WebYou.dc.html": {
-      "expand": "fill",
-      "h": 4300,
-      "is_interactive": true,
-      "title": "Web · You",
-      "w": 1440,
-      "x": 6080,
-      "y": 7450
-    },
-    "WebYouDark.dc.html": {
-      "expand": "fill",
-      "h": 4300,
-      "is_interactive": true,
-      "title": "Web · You · Ink",
-      "w": 1440,
-      "x": 6080,
-      "y": 18300
-    },
-    "You.dc.html": {
-      "h": 2120,
-      "is_interactive": true,
-      "title": "You · settings",
-      "w": 390,
-      "x": 2820,
-      "y": 5650
-    },
-    "YouAccessibility.dc.html": {
-      "h": 2400,
-      "is_interactive": true,
-      "title": "You › Accessibility",
-      "w": 390,
-      "x": 3290,
-      "y": 5650
-    },
-    "YouDark.dc.html": {
-      "h": 2120,
-      "is_interactive": true,
-      "title": "You · settings · Ink",
-      "w": 390,
-      "x": 2350,
-      "y": 11250
-    },
-    "YouLanguage.dc.html": {
-      "h": 1280,
-      "is_interactive": true,
-      "title": "You › Language",
-      "w": 390,
-      "x": 3760,
-      "y": 5650
-    },
-    "YouNotifications.dc.html": {
-      "h": 1700,
-      "is_interactive": true,
-      "title": "You › Notifications",
-      "w": 390,
-      "x": 4230,
-      "y": 5650
-    },
-    "YouAccessibilityDark.dc.html": {
-      "h": 2400,
-      "is_interactive": true,
-      "title": "You › Accessibility · Ink",
-      "w": 390,
-      "x": 2820,
-      "y": 11250
-    },
-    "YouLanguageDark.dc.html": {
-      "h": 1280,
-      "is_interactive": true,
-      "title": "You › Language · Ink",
-      "w": 390,
-      "x": 3290,
-      "y": 11250
-    },
-    "YouNotificationsDark.dc.html": {
-      "h": 1700,
-      "is_interactive": true,
-      "title": "You › Notifications · Ink",
-      "w": 390,
-      "x": 3760,
-      "y": 11250
-    },
-    "HomeHindi.dc.html": {
-      "h": 1900,
-      "is_interactive": true,
-      "title": "Home · Hindi · Paper",
-      "w": 390,
-      "x": 5265,
-      "y": 0
-    },
-    "HomeMarathi.dc.html": {
-      "h": 1900,
-      "is_interactive": true,
-      "title": "Home · Marathi · Paper",
-      "w": 390,
-      "x": 5735,
-      "y": 0
-    }
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "Article-ptmb.dc.html": {
+   "h": 1640,
+   "is_interactive": true,
+   "title": "Article · source switcher · Paper copy",
+   "w": 390,
+   "x": 4795,
+   "y": 0
   },
-  "createdOnFiles": {
-    "at": "2026-10-06T10:30:00Z",
-    "v": 1
+  "Article.dc.html": {
+   "h": 1640,
+   "is_interactive": true,
+   "title": "Article · source switcher · Paper",
+   "w": 390,
+   "x": 1880,
+   "y": 0
   },
-  "designSystems": [],
-  "launch": {
-    "view": "canvas"
+  "ArticleDark.dc.html": {
+   "h": 1640,
+   "is_interactive": true,
+   "title": "Article · source switcher · Ink",
+   "w": 390,
+   "x": 1880,
+   "y": 2200
   },
-  "notes": {
-    "rowBrand": {
-      "kind": "title1",
-      "maxW": 5280,
-      "text": "Brand & tokens",
-      "w": 240,
-      "x": 0,
-      "y": 9550
-    },
-    "rowInk": {
-      "kind": "title1",
-      "maxW": 4620,
-      "text": "Ink — dark theme, low contrast",
-      "w": 240,
-      "x": 0,
-      "y": 1900
-    },
-    "rowLanding": {
-      "kind": "title1",
-      "maxW": 1440,
-      "text": "Landing page",
-      "w": 240,
-      "x": 0,
-      "y": 12950
-    },
-    "rowOnboarding": {
-      "kind": "title1",
-      "maxW": 5090,
-      "text": "Onboarding — tap Continue in Play to walk through",
-      "w": 240,
-      "x": 0,
-      "y": 4100
-    },
-    "rowPaper": {
-      "kind": "title1",
-      "maxW": 4620,
-      "text": "Paper — light theme",
-      "w": 240,
-      "x": 0,
-      "y": -300
-    },
-    "rowSheets": {
-      "kind": "title1",
-      "maxW": 3680,
-      "text": "Menus, states & You",
-      "w": 240,
-      "x": 0,
-      "y": 5350
-    },
-    "rowSheetsInk": {
-      "kind": "title1",
-      "maxW": 2740,
-      "text": "Menus, states & You · Ink",
-      "w": 240,
-      "x": 0,
-      "y": 11000
-    },
-    "rowWeb": {
-      "kind": "title1",
-      "maxW": 8000,
-      "text": "Web — tab bar moves to the top",
-      "w": 240,
-      "x": 0,
-      "y": 7150
-    },
-    "rowWebInk": {
-      "kind": "title1",
-      "maxW": 8000,
-      "text": "Web · Ink — dark theme",
-      "w": 240,
-      "x": 0,
-      "y": 18050
-    }
+  "Components.dc.html": {
+   "h": 1820,
+   "is_interactive": true,
+   "title": "Components",
+   "w": 1440,
+   "x": 3840,
+   "y": 9850
   },
-  "order": [
-    "Main.dc.html",
-    "HomeFocused.dc.html",
-    "Feed.dc.html",
-    "FeedCaughtUp.dc.html",
-    "Article.dc.html",
-    "Library.dc.html",
-    "LibraryEmpty.dc.html",
-    "Search.dc.html",
-    "FolderEmpty.dc.html",
-    "HomeDark.dc.html",
-    "HomeFocusedDark.dc.html",
-    "FeedDark.dc.html",
-    "FeedCaughtUpDark.dc.html",
-    "ArticleDark.dc.html",
-    "LibraryDark.dc.html",
-    "LibraryEmptyDark.dc.html",
-    "SearchDark.dc.html",
-    "FolderEmptyDark.dc.html",
-    "OB1Welcome.dc.html",
-    "OB2Language.dc.html",
-    "OB3Reading.dc.html",
-    "OB4Topics.dc.html",
-    "OB5Regions.dc.html",
-    "OB6Sources.dc.html",
-    "OB7Front.dc.html",
-    "OB8Printing.dc.html",
-    "OB9SignIn.dc.html",
-    "MoreSheet.dc.html",
-    "SaveSheet.dc.html",
-    "GuestPrompt.dc.html",
-    "ImageView.dc.html",
-    "Skeleton.dc.html",
-    "Offline.dc.html",
-    "You.dc.html",
-    "WebHome.dc.html",
-    "WebArticle.dc.html",
-    "WebFeed.dc.html",
-    "WebLibrary.dc.html",
-    "WebSyncHint.dc.html",
-    "WebYou.dc.html",
-    "Logo.dc.html",
-    "Tokens.dc.html",
-    "MoreSheetDark.dc.html",
-    "SaveSheetDark.dc.html",
-    "GuestPromptDark.dc.html",
-    "SkeletonDark.dc.html",
-    "OfflineDark.dc.html",
-    "YouDark.dc.html",
-    "YouAccessibilityDark.dc.html",
-    "YouLanguageDark.dc.html",
-    "YouNotificationsDark.dc.html",
-    "Landing.dc.html",
-    "History.dc.html",
-    "HistoryDark.dc.html",
-    "Stamps.dc.html",
-    "Article-ptmb.dc.html",
-    "Tour.dc.html",
-    "TourDark.dc.html",
-    "YouAccessibility.dc.html",
-    "YouLanguage.dc.html",
-    "YouNotifications.dc.html",
-    "WebSearch.dc.html",
-    "Components.dc.html",
-    "WebHomeDark.dc.html",
-    "WebArticleDark.dc.html",
-    "WebFeedDark.dc.html",
-    "WebLibraryDark.dc.html",
-    "WebYouDark.dc.html",
-    "WebSearchDark.dc.html",
-    "HomeHindi.dc.html",
-    "HomeMarathi.dc.html"
-  ],
-  "pages": [],
-  "title": "Un:edited — Core Screens"
+  "Feed.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Feed · Paper",
+   "w": 390,
+   "x": 940,
+   "y": 0
+  },
+  "FeedCaughtUp.dc.html": {
+   "h": 844,
+   "title": "Feed · Caught up · Paper",
+   "w": 390,
+   "x": 1410,
+   "y": 0
+  },
+  "FeedCaughtUpDark.dc.html": {
+   "h": 844,
+   "title": "Feed · Caught up · Ink",
+   "w": 390,
+   "x": 1410,
+   "y": 2200
+  },
+  "FeedDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Feed · Ink",
+   "w": 390,
+   "x": 940,
+   "y": 2200
+  },
+  "FolderEmpty.dc.html": {
+   "h": 844,
+   "title": "Folder · Empty · Paper",
+   "w": 390,
+   "x": 3760,
+   "y": 0
+  },
+  "FolderEmptyDark.dc.html": {
+   "h": 844,
+   "title": "Folder · Empty · Ink",
+   "w": 390,
+   "x": 3760,
+   "y": 2200
+  },
+  "GuestPrompt.dc.html": {
+   "h": 844,
+   "title": "Guest · sign-in prompt",
+   "w": 390,
+   "x": 940,
+   "y": 5650
+  },
+  "GuestPromptDark.dc.html": {
+   "h": 844,
+   "title": "Guest · sign-in prompt · Ink",
+   "w": 390,
+   "x": 940,
+   "y": 11250
+  },
+  "History.dc.html": {
+   "h": 1780,
+   "title": "Recently viewed · Paper",
+   "w": 390,
+   "x": 4230,
+   "y": 0
+  },
+  "HistoryDark.dc.html": {
+   "h": 1780,
+   "title": "Recently viewed · Ink",
+   "w": 390,
+   "x": 4230,
+   "y": 2200
+  },
+  "HomeDark.dc.html": {
+   "h": 1900,
+   "is_interactive": true,
+   "title": "Home · Comfortable · Ink",
+   "w": 390,
+   "x": 0,
+   "y": 2200
+  },
+  "HomeFocused.dc.html": {
+   "h": 1540,
+   "title": "Home · Focused · Paper",
+   "w": 390,
+   "x": 470,
+   "y": 0
+  },
+  "HomeFocusedDark.dc.html": {
+   "h": 1540,
+   "title": "Home · Focused · Ink",
+   "w": 390,
+   "x": 470,
+   "y": 2200
+  },
+  "ImageView.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Image · full view",
+   "w": 390,
+   "x": 1410,
+   "y": 5650
+  },
+  "Landing.dc.html": {
+   "expand": "fill",
+   "h": 4600,
+   "is_interactive": true,
+   "title": "Landing page",
+   "w": 1440,
+   "x": 0,
+   "y": 13200
+  },
+  "Library.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Library · Paper",
+   "w": 390,
+   "x": 2350,
+   "y": 0
+  },
+  "LibraryDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Library · Ink",
+   "w": 390,
+   "x": 2350,
+   "y": 2200
+  },
+  "LibraryEmpty.dc.html": {
+   "h": 844,
+   "title": "Library · Empty · Paper",
+   "w": 390,
+   "x": 2820,
+   "y": 0
+  },
+  "LibraryEmptyDark.dc.html": {
+   "h": 844,
+   "title": "Library · Empty · Ink",
+   "w": 390,
+   "x": 2820,
+   "y": 2200
+  },
+  "Logo.dc.html": {
+   "h": 760,
+   "title": "Logo & app icon",
+   "w": 1200,
+   "x": 0,
+   "y": 9850
+  },
+  "Main.dc.html": {
+   "h": 1900,
+   "is_interactive": true,
+   "title": "Home · Comfortable · Paper",
+   "w": 390,
+   "x": 0,
+   "y": 0
+  },
+  "MoreSheet.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "⋯ menu",
+   "w": 390,
+   "x": 0,
+   "y": 5650
+  },
+  "MoreSheetDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "⋯ menu · Ink",
+   "w": 390,
+   "x": 0,
+   "y": 11250
+  },
+  "OB1Welcome.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 1 · Welcome",
+   "w": 390,
+   "x": 0,
+   "y": 4400
+  },
+  "OB2Language.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 2 · Language",
+   "w": 390,
+   "x": 470,
+   "y": 4400
+  },
+  "OB3Reading.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 3 · Reading",
+   "w": 390,
+   "x": 940,
+   "y": 4400
+  },
+  "OB4Topics.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 4 · Topics",
+   "w": 390,
+   "x": 1410,
+   "y": 4400
+  },
+  "OB5Regions.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 5 · Regions",
+   "w": 390,
+   "x": 1880,
+   "y": 4400
+  },
+  "OB6Sources.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 6 · Choose who you trust",
+   "w": 390,
+   "x": 2350,
+   "y": 4400
+  },
+  "OB7Front.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 7 · Your front page",
+   "w": 390,
+   "x": 2820,
+   "y": 4400
+  },
+  "OB8Printing.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 8 · Printing",
+   "w": 390,
+   "x": 3290,
+   "y": 4400
+  },
+  "OB9SignIn.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Onboarding 9 · Sign in",
+   "w": 390,
+   "x": 3760,
+   "y": 4400
+  },
+  "Offline.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Offline",
+   "w": 390,
+   "x": 2350,
+   "y": 5650
+  },
+  "OfflineDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Offline · Ink",
+   "w": 390,
+   "x": 1880,
+   "y": 11250
+  },
+  "SaveSheet.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Save to folder",
+   "w": 390,
+   "x": 470,
+   "y": 5650
+  },
+  "SaveSheetDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Save to folder · Ink",
+   "w": 390,
+   "x": 470,
+   "y": 11250
+  },
+  "Search.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Search · Paper",
+   "w": 390,
+   "x": 3290,
+   "y": 0
+  },
+  "SearchDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "Search · Ink",
+   "w": 390,
+   "x": 3290,
+   "y": 2200
+  },
+  "Skeleton.dc.html": {
+   "h": 844,
+   "title": "Loading · skeleton",
+   "w": 390,
+   "x": 1880,
+   "y": 5650
+  },
+  "SkeletonDark.dc.html": {
+   "h": 844,
+   "title": "Loading · skeleton · Ink",
+   "w": 390,
+   "x": 1410,
+   "y": 11250
+  },
+  "Stamps.dc.html": {
+   "h": 1000,
+   "title": "Stamps",
+   "w": 1200,
+   "x": 2560,
+   "y": 9850
+  },
+  "Tokens.dc.html": {
+   "h": 900,
+   "title": "Design tokens",
+   "w": 1200,
+   "x": 1280,
+   "y": 9850
+  },
+  "Tour.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "First-run tour · after sign-in",
+   "w": 390,
+   "x": 4230,
+   "y": 4400
+  },
+  "TourDark.dc.html": {
+   "h": 844,
+   "is_interactive": true,
+   "title": "First-run tour · Ink (swipe step)",
+   "w": 390,
+   "x": 4700,
+   "y": 4400
+  },
+  "WebArticle.dc.html": {
+   "expand": "fill",
+   "h": 1700,
+   "is_interactive": true,
+   "title": "Web · Article",
+   "w": 1440,
+   "x": 1520,
+   "y": 7450
+  },
+  "WebArticleDark.dc.html": {
+   "expand": "fill",
+   "h": 1700,
+   "is_interactive": true,
+   "title": "Web · Article · Ink",
+   "w": 1440,
+   "x": 1520,
+   "y": 18300
+  },
+  "WebFeed.dc.html": {
+   "expand": "fill",
+   "h": 2700,
+   "is_interactive": true,
+   "title": "Web · Feed",
+   "w": 1440,
+   "x": 3040,
+   "y": 7450
+  },
+  "WebFeedDark.dc.html": {
+   "expand": "fill",
+   "h": 2700,
+   "is_interactive": true,
+   "title": "Web · Feed · Ink",
+   "w": 1440,
+   "x": 3040,
+   "y": 18300
+  },
+  "WebHome.dc.html": {
+   "expand": "fill",
+   "h": 2000,
+   "is_interactive": true,
+   "title": "Web · Home",
+   "w": 1440,
+   "x": 0,
+   "y": 7450
+  },
+  "WebHomeDark.dc.html": {
+   "expand": "fill",
+   "h": 2000,
+   "is_interactive": true,
+   "title": "Web · Home · Ink",
+   "w": 1440,
+   "x": 0,
+   "y": 18300
+  },
+  "WebLibrary.dc.html": {
+   "expand": "fill",
+   "h": 1300,
+   "is_interactive": true,
+   "title": "Web · Library",
+   "w": 1440,
+   "x": 4560,
+   "y": 7450
+  },
+  "WebLibraryDark.dc.html": {
+   "expand": "fill",
+   "h": 1300,
+   "is_interactive": true,
+   "title": "Web · Library · Ink",
+   "w": 1440,
+   "x": 4560,
+   "y": 18300
+  },
+  "WebSearch.dc.html": {
+   "expand": "fill",
+   "h": 1300,
+   "is_interactive": true,
+   "title": "Web · Search",
+   "w": 1440,
+   "x": 7600,
+   "y": 7450
+  },
+  "WebSearchDark.dc.html": {
+   "expand": "fill",
+   "h": 1300,
+   "is_interactive": true,
+   "title": "Web · Search · Ink",
+   "w": 1440,
+   "x": 7600,
+   "y": 18300
+  },
+  "WebSyncHint.dc.html": {
+   "h": 200,
+   "is_interactive": true,
+   "title": "Web · Library hint (first visit only)",
+   "w": 320,
+   "x": 4560,
+   "y": 8830
+  },
+  "WebYou.dc.html": {
+   "expand": "fill",
+   "h": 2150,
+   "is_interactive": true,
+   "title": "Web · You",
+   "w": 1440,
+   "x": 6080,
+   "y": 7450
+  },
+  "WebYouDark.dc.html": {
+   "expand": "fill",
+   "h": 2150,
+   "is_interactive": true,
+   "title": "Web · You · Ink",
+   "w": 1440,
+   "x": 6080,
+   "y": 18300
+  },
+  "You.dc.html": {
+   "h": 2120,
+   "is_interactive": true,
+   "title": "You · settings",
+   "w": 390,
+   "x": 2820,
+   "y": 5650
+  },
+  "YouAccessibility.dc.html": {
+   "h": 2400,
+   "is_interactive": true,
+   "title": "You › Accessibility",
+   "w": 390,
+   "x": 3290,
+   "y": 5650
+  },
+  "YouDark.dc.html": {
+   "h": 1700,
+   "is_interactive": true,
+   "title": "You · settings · Ink",
+   "w": 390,
+   "x": 2350,
+   "y": 11250
+  },
+  "Notifications.dc.html": {
+   "x": 3760,
+   "y": 5650,
+   "w": 390,
+   "h": 2050,
+   "title": "You › Notifications",
+   "is_interactive": true
+  },
+  "SignOut.dc.html": {
+   "x": 4230,
+   "y": 5650,
+   "w": 390,
+   "h": 844,
+   "title": "Sign out · confirm / signed out",
+   "is_interactive": true
+  },
+  "NotificationDelivery.dc.html": {
+   "x": 4700,
+   "y": 5650,
+   "w": 1200,
+   "h": 820,
+   "title": "Notifications · delivery"
+  },
+  "WebOnboarding.dc.html": {
+   "x": 9120,
+   "y": 7450,
+   "w": 1440,
+   "h": 1000,
+   "title": "Web · Onboarding",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "WebSignOut.dc.html": {
+   "x": 10640,
+   "y": 7450,
+   "w": 1440,
+   "h": 900,
+   "title": "Web · Sign out",
+   "expand": "fill",
+   "is_interactive": true
+  },
+  "Localized.dc.html": {
+   "x": 5360,
+   "y": 9850,
+   "w": 1440,
+   "h": 1720,
+   "title": "Hindi & Marathi interface"
+  },
+  "HomeHindi.dc.html": {
+   "h": 1900,
+   "is_interactive": true,
+   "title": "Home · Hindi · Paper",
+   "w": 390,
+   "x": 5265,
+   "y": 0
+  },
+  "HomeMarathi.dc.html": {
+   "h": 1900,
+   "is_interactive": true,
+   "title": "Home · Marathi · Paper",
+   "w": 390,
+   "x": 5735,
+   "y": 0
+  },
+  "YouAccessibilityDark.dc.html": {
+   "h": 2400,
+   "is_interactive": true,
+   "title": "You › Accessibility · Ink",
+   "w": 390,
+   "x": 2820,
+   "y": 11250
+  },
+  "YouLanguage.dc.html": {
+   "h": 1280,
+   "is_interactive": true,
+   "title": "You › Language",
+   "w": 390,
+   "x": 6050,
+   "y": 5650
+  },
+  "YouLanguageDark.dc.html": {
+   "h": 1280,
+   "is_interactive": true,
+   "title": "You › Language · Ink",
+   "w": 390,
+   "x": 3290,
+   "y": 11250
+  },
+  "NotificationsDark.dc.html": {
+   "h": 2050,
+   "is_interactive": true,
+   "title": "You · Notifications · Ink",
+   "w": 390,
+   "x": 3760,
+   "y": 11250
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-10-06T10:30:00Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "rowBrand": {
+   "kind": "title1",
+   "maxW": 6800,
+   "text": "Brand & tokens",
+   "w": 240,
+   "x": 0,
+   "y": 9550
+  },
+  "rowInk": {
+   "kind": "title1",
+   "maxW": 4620,
+   "text": "Ink — dark theme, low contrast",
+   "w": 240,
+   "x": 0,
+   "y": 1900
+  },
+  "rowLanding": {
+   "kind": "title1",
+   "maxW": 1440,
+   "text": "Landing page",
+   "w": 240,
+   "x": 0,
+   "y": 12950
+  },
+  "rowOnboarding": {
+   "kind": "title1",
+   "maxW": 5090,
+   "text": "Onboarding — tap Continue in Play to walk through",
+   "w": 240,
+   "x": 0,
+   "y": 4100
+  },
+  "rowPaper": {
+   "kind": "title1",
+   "maxW": 4620,
+   "text": "Paper — light theme",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "rowSheets": {
+   "kind": "title1",
+   "maxW": 5900,
+   "text": "Menus, states & You",
+   "w": 240,
+   "x": 0,
+   "y": 5350
+  },
+  "rowSheetsInk": {
+   "kind": "title1",
+   "maxW": 2740,
+   "text": "Menus, states & You · Ink",
+   "w": 240,
+   "x": 0,
+   "y": 11000
+  },
+  "rowWeb": {
+   "kind": "title1",
+   "maxW": 12080,
+   "text": "Web — tab bar moves to the top",
+   "w": 240,
+   "x": 0,
+   "y": 7150
+  },
+  "rowWebInk": {
+   "kind": "title1",
+   "maxW": 8000,
+   "text": "Web · Ink — dark theme",
+   "w": 240,
+   "x": 0,
+   "y": 18050
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "HomeFocused.dc.html",
+  "Feed.dc.html",
+  "FeedCaughtUp.dc.html",
+  "Article.dc.html",
+  "Library.dc.html",
+  "LibraryEmpty.dc.html",
+  "Search.dc.html",
+  "FolderEmpty.dc.html",
+  "HomeDark.dc.html",
+  "HomeFocusedDark.dc.html",
+  "FeedDark.dc.html",
+  "FeedCaughtUpDark.dc.html",
+  "ArticleDark.dc.html",
+  "LibraryDark.dc.html",
+  "LibraryEmptyDark.dc.html",
+  "SearchDark.dc.html",
+  "FolderEmptyDark.dc.html",
+  "OB1Welcome.dc.html",
+  "OB2Language.dc.html",
+  "OB3Reading.dc.html",
+  "OB4Topics.dc.html",
+  "OB5Regions.dc.html",
+  "OB6Sources.dc.html",
+  "OB7Front.dc.html",
+  "OB8Printing.dc.html",
+  "OB9SignIn.dc.html",
+  "MoreSheet.dc.html",
+  "SaveSheet.dc.html",
+  "GuestPrompt.dc.html",
+  "ImageView.dc.html",
+  "Skeleton.dc.html",
+  "Offline.dc.html",
+  "You.dc.html",
+  "WebHome.dc.html",
+  "WebArticle.dc.html",
+  "WebFeed.dc.html",
+  "WebLibrary.dc.html",
+  "WebSyncHint.dc.html",
+  "WebYou.dc.html",
+  "Logo.dc.html",
+  "Tokens.dc.html",
+  "MoreSheetDark.dc.html",
+  "SaveSheetDark.dc.html",
+  "GuestPromptDark.dc.html",
+  "SkeletonDark.dc.html",
+  "OfflineDark.dc.html",
+  "YouDark.dc.html",
+  "Landing.dc.html",
+  "History.dc.html",
+  "HistoryDark.dc.html",
+  "Stamps.dc.html",
+  "Article-ptmb.dc.html",
+  "Tour.dc.html",
+  "TourDark.dc.html",
+  "YouAccessibility.dc.html",
+  "WebSearch.dc.html",
+  "Components.dc.html",
+  "WebHomeDark.dc.html",
+  "WebArticleDark.dc.html",
+  "WebFeedDark.dc.html",
+  "WebLibraryDark.dc.html",
+  "WebYouDark.dc.html",
+  "WebSearchDark.dc.html",
+  "Notifications.dc.html",
+  "SignOut.dc.html",
+  "NotificationDelivery.dc.html",
+  "WebOnboarding.dc.html",
+  "WebSignOut.dc.html",
+  "Localized.dc.html",
+  "HomeHindi.dc.html",
+  "HomeMarathi.dc.html",
+  "YouLanguage.dc.html",
+  "YouAccessibilityDark.dc.html",
+  "YouLanguageDark.dc.html",
+  "NotificationsDark.dc.html"
+ ],
+ "pages": [],
+ "title": "Un:edited — Core Screens"
 }

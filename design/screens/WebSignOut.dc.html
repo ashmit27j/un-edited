@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Web sign out</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+*{scrollbar-width:thin;scrollbar-color:rgba(122,112,98,.45) transparent}
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(122,112,98,.4);border-radius:10px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:rgba(122,112,98,.7);border:3px solid transparent;background-clip:padding-box}
+</style>
+</helmet>
+<div style="min-height: 100vh; position: relative; background: {{t.bg}}; font-family: 'Inter', sans-serif;">
+  <div aria-hidden="true"><dc-import name="WebYou" dark="{{dark}}" hint-size="1440px,2150px"></dc-import></div>
+  <sc-if value="{{confirm}}" hint-placeholder-val="{{ true }}">
+    <div style="position: fixed; inset: 0; background: {{t.scrim}}; display: flex; align-items: center; justify-content: center; padding: 24px;">
+      <section role="alertdialog" aria-modal="true" aria-labelledby="wso-title" style="width: 100%; max-width: 460px; box-sizing: border-box; background: {{t.surface}}; border: 1px solid {{t.rule}}; border-top: 3px solid {{t.accent}}; padding: 26px 28px 24px 28px; color: {{t.ink}}; display: flex; flex-direction: column; gap: 14px;">
+        <h2 id="wso-title" style="margin: 0; font-family: 'Baskervville', Baskerville, Georgia, serif; font-weight: 500; font-size: 28px; line-height: 1.15;">Sign out of Un:edited?</h2>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.55; color: {{t.body}};">Your sources, topics, folders and settings stay in your account. Offline copies saved in this browser are cleared.</p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 6px;">
+          <a href="WebYou.dc.html" style="height: 46px; padding: 0 20px; border: 1px solid {{t.ink}}; display: flex; align-items: center; font-size: 15px; font-weight: 500;">Cancel</a>
+          <button onClick="{{signOut}}" style="height: 46px; padding: 0 22px; border: 0; background: {{t.accent}}; color: {{t.onAccent}}; font-size: 15px; font-weight: 500; cursor: pointer;">Sign out</button>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+  <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%); width: min(520px, calc(100% - 32px)); box-sizing: border-box; padding: 14px 18px; background: {{t.ink}}; color: {{t.bg}}; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+      <span style="font-size: 14.5px;">You’re signed out. You can keep reading as a guest.</span>
+      <a href="WebHome.dc.html" style="height: 40px; display: flex; align-items: center; font-size: 14.5px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px;">Go to Home</a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Theme"},"stage":{"editor":"enum","options":["confirm","signed-out"],"default":"confirm","section":"State"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { stage: null };
+  }
+  renderVals() {
+    const dark = this.props.dark ?? false;
+    const t = dark
+      ? { bg: '#1E1C19', surface: '#262320', ink: '#C9C0B0', body: '#B5AC9C', rule: '#38332D', accent: '#C8705F', onAccent: '#1C1A17', scrim: 'rgba(0,0,0,0.6)' }
+      : { bg: '#F1EBE0', surface: '#F8F3EA', ink: '#1C1A17', body: '#3F3A33', rule: '#DDD4C4', accent: '#A8372A', onAccent: '#F8F3EA', scrim: 'rgba(28,26,23,0.42)' };
+    const stage = this.state.stage ?? (this.props.stage ?? 'confirm');
+    return { t: t, dark: dark, confirm: stage === 'confirm', done: stage === 'signed-out', signOut: () => this.setState({ stage: 'signed-out' }) };
+  }
+}
+</script>
+</body>
+</html>

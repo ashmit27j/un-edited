@@ -8,7 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Tiro+Devanagari+Hindi&amp;family=Tiro+Devanagari+Marathi&amp;family=Mukta:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 body{margin:0}
 a{color:inherit;text-decoration:none}
@@ -79,7 +79,7 @@ button{font:inherit}
         </sc-for>
       </section>
     </sc-for>
-    <button style="margin-top: 28px; height: 48px; border: 1px solid {{t.rule}}; background: none; color: {{t.accent}}; font-size: 15px; cursor: pointer;">Sign out</button>
+    <a href="SignOut.dc.html" style="margin-top: 28px; height: 48px; border: 1px solid {{t.rule}}; color: {{t.accent}}; font-size: 15px; display: flex; align-items: center; justify-content: center;">Sign out</a>
     <p style="margin: 16px 0 0 0; text-align: center; font-family: 'Baskervville', Baskerville, 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 14px; color: {{t.muted}};">Un:edited 1.0 · No AI, no algorithm, no fee.</p>
   </main>
 
@@ -130,7 +130,7 @@ class Component extends DCLogic {
         { title: 'Reading', rows: [link('Font', 'Serif', 'OB3Reading.dc.html'), link('Text size', 'Medium'), link('Theme', 'Light', 'OB3Reading.dc.html'), link('Home view', 'Comfortable', 'OB3Reading.dc.html'), link('Accessibility', 'Colour, vision, reading', 'YouAccessibility.dc.html')] },
         { title: 'Your news', rows: [link('Who you trust', '4 sources', 'OB6Sources.dc.html'), link('Topics', '5', 'OB4Topics.dc.html'), link('Places', '4', 'OB5Regions.dc.html')] },
         { title: 'Language', rows: [link('App language', 'English', 'YouLanguage.dc.html'), link('Source languages', 'English, मराठी', 'YouLanguage.dc.html'), link('Hindi and Marathi font', 'Match Font', 'YouLanguage.dc.html')] },
-        { title: 'Notifications', rows: [link('New edition', '6:00 AM · every day', 'YouNotifications.dc.html'), link('Topic and source alerts', 'Off', 'YouNotifications.dc.html')] },
+        { title: 'Notifications', rows: [link('New edition', '6:00 AM · every day', 'Notifications.dc.html'), link('Topic and source alerts', 'Off', 'Notifications.dc.html')] },
         { title: 'Front page', rows: [sw('trending', 'Trending', 'Five stories the most outlets are covering.'), sw('papers', 'Papers & Reports', 'Research and official documents.'), sw('outside', 'Outside your sources', 'A few stories from outlets you haven’t chosen.'), sw('cont', 'Continue reading', 'Articles you started.')] },
         { title: 'Storage', rows: [sw('autoDl', 'Auto-download saved articles', s.autoDl ? 'New saves download to this phone as you save them.' : 'Off. Saving does not download. Use ⋯ › Download on a story, or a folder’s Download. Already-downloaded stories stay.'), link('Downloaded', s.cleared ? '0 articles · 0 MB' : '14 articles · 18 MB', 'Library.dc.html'), clearRow()] },
         { title: 'About', rows: [link('Replay the tour', '', 'Tour.dc.html'), link('Our principles'), link('Full source list', 'Public'), link('Privacy')] }

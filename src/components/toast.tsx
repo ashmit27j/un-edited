@@ -1,8 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/text';
+import { useLayout } from '@/hooks/use-layout';
 import { useTheme } from '@/theme/theme-provider';
 
 type ToastState = { text: string; action?: { label: string; run: () => void } } | null;
@@ -14,6 +15,8 @@ const ToastContext = createContext<ToastValue>({ show: () => {} });
 export function ToastProvider({ children }: { children: ReactNode }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  // Phones: above the tab bar. Web 768px+: 32px from the bottom (no tab bar there).
+  const bottom = useLayout() === 'phone' ? insets.bottom + 84 : 32;
   const [toast, setToast] = useState<ToastState>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -30,7 +33,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={value}>
       {children}
       {toast ? (
-        <View pointerEvents="box-none" style={[styles.wrap, { bottom: insets.bottom + 84 }]}>
+        <View pointerEvents="box-none" style={[styles.wrap, { bottom }]}>
           <View
             accessibilityRole="alert"
             accessibilityLiveRegion="polite"
@@ -61,7 +64,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 export const useToast = () => useContext(ToastContext);
 
 const styles = StyleSheet.create({
-  wrap: { position: 'absolute', left: 0, right: 0, alignItems: 'center', paddingHorizontal: 16 },
+  // Fixed on web: from 768px the document scrolls, so 'absolute' would pin it to the end of the page.
+  wrap: { position: Platform.OS === 'web' ? ('fixed' as 'absolute') : 'absolute', left: 0, right: 0, alignItems: 'center', paddingHorizontal: 16, zIndex: 20 },
   toast: {
     flexDirection: 'row',
     alignItems: 'center',

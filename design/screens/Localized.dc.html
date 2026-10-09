@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Un:edited — Hindi and Marathi interface</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1440px; height: 1720px; box-sizing: border-box; padding: 52px 64px; background: #F1EBE0; color: #1C1A17; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; gap: 30px;">
+  <header style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; border-bottom: 3px solid #1C1A17; padding-bottom: 14px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #A8372A;">Languages · interface chrome</span>
+      <h1 style="margin: 0; font-family: 'Baskervville', Baskerville, Georgia, serif; font-weight: 400; font-size: 44px; letter-spacing: -0.6px; line-height: 1;">English · <span lang="hi" style="font-family: 'Tiro Devanagari Hindi', serif;">हिंदी</span> · <span lang="mr" style="font-family: 'Tiro Devanagari Marathi', serif;">मराठी</span></h1>
+    </div>
+    <ul style="margin: 0; padding: 0 0 0 18px; max-width: 560px; font-size: 13px; line-height: 1.6; color: #3F3A33;">
+      <li>Only menus, buttons and labels change. Headlines and story text stay in the publisher’s language.</li>
+      <li>Devanagari reading text: Tiro Devanagari Hindi / Marathi. Devanagari UI text: Mukta. Set <code>lang="hi"</code> / <code>lang="mr"</code>.</li>
+      <li>No uppercase or letter-spacing on Devanagari: mono labels switch to Mukta 12px, medium weight.</li>
+      <li>Line height +0.1 for Devanagari (matras need room). Drafts: get a native speaker to review.</li>
+    </ul>
+  </header>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px;">
+    <sc-for list="{{cols}}" as="c" hint-placeholder-count="3">
+      <section lang="{{c.lang}}" style="display: flex; flex-direction: column; gap: 14px; background: #F8F3EA; border: 1px solid #DDD4C4; padding: 18px 20px;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: #6B645A;">{{c.title}}</span>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid #1C1A17;">
+          <span style="font-family: {{c.label}}; font-size: {{c.labelSize}}; letter-spacing: {{c.track}}; text-transform: {{c.case}}; font-weight: 500;">{{c.mostCovered}}</span>
+          <span style="font-family: {{c.ui}}; font-size: 12.5px; color: #A8372A;">{{c.seeMore}}</span>
+        </div>
+        <span style="font-family: {{c.read}}; font-size: 19px; line-height: {{c.lh}};">{{c.endOfEdition}}</span>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span style="height: 44px; padding: 0 18px; background: #1C1A17; color: #F8F3EA; display: flex; align-items: center; font-family: {{c.ui}}; font-size: 15px; font-weight: 500;">{{c.cont}}</span>
+          <span style="height: 44px; padding: 0 16px; border: 1px solid #1C1A17; display: flex; align-items: center; font-family: {{c.ui}}; font-size: 15px; font-weight: 500;">{{c.cancel}}</span>
+        </div>
+        <nav aria-label="Tab bar example" style="height: 64px; box-sizing: border-box; padding: 6px 0; border-top: 1px solid #DDD4C4; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); font-family: {{c.ui}}; font-size: {{c.tabSize}};">
+          <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #A8372A; font-weight: 500;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M4 5h16v14H4z"></path><path d="M4 9h16M9 9v10"></path></svg>{{c.home}}</span>
+          <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #6B645A;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M6 3h12v18H6z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></svg>{{c.feed}}</span>
+          <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #6B645A;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round;"><path d="M3.5 7h6l2 2h9v10h-17z"></path></svg>{{c.library}}</span>
+          <span style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #6B645A;"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>{{c.you}}</span>
+        </nav>
+      </section>
+    </sc-for>
+  </div>
+
+  <section style="display: flex; flex-direction: column;">
+    <div style="display: grid; grid-template-columns: 220px repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: 8px; border-bottom: 2px solid #1C1A17; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.9px; text-transform: uppercase; color: #6B645A;"><span>Key</span><span>English</span><span>हिंदी</span><span>मराठी</span></div>
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="32">
+      <div style="display: grid; grid-template-columns: 220px repeat(3, minmax(0, 1fr)); gap: 16px; padding: 7px 0; border-bottom: 1px solid #DDD4C4; font-size: 13.5px; align-items: baseline;">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6B645A;">{{r.k}}</span>
+        <span>{{r.en}}</span>
+        <span lang="hi" style="font-family: 'Mukta', sans-serif; font-size: 15px;">{{r.hi}}</span>
+        <span lang="mr" style="font-family: 'Mukta', sans-serif; font-size: 15px;">{{r.mr}}</span>
+      </div>
+    </sc-for>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const rows = [
+      {"k": "nav.home", "en": "Home", "hi": "होम", "mr": "मुख्यपृष्ठ"},
+      {"k": "nav.feed", "en": "Feed", "hi": "फ़ीड", "mr": "फीड"},
+      {"k": "nav.library", "en": "Library", "hi": "लाइब्रेरी", "mr": "संग्रह"},
+      {"k": "nav.you", "en": "You", "hi": "आप", "mr": "तुम्ही"},
+      {"k": "feed.mine", "en": "My Feed", "hi": "मेरी फ़ीड", "mr": "माझी फीड"},
+      {"k": "feed.explore", "en": "Explore", "hi": "एक्सप्लोर", "mr": "एक्सप्लोर"},
+      {"k": "home.edition", "en": "Morning Edition", "hi": "सुबह का संस्करण", "mr": "सकाळची आवृत्ती"},
+      {"k": "home.mostCovered", "en": "Most covered today", "hi": "आज सबसे ज़्यादा कवर हुई ख़बरें", "mr": "आज सर्वाधिक कव्हर झालेल्या बातम्या"},
+      {"k": "home.seeMore", "en": "See more", "hi": "और देखें", "mr": "अधिक पाहा"},
+      {"k": "home.endOfEdition", "en": "That’s today’s edition.", "hi": "आज का संस्करण यहीं तक।", "mr": "आजची आवृत्ती इथेच संपली."},
+      {"k": "story.save", "en": "Save", "hi": "सहेजें", "mr": "जतन करा"},
+      {"k": "story.saved", "en": "Saved", "hi": "सहेजा गया", "mr": "जतन केले"},
+      {"k": "story.share", "en": "Share link", "hi": "लिंक शेयर करें", "mr": "लिंक शेअर करा"},
+      {"k": "story.notInterested", "en": "Not interested", "hi": "दिलचस्पी नहीं", "mr": "रस नाही"},
+      {"k": "story.report", "en": "Report a problem", "hi": "समस्या बताएँ", "mr": "समस्या कळवा"},
+      {"k": "story.continueOn", "en": "Continue on {source}", "hi": "{source} पर आगे पढ़ें", "mr": "{source} वर पुढे वाचा"},
+      {"k": "feed.caughtUp", "en": "You’re all caught up.", "hi": "आपने सब पढ़ लिया।", "mr": "तुम्ही सगळं वाचलंत."},
+      {"k": "search.placeholder", "en": "Search the news", "hi": "ख़बरें खोजें", "mr": "बातम्या शोधा"},
+      {"k": "common.continue", "en": "Continue", "hi": "आगे बढ़ें", "mr": "पुढे चला"},
+      {"k": "common.back", "en": "Back", "hi": "पीछे", "mr": "मागे"},
+      {"k": "common.skip", "en": "Skip", "hi": "छोड़ें", "mr": "वगळा"},
+      {"k": "common.cancel", "en": "Cancel", "hi": "रद्द करें", "mr": "रद्द करा"},
+      {"k": "you.reading", "en": "Reading", "hi": "पढ़ना", "mr": "वाचन"},
+      {"k": "you.theme", "en": "Theme", "hi": "थीम", "mr": "थीम"},
+      {"k": "you.textSize", "en": "Text size", "hi": "अक्षरों का आकार", "mr": "अक्षरांचा आकार"},
+      {"k": "you.notifications", "en": "Notifications", "hi": "सूचनाएँ", "mr": "सूचना"},
+      {"k": "you.accessibility", "en": "Accessibility", "hi": "सुगम्यता", "mr": "सुलभता"},
+      {"k": "you.signOut", "en": "Sign out", "hi": "साइन आउट करें", "mr": "साइन आउट करा"},
+      {"k": "library.download", "en": "Download", "hi": "डाउनलोड करें", "mr": "डाउनलोड करा"},
+      {"k": "library.remove", "en": "Remove", "hi": "हटाएँ", "mr": "काढून टाका"},
+      {"k": "tour.skip", "en": "Skip tour", "hi": "टूर छोड़ें", "mr": "टूर वगळा"},
+      {"k": "tour.next", "en": "Next", "hi": "आगे", "mr": "पुढे"}
+    ];
+    const g = (k, l) => rows.find((r) => r.k === k)[l];
+    const mk = (l, title, deva, readFont) => ({
+      lang: l, title: title,
+      ui: deva ? "'Mukta', sans-serif" : "'Inter', sans-serif",
+      read: readFont,
+      label: deva ? "'Mukta', sans-serif" : "'JetBrains Mono', monospace",
+      labelSize: deva ? '13px' : '11px', track: deva ? '0' : '1px', case: deva ? 'none' : 'uppercase',
+      lh: deva ? 1.55 : 1.45, tabSize: deva ? '12px' : '11px',
+      mostCovered: g('home.mostCovered', l), seeMore: g('home.seeMore', l), endOfEdition: g('home.endOfEdition', l),
+      cont: g('common.continue', l), cancel: g('common.cancel', l),
+      home: g('nav.home', l), feed: g('nav.feed', l), library: g('nav.library', l), you: g('nav.you', l)
+    });
+    return {
+      rows: rows,
+      cols: [
+        mk('en', 'English', false, "'Baskervville', Baskerville, Georgia, serif"),
+        mk('hi', 'हिंदी · Hindi', true, "'Tiro Devanagari Hindi', serif"),
+        mk('mr', 'मराठी · Marathi', true, "'Tiro Devanagari Marathi', serif")
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

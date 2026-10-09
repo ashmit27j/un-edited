@@ -19,7 +19,11 @@ The project has had five design passes on a claude.ai design canvas and an early
 | `docs/current-config.md` | Current state of product, brand, tokens, screens, backend, build, plus open items and known conflicts. **Read this first.** |
 | `docs/changelog.md` | Log of changes made from here on. |
 | `docs/history/` | Original design doc and decisions log, as of 2026-10-07/08. |
-| `design/screens/*.dc.html` | 64 screen files (mobile Paper + Ink, onboarding, tour, menus/states, web, landing, brand boards). |
+| `design/screens/*.dc.html` | 76 screen files (mobile Paper + Ink, onboarding, tour, menus/states, notifications, sign out, web, web onboarding, landing, Hindi/Marathi, brand boards). Merged with Pass 6 on 2026-10-09. |
+| `design/screens/fonts/` | Local woff2 files + `fonts.css` the boards load. |
+| `design/screenshots/` | PNG of each board (Pass 6 export; boards changed since may differ). |
+| `design/strings.json` | Draft Hindi / Marathi interface strings. Needs a native-speaker review. |
+| `docs/history/2026-10-09-pass6/` | Pass 6 handoff (HANDOFF, LIVE_SITE_REVIEW, prompt). Snapshot; don't edit. |
 | `design/screens/canvas.json` | Board titles, sizes and positions on the original canvas. |
 | `design/screens/index.html` | Gallery of every board. |
 | `design/screens/support.js` | The runtime that renders `.dc.html` files. Don't edit. |

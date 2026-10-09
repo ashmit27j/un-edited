@@ -19,7 +19,10 @@ import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { useEditionSchedule } from '@/components/notification-settings';
 import { ToastProvider } from '@/components/toast';
+import { TourProvider } from '@/tour/tour';
+import { useWebScrollMemory } from '@/hooks/use-web-scroll-memory';
 import { SessionProvider } from '@/session/session-provider';
 import { ReaderProvider } from '@/store/reader-provider';
 import { ThemeProvider, useTheme } from '@/theme/theme-provider';
@@ -28,10 +31,14 @@ SplashScreen.preventAutoHideAsync();
 
 function Shell() {
   const { name, colors } = useTheme();
+  useWebScrollMemory();
+  useEditionSchedule();
   return (
     <>
       <StatusBar style={name === 'ink' ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
+      <TourProvider>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
+      </TourProvider>
     </>
   );
 }
@@ -65,15 +72,16 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <ReaderProvider>
+      {/* Reader settings come first: the theme reads its accessibility colour options. */}
+      <ReaderProvider>
+        <ThemeProvider>
           <SessionProvider>
             <ToastProvider>
               <Shell />
             </ToastProvider>
           </SessionProvider>
-        </ReaderProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </ReaderProvider>
     </SafeAreaProvider>
   );
 }

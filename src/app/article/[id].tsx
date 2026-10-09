@@ -5,15 +5,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/button';
 import { BackIcon, ChevronIcon } from '@/components/icons';
+import { ReadingBody } from '@/components/reading-line';
 import { Stamp } from '@/components/stamp';
 import { MoreButton, SaveButton, SITE_URL, useOpenStory } from '@/components/story';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { Photo, Rule, Screen, useGutter } from '@/components/ui';
+import { WideArticle } from '@/components/wide/article';
+import { useLayout } from '@/hooks/use-layout';
 import { WideBreakpoint } from '@/constants/theme';
 import { PRIMARY_SOURCE, STORIES, ago, groupOf, sourceById, storyById } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
+import { useT } from '@/lib/i18n';
 
 export default function Article() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -27,6 +31,8 @@ export default function Article() {
   const open = useOpenStory();
   const story = storyById(id);
   const wide = width >= WideBreakpoint;
+  const layout = useLayout();
+  const t = useT();
 
   useEffect(() => {
     if (story) markViewed(story.id);
@@ -41,6 +47,8 @@ export default function Article() {
       </Screen>
     );
   }
+
+  if (layout !== 'phone') return <WideArticle story={story} />;
 
   const source = sourceById(story.sourceId);
   const group = groupOf(story);
@@ -60,7 +68,12 @@ export default function Article() {
       <Stack.Screen options={{ title: story.headline }} />
       <Screen maxWidth={720} topInset={false}>
         <View style={{ marginHorizontal: -gutter }}>
-          <Photo credit={story.credit} height={wide ? 300 : 240} />
+          <Pressable
+            accessibilityRole="imagebutton"
+            accessibilityLabel="View image full screen"
+            onPress={() => router.push({ pathname: '/image/[id]', params: { id: story.id } })}>
+            <Photo credit={story.credit} height={wide ? 300 : 240} />
+          </Pressable>
           <View style={[styles.imageBar, { top: insets.top + 8, paddingHorizontal: 8 }]}>
             <Pressable
               accessibilityRole="button"
@@ -86,18 +99,14 @@ export default function Article() {
             {source.name} · {ago(story.minsAgo)}
           </Text>
           <Rule style={{ marginVertical: 4 }} />
-          {story.body.map((para, i) => (
-            <Text key={i} variant="body" lang={lang} style={{ fontSize: 18, lineHeight: 29 }}>
-              {para}
-            </Text>
-          ))}
+          <ReadingBody paragraphs={story.body} lang={lang} style={{ fontSize: 18, lineHeight: 29 }} />
           {story.excerptOnly ? (
             <Text variant="meta" color="muted">
               Only an excerpt is available here. The full story is on {source.name}.
             </Text>
           ) : null}
           <View style={{ marginTop: 8 }}>
-            <Button label={`Continue on ${source.name}`} kind="secondary" onPress={openOriginal} />
+            <Button label={t('story.continueOn', { source: source.name })} kind="secondary" onPress={openOriginal} />
           </View>
         </View>
 

@@ -20,34 +20,90 @@ export type TextProps = RNTextProps & {
   lang?: LanguageCode;
 };
 
-/** Text size S to XXL (You › Reading). Mono labels stay at their minimum. */
-export const TEXT_SCALES = [0.9, 0.95, 1, 1.12, 1.25] as const;
+/**
+ * Text size S to XXL (You › Accessibility): body 15 / 17 / 19.5 / 22 / 28px, so M (17) is the standard size.
+ * Mono labels stay at their minimum.
+ */
+export const TEXT_SCALES = [15 / 17, 1, 19.5 / 17, 22 / 17, 28 / 17] as const;
+
+/** Line spacing for body text: Normal 1.55, Relaxed 1.75, Loose 1.95 (as a factor on the designed line height). */
+const LINE_SPACING = { normal: 1, relaxed: 1.75 / 1.55, loose: 1.95 / 1.55 } as const;
+/** Letter spacing in em: Normal, Wide, Wider. */
+const TRACKING = { normal: 0, wide: 0.02, wider: 0.05 } as const;
 
 const READING: TextVariant[] = ['display', 'headline', 'body'];
 
-export function Text({ variant = 'body', color = 'ink', medium, lang, style, ...rest }: TextProps) {
+/**
+ * Reading text is sized for Baskervville. Inter and Atkinson have a taller x-height, so the same px reads
+ * about 25% bigger (HANDOFF §2): Sans = serif size × 0.88, dyslexia-friendly (Atkinson) = × 0.9,
+ * rounded to 0.5px, with the line height scaled to keep the same multiplier. UI text never changes.
+ */
+export const READING_FACTOR = { serif: 1, sans: 0.88, dyslexic: 0.9 } as const;
+
+export function readingSize(serifPx: number, font: keyof typeof READING_FACTOR) {
+  return Math.round(serifPx * READING_FACTOR[font] * 2) / 2;
+}
+
+const DEVANAGARI = /[ऀ-ॿ]/;
+
+export function Text({ variant = 'body', color = 'ink', medium, lang: given, style, ...rest }: TextProps) {
   const { colors } = useTheme();
   const { prefs } = useReader();
+  // Devanagari text without a lang (translated menus, Hindi/Marathi outlet names) still gets its fonts and spacing.
+  const lang =
+    given ?? (typeof rest.children === 'string' && DEVANAGARI.test(rest.children) ? (prefs.appLanguage === 'mr' ? 'mr' : 'hi') : undefined);
   const base = styles[variant];
-  const scale = variant === 'label' ? 1 : TEXT_SCALES[prefs.textSize] ?? 1;
+  // "Match my phone's text size" hands sizing to the system (font scaling stays on), so the S–XXL step is ignored.
+  const scale = variant === 'label' || prefs.matchSystemSize ? 1 : TEXT_SCALES[prefs.textSize] ?? 1;
+  // Bolder text: the medium weight everywhere text would be regular.
+  const weight = medium || prefs.boldText;
 
-  let family: string = medium ? mediumFamily[variant] : base.fontFamily;
+  let family: string = weight ? mediumFamily[variant] : base.fontFamily;
   const reading = READING.includes(variant);
-  if (reading && prefs.readFont === 'sans') family = medium ? Fonts.sansMedium : Fonts.sans;
+  const own = StyleSheet.flatten(style) ?? {};
+  // A style with its own fontFamily (wordmark, avatar letters) keeps its size and face.
+  let readFace: keyof typeof READING_FACTOR = 'serif';
+  if (reading && !own.fontFamily) {
+    if (prefs.dyslexiaFont) readFace = 'dyslexic';
+    else if (prefs.readFont === 'sans') readFace = 'sans';
+  }
+  if (readFace === 'sans') family = weight ? Fonts.sansMedium : Fonts.sans;
+  // Atkinson ships 400 and 700 only; 700 would break the 400/500 rule, so it stays regular.
+  if (readFace === 'dyslexic') family = Fonts.dyslexic;
 
   // Custom fonts have one family per style: italic serif text needs the italic cut, not a slanted regular.
   // fontStyle goes back to normal so web doesn't slant the italic cut a second time.
   let italic: { fontFamily: string; fontStyle: 'normal' } | null = null;
-  if ((family === Fonts.serif || family === Fonts.serifMedium) && StyleSheet.flatten(style)?.fontStyle === 'italic') {
+  if ((family === Fonts.serif || family === Fonts.serifMedium) && own.fontStyle === 'italic') {
     italic = { fontFamily: family === Fonts.serif ? Fonts.serifItalic : Fonts.serifMediumItalic, fontStyle: 'normal' };
   }
 
   let spacing: { letterSpacing?: number; textTransform?: 'none' } | null = null;
-  if (lang === 'hi' || lang === 'mr') {
-    const sans = prefs.devanagariFont === 'match' ? prefs.readFont === 'sans' : prefs.devanagariFont === 'sans';
-    family = sans ? (medium ? Fonts.devanagariSansMedium : Fonts.devanagariSans) : lang === 'hi' ? Fonts.hindi : Fonts.marathi;
+  const devanagari = lang === 'hi' || lang === 'mr';
+  if (devanagari) {
+    // Interface text is always Mukta; reading text follows You › Language › Hindi and Marathi font.
+    const sans = !reading || (prefs.devanagariFont === 'match' ? prefs.readFont === 'sans' : prefs.devanagariFont === 'sans');
+    family = sans ? (weight ? Fonts.devanagariSansMedium : Fonts.devanagariSans) : lang === 'hi' ? Fonts.hindi : Fonts.marathi;
     spacing = { letterSpacing: 0, textTransform: 'none' };
+    // Devanagari keeps its own faces, so it doesn't take the Sans / Atkinson size factor.
+    readFace = 'serif';
   }
+
+  // Final size: text-size step × reading-face factor, applied after any size the caller set.
+  const fontSize = (own.fontSize ?? base.fontSize) * scale;
+  const factor = READING_FACTOR[readFace];
+  // Devanagari needs more room for its marks: line height +0.1 of the font size.
+  const spacingFactor = variant === 'body' ? LINE_SPACING[prefs.lineSpacing] : 1;
+  const lineHeight = (own.lineHeight ?? base.lineHeight) * scale * spacingFactor + (devanagari ? fontSize * 0.1 : 0);
+  const tracking = devanagari ? 0 : TRACKING[prefs.tracking];
+  const sized =
+    scale !== 1 || factor !== 1 || devanagari || spacingFactor !== 1 || tracking
+      ? {
+          fontSize: Math.round(fontSize * factor * 2) / 2,
+          lineHeight: Math.round(lineHeight * factor),
+          ...(tracking ? { letterSpacing: Math.round(fontSize * tracking * 10) / 10 + (own.letterSpacing ?? ('letterSpacing' in base ? base.letterSpacing : 0)) } : null),
+        }
+      : null;
 
   return (
     <RNText
@@ -55,9 +111,9 @@ export function Text({ variant = 'body', color = 'ink', medium, lang, style, ...
       style={[
         base,
         { color: colors[color], fontFamily: family },
-        scale !== 1 ? { fontSize: Math.round(base.fontSize * scale * 10) / 10, lineHeight: Math.round(base.lineHeight * scale) } : null,
         spacing,
         style,
+        sized,
         italic,
       ]}
       {...rest}

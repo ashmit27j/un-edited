@@ -9,7 +9,9 @@ import { StoryRow } from '@/components/story';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
 import { Screen, SectionHeader } from '@/components/ui';
+import { WideLibrary } from '@/components/wide/library';
 import { Fonts, TouchTarget } from '@/constants/theme';
+import { useLayout } from '@/hooks/use-layout';
 import { storyById } from '@/data/sample';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
@@ -23,12 +25,50 @@ export default function Library() {
   const { folders, downloaded, recent, createFolder } = useReader();
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState('');
+  const wide = useLayout() !== 'phone';
 
   const total = Object.values(folders).reduce((n, ids) => n + ids.length, 0);
   const recentStories = recent
     .slice(0, 5)
     .map((id) => storyById(id))
     .filter((s): s is NonNullable<typeof s> => !!s);
+
+  const newFolderSheet = (
+    <Sheet visible={creating} title="New folder" onClose={() => setCreating(false)}>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="Folder name"
+        placeholderTextColor={colors.muted}
+        autoFocus
+        maxLength={40}
+        style={[styles.input, { borderColor: colors.ink, color: colors.ink, backgroundColor: colors.bg }]}
+      />
+      <View style={{ height: 12 }} />
+      <Button
+        label="Create folder"
+        disabled={!name.trim()}
+        onPress={() => {
+          if (createFolder(name)) {
+            toast.show(`Created ${name.trim()}`);
+            setName('');
+            setCreating(false);
+          } else {
+            toast.show('You already have a folder with that name.');
+          }
+        }}
+      />
+    </Sheet>
+  );
+
+  if (wide) {
+    return (
+      <>
+        <WideLibrary onNewFolder={() => setCreating(true)} />
+        {newFolderSheet}
+      </>
+    );
+  }
 
   return (
     <Screen maxWidth={720}>
@@ -83,38 +123,14 @@ export default function Library() {
 
       {recentStories.length ? (
         <View>
-          <SectionHeader title="Recently viewed" />
+          <SectionHeader title="Recently viewed" moreLabel="See all" onMore={() => router.push('/history')} />
           {recentStories.map((s) => (
             <StoryRow key={s.id} story={s} />
           ))}
         </View>
       ) : null}
 
-      <Sheet visible={creating} title="New folder" onClose={() => setCreating(false)}>
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          placeholder="Folder name"
-          placeholderTextColor={colors.muted}
-          autoFocus
-          maxLength={40}
-          style={[styles.input, { borderColor: colors.ink, color: colors.ink, backgroundColor: colors.bg }]}
-        />
-        <View style={{ height: 12 }} />
-        <Button
-          label="Create folder"
-          disabled={!name.trim()}
-          onPress={() => {
-            if (createFolder(name)) {
-              toast.show(`Created ${name.trim()}`);
-              setName('');
-              setCreating(false);
-            } else {
-              toast.show('You already have a folder with that name.');
-            }
-          }}
-        />
-      </Sheet>
+      {newFolderSheet}
     </Screen>
   );
 }

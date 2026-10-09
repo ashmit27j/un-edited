@@ -4,9 +4,15 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type Styl
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BackIcon, ChevronIcon } from '@/components/icons';
+import { emitScroll } from '@/components/reading-line';
 import { Text } from '@/components/text';
+import { WebNav } from '@/components/web-nav';
+import { useTarget, useUnderlineLinks } from '@/hooks/use-a11y';
+import { useLayout } from '@/hooks/use-layout';
+import { useReader } from '@/store/reader-provider';
 import { MaxContentWidth, Spacing, TouchTarget, WideBreakpoint } from '@/constants/theme';
 import { useTheme } from '@/theme/theme-provider';
+import { useT } from '@/lib/i18n';
 
 export function useGutter() {
   const { width } = useWindowDimensions();
@@ -28,11 +34,16 @@ export function Screen({
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const gutter = useGutter();
+  // Pages outside the tabs (folder, Your news) get the web top nav from 768px.
+  const web = useLayout() !== 'phone';
   return (
-    <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: topInset ? insets.top : 0 }}>
+    <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: topInset && !web ? insets.top : 0 }}>
+      {web ? <WebNav /> : null}
       {header}
       <ScrollView
         style={{ flex: 1 }}
+        onScroll={emitScroll}
+        scrollEventThrottle={32}
         contentContainerStyle={{ paddingHorizontal: gutter, paddingTop: Spacing.three, paddingBottom: Spacing.six }}>
         <View style={{ width: '100%', maxWidth, alignSelf: 'center' }}>{children}</View>
       </ScrollView>
@@ -45,13 +56,21 @@ export function BackHeader({ title, right }: { title?: string; right?: ReactNode
   const { colors } = useTheme();
   const router = useRouter();
   const gutter = useGutter();
+  const web = useLayout() !== 'phone';
+  const target = useTarget();
   return (
-    <View style={[styles.backHeader, { paddingHorizontal: gutter - 8, borderBottomColor: colors.rule }]}>
+    <View
+      style={[
+        styles.backHeader,
+        { paddingHorizontal: gutter - 8, borderBottomColor: colors.rule },
+        // Web: line up with the 720px page column below, no rule under it.
+        web && { width: '100%', maxWidth: 720 + gutter * 2, alignSelf: 'center', borderBottomWidth: 0, marginTop: 8 },
+      ]}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Back"
         onPress={() => (router.canGoBack() ? router.back() : router.replace('/home'))}
-        style={styles.iconButton}>
+        style={[styles.iconButton, { width: target, height: target }]}>
         <BackIcon color={colors.ink} />
       </Pressable>
       {title ? (
@@ -75,8 +94,14 @@ export function IconButton({
   onPress: () => void;
   children: ReactNode;
 }) {
+  const target = useTarget();
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} hitSlop={4} style={styles.iconButton}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      hitSlop={4}
+      style={[styles.iconButton, { width: target, height: target }]}>
       {children}
     </Pressable>
   );
@@ -98,13 +123,15 @@ export function Rule({ strong, style }: { strong?: boolean; style?: StyleProp<Vi
 export function SectionHeader({
   title,
   onMore,
-  moreLabel = 'See more',
+  moreLabel,
 }: {
   title: string;
   onMore?: () => void;
   moreLabel?: string;
 }) {
   const { colors } = useTheme();
+  const underline = useUnderlineLinks();
+  const t = useT();
   return (
     <View style={styles.sectionHeader}>
       <Text variant="label" color="muted">
@@ -113,8 +140,8 @@ export function SectionHeader({
       <View style={[styles.sectionRule, { backgroundColor: colors.rule }]} />
       {onMore ? (
         <Pressable accessibilityRole="link" onPress={onMore} style={styles.more}>
-          <Text variant="meta" color="accent" medium>
-            {moreLabel}
+          <Text variant="meta" color="accent" medium style={underline && styles.underline}>
+            {moreLabel ?? t('home.seeMore')}
           </Text>
           <ChevronIcon size={14} color={colors.accent} />
         </Pressable>
@@ -135,12 +162,13 @@ export function Chip({
   lang?: 'hi' | 'mr' | 'en';
 }) {
   const { colors } = useTheme();
+  const target = useTarget();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected: !!on }}
       onPress={onPress}
-      style={[styles.chip, { borderColor: on ? colors.ink : colors.rule, backgroundColor: on ? colors.ink : 'transparent' }]}>
+      style={[styles.chip, { minHeight: target,  borderColor: on ? colors.ink : colors.rule, backgroundColor: on ? colors.ink : 'transparent' }]}>
       <Text variant="ui" medium={on} lang={lang} style={{ color: on ? colors.bg : colors.ink }}>
         {label}
       </Text>
@@ -151,10 +179,13 @@ export function Chip({
 /** Photo placeholder with a mono credit line. Real images arrive with the live feeds. */
 export function Photo({ credit, height = 200, style }: { credit?: string; height?: number; style?: StyleProp<ViewStyle> }) {
   const { colors } = useTheme();
+  // "Read image credits aloud" (You › Accessibility): screen readers hear the publisher's credit line.
+  const { prefs } = useReader();
   return (
     <View
+      accessible
       accessibilityRole="image"
-      accessibilityLabel={credit ? `Photo placeholder. ${credit}` : 'Photo placeholder'}
+      accessibilityLabel={credit && prefs.readCredits ? `Photo. ${credit}` : 'Photo'}
       style={[styles.photo, { height, backgroundColor: colors.photo }, style]}>
       {credit ? (
         <Text variant="label" color="muted" style={styles.credit} numberOfLines={1}>
@@ -167,13 +198,14 @@ export function Photo({ credit, height = 200, style }: { credit?: string; height
 
 export function Switch({ on, onChange, label }: { on: boolean; onChange: (next: boolean) => void; label: string }) {
   const { colors } = useTheme();
+  const target = useTarget();
   return (
     <Pressable
       accessibilityRole="switch"
       accessibilityLabel={label}
       accessibilityState={{ checked: on }}
       onPress={() => onChange(!on)}
-      style={styles.switchHit}>
+      style={[styles.switchHit, { minWidth: target, minHeight: target }]}>
       <View style={[styles.track, { backgroundColor: on ? colors.accent : colors.rule }]}>
         <View style={[styles.thumb, { backgroundColor: colors.surface, alignSelf: on ? 'flex-end' : 'flex-start' }]} />
       </View>
@@ -198,8 +230,9 @@ export function SettingRow({
   onPress?: () => void;
 }) {
   const { colors } = useTheme();
+  const target = useTarget();
   const body = (
-    <View style={[styles.settingRow, { borderBottomColor: colors.rule }]}>
+    <View style={[styles.settingRow, { borderBottomColor: colors.rule, minHeight: target + 16 }]}>
       <View style={{ flex: 1, gap: 2 }}>
         <Text variant="ui" style={{ fontSize: 16 }}>
           {label}
@@ -238,6 +271,7 @@ export function Segmented<T extends string>({
   onChange: (v: T) => void;
 }) {
   const { colors } = useTheme();
+  const target = useTarget();
   return (
     <View style={[styles.segmented, { borderColor: colors.ink }]}>
       {options.map((o, i) => {
@@ -250,7 +284,7 @@ export function Segmented<T extends string>({
             onPress={() => onChange(o.value)}
             style={[
               styles.segment,
-              { backgroundColor: on ? colors.ink : 'transparent', borderLeftWidth: i ? 1 : 0, borderLeftColor: colors.ink },
+              { minHeight: target, backgroundColor: on ? colors.ink : 'transparent', borderLeftWidth: i ? 1 : 0, borderLeftColor: colors.ink },
             ]}>
             <Text variant="ui" medium={on} style={{ color: on ? colors.bg : colors.ink }}>
               {o.label}
@@ -262,7 +296,27 @@ export function Segmented<T extends string>({
   );
 }
 
+export function withAlpha(hex: string, alpha: number) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${alpha})`;
+}
+
+/** Text that fades into the page, so a story reads as a taste, not a wall. */
+export function Fade({ height = 90 }: { height?: number }) {
+  const { colors } = useTheme();
+  const steps = 9;
+  return (
+    <View pointerEvents="none" style={[styles.fade, { height }]}>
+      {Array.from({ length: steps }, (_, i) => (
+        <View key={i} style={{ flex: 1, backgroundColor: withAlpha(colors.bg, (i + 1) / steps) }} />
+      ))}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  fade: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+  underline: { textDecorationLine: 'underline' },
   backHeader: { flexDirection: 'row', alignItems: 'center', minHeight: 52, borderBottomWidth: StyleSheet.hairlineWidth },
   iconButton: { width: TouchTarget, height: TouchTarget, alignItems: 'center', justifyContent: 'center' },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: Spacing.five, marginBottom: Spacing.two },
