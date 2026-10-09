@@ -2,6 +2,7 @@
 
 Newest first. One line per change: date — what changed — why (if known). Update `current-config.md` alongside.
 
+- 2026-10-10 — **First Android APK build started on EAS.** Project linked to Expo account `ashmit27j` (`@ashmit27j/unedited`, projectId in `app.json`). The three `EXPO_PUBLIC_*` values are now EAS environment variables (`preview` and `production`), since `.env.local` isn't uploaded; `eas.json` profiles name their environment. Android signing keystore generated and held by Expo. Build: https://expo.dev/accounts/ashmit27j/projects/unedited/builds/afc5345f-b073-4f72-8a3a-bc84f98b9b30
 - 2026-10-09 — **Backend deployed and live news on.** Supabase project `pqouqidkhpxtblpwfhea`: tables, outlets and schedule pushed; `fetch-news`, `send-notifications`, `register-push` deployed; Vault secrets set; cron every 30 min verified end to end (200). First fetch: 24 outlets, ~1,200 stories, 49 multi-outlet groups.
   - PIB moved to Hindi news (its feed is Hindi press releases; "Official report" would mislabel them). ABP News serves a stale cached feed to the function's region: stale feeds now count as failed and try the API fallbacks (none set yet).
   - Home is the **Morning Edition** (stories from the 24h before the latest 06:00 IST, fixed for the day), led by the event most of the reader's outlets covered; until the first full edition exists (fewer than 10 stories) it uses the last 24 hours. Coverage counts different outlets, not stories.
