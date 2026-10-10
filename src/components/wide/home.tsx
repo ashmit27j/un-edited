@@ -13,6 +13,7 @@ import { ago, type Story } from '@/data/sample';
 import { useReader } from '@/store/reader-provider';
 import { coverage } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
+import { useTourTarget } from '@/tour/tour';
 import { useT } from '@/lib/i18n';
 
 /** Home on web at 768px and wider (WebHome). Data comes from the mobile Home so both show the same edition. */
@@ -47,11 +48,13 @@ export function WideHome({
   const PAPERS = allPapers.filter((p) => !p.lang || prefs.sourceLanguages.includes(p.lang)).slice(0, 3);
   const staleSources = live && prefs.sources.length > 0 && !prefs.sources.some((id) => allSources.some((s) => s.id === id));
   const t = useT();
+  const stripRef = useTourTarget('strip');
+  const leadRef = useTourTarget('lead');
 
   return (
     <WidePage top={24} bottom={64}>
       <NotifyAsk />
-      <View style={[styles.strip, { borderTopColor: colors.ink, borderBottomColor: colors.ink }]}>
+      <View ref={stripRef} style={[styles.strip, { borderTopColor: colors.ink, borderBottomColor: colors.ink }]}>
         <Text variant="label" color="muted">
           {edition} · {date}
         </Text>
@@ -71,7 +74,7 @@ export function WideHome({
         </View>
       ) : (
         <View style={styles.top}>
-          <View style={styles.lead}>
+          <View ref={leadRef} style={styles.lead}>
             {comfortable ? (
               <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel="Open lead story" onPress={() => open(lead.id)}>
                 <Photo uri={lead.imageUrl} credit={lead.credit} height={380} />

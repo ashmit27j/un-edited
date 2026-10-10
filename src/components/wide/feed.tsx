@@ -11,6 +11,7 @@ import { useReader } from '@/store/reader-provider';
 import { coverage, useStories } from '@/store/selectors';
 import { useTheme } from '@/theme/theme-provider';
 import { useNews } from '@/data/news';
+import { useTourTarget } from '@/tour/tour';
 import { useT } from '@/lib/i18n';
 
 const TODAY = 'Today';
@@ -30,6 +31,8 @@ export function WideFeed() {
   const [older, setOlder] = useState(false);
   // 768–1023px: one column, so sections become a row of tabs above the stories.
   const compact = useLayout() === 'web';
+  const modeRef = useTourTarget('feedMode');
+  const sectionsRef = useTourTarget('feedSections');
   const { live } = useNews();
   const t = useT();
 
@@ -63,7 +66,7 @@ export function WideFeed() {
 
   const side = (
     <View style={{ gap: 24 }}>
-      <View style={[styles.modes, { borderBottomColor: colors.rule }]} accessibilityRole="tablist">
+      <View ref={modeRef} style={[styles.modes, { borderBottomColor: colors.rule }]} accessibilityRole="tablist">
         {(
           [
             { value: 'mine', label: t('feed.mine') },
@@ -86,6 +89,7 @@ export function WideFeed() {
         })}
       </View>
       {compact ? (
+        <View ref={sectionsRef}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}>
           {categories.map((c) => {
             const on = c === category;
@@ -106,8 +110,9 @@ export function WideFeed() {
             );
           })}
         </ScrollView>
+        </View>
       ) : (
-      <View>
+      <View ref={sectionsRef}>
         <Text variant="label" color="muted" style={{ paddingBottom: 6 }}>
           Sections
         </Text>

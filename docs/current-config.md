@@ -25,8 +25,9 @@ When this file and the screen files disagree, ask Ashmit which one is right. Don
 | Platforms | Android, iPhone, web — same features everywhere. | current |
 | Distribution | Android: APK. Web: PWA. iPhone: the installable website (no App Store, no Apple developer fee). | current |
 | Languages at launch | English, Hindi, Marathi — interface and source lists. Three separate settings in You › Language: app language, source languages (at least one on), and the Hindi / Marathi reading font (Match Font · Serif · Sans). | current |
-| Handles / domain | Not chosen. Old handle was `uneditd`. | open |
-| Funding story (for landing page) | Not written. | open |
+| Handles / domain | For now the Vercel address, https://unedited-six.vercel.app (Ashmit, 2026-10-10; a custom domain later). Handles not chosen; old handle was `uneditd`. | current (domain) · open (handles) |
+| Funding story (for landing page) | No paid version, no payments, no subscriptions, no ads, ever (Ashmit, 2026-10-10). Landing FAQ: "It doesn't need to. There is no paid version, no subscription and no ads, and there won't be. It is built by one person and runs on free and low-cost services." | current |
+| Contact email | ashmit27j@gmail.com (landing footer). | current |
 
 ## 2. Brand
 
@@ -97,9 +98,13 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
 
 **Tour (current):** 8 steps + done — edition strip → lead story → Search → tab bar → Feed swipe → My Feed / Explore → Library → You → "You're all set" with stamp. Spotlight + scrim, hint card with accent top rule, Skip on every step, Back/Next, progress dashes.
 
+**Web tour (current, 2026-10-10):** the same tour on web (768px+), same motion: tab bar → the top nav ("Four places, always at the top."), Feed swipe → "Pick a section." over the Feed's section list; Search, Library and You point at the nav. 400px card beside or below the target, page scroll locked while it runs, Esc skips. Shown once after setup; web You › About › Replay the tour. No design board; built from the phone Tour board.
+
+**iPhone install guide (current, 2026-10-10):** four swipeable cards in a sheet (Share → Add to Home Screen → Add → open from the Home Screen), drawn as simple screen illustrations, Back / Next, progress dashes, "Got it" at the end. Shows once by itself in Safari on an iPhone or iPad (not already installed), the first time the reader reaches a tab screen after setup and sign-in; the tour waits for it. The landing page's "Add to iPhone" opens it any time, ending in "Set up my edition" (or "Go to my edition" once set up). Closing it counts as seen. Last card explains that iPhone keeps Home Screen apps apart from Safari (guests set up once more there; signed-in readers sign in). Opened from the Home Screen while signed out, the app goes to onboarding, not the landing page. No motion of its own (native snap scrolling; buttons jump with reduced motion). No design board.
+
 **Web (current):** fluid, 1200px max, top nav. Home, Article, Feed, Library, You, Search, plus a first-visit Library sync hint. Desktop-only custom cursors (ink pointer; Read more stamp over story links).
 
-**Landing page (current):** Hero → stats → 01 The idea → 02 Your sources → 03 Papers & reports → 04 Your day → 05 Questions → 06 Start → footer. Placeholders still in: `[ANSWER: how the project is funded]`, `[CONTACT EMAIL]`, store links.
+**Landing page (current):** Hero → stats → 01 The idea → 02 Your sources → 03 Papers & reports → 04 Your day → 05 Questions → 06 Start → footer. Funding answer and contact email filled in the app's landing (2026-10-10); store links still placeholders (Android "coming soon").
 
 ## 5. Content and backend
 
@@ -113,9 +118,9 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
 | Stack: app | **Expo, one repository, one codebase.** It builds the Android APK and the web PWA. iPhone has no native build: readers install the website to the Home Screen from Safari. | current (confirmed 2026-10-09) |
 | Stack: backend and hosting | Supabase (DB, auth, Edge Functions, pg_cron every 30 min); web on Vercel. Code in `supabase/`; setup steps in `docs/backend-setup.md`. | current (deployed 2026-10-09) |
 | Sign-in | Google + email. No Sign in with Apple. | proposed |
-| Notifications (delivery) | Web Push (browsers and installed PWA) and the Android app. Edition notification built from the 06:00 IST edition. Topic and source alerts are opt-in and reader-picked, never chosen by an algorithm. | proposed |
+| Notifications (delivery) | Web Push (browsers and installed PWA) and the Android app. Edition notification built from the 06:00 IST edition. Topic and source alerts are opt-in and reader-picked, never chosen by an algorithm. Standard system look (the OS styles them; we supply icon, title, one or two lines): Android channels per kind (Morning Edition, Big stories, Topic and source alerts, Papers & Reports) so readers manage each in system settings, monochrome status-bar icon in accent; web push uses a monochrome badge. | current |
 | Android | Package `app.unedited`. EAS `preview` profile builds an APK (EAS project `@ashmit27j/unedited`; `EXPO_PUBLIC_*` vars live in EAS environments; keystore held by Expo). First build started 2026-10-10. Register as a verified developer early. | current (package) |
-| iPhone install guide | One-time Safari screen after onboarding: Share → Add to Home Screen. | proposed |
+| iPhone install guide | Built 2026-10-10: swipeable cards, once after setup on iPhone Safari, and from the landing page's "Add to iPhone" (see §4). | current |
 
 ## 6. Build status
 
@@ -140,7 +145,8 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
   - **Stamps:** all 16 SVGs are in `design/screens/assets/` and copied to `assets/stamps/` and `assets/cursors/`. `Stamp` and `StampDown` (`src/components/stamp.tsx`) render them; the sign-in screen has the edition preview card with the capped Brand stamp dropping onto it (static when the reader prefers reduced motion). On web the SVGs use React Native's `Image`, because expo-image froze the page on web. On Android they use expo-image, which has **not** been tested on a device, and Android may drop the ink texture (an SVG filter) and show a flat stamp.
   - **Landing (rebuilt 2026-10-09):** web-only HTML/CSS in `src/components/landing-page.web.tsx`, following `Landing.dc.html` and MOTION.md §9, with a light/dark toggle. Phone demo uses captures of the design boards (`public/lp/*.jpg`); re-capture them if Home, Library, You, Feed or Article change.
   - **Known issue:** tab routes (`/home`, `/you`, `/library`) log a React hydration mismatch (#418) on load in the static build. It was already there before the landing rebuild; the page still works.
-  - **Not done (updated 2026-10-10):** any test on a real Android phone (first APK built 2026-10-10); Firebase (FCM) credentials for Expo push on Android; Google sign-in on Android (redirect not set up or tested); Hindi/Marathi interface beyond the 32 draft strings; web-specific onboarding and a web tour; API fallback keys (NewsData.io / NewsAPI.org / GNews); landing placeholders for funding and contact email (left out of the page for now).
+  - **Not done (updated 2026-10-10):** any test on a real Android phone (first APK built 2026-10-10); Firebase (FCM) credentials for Expo push on Android; Google sign-in on Android (redirect not set up or tested); Hindi/Marathi interface beyond the 32 draft strings; API fallback keys (NewsData.io / NewsAPI.org / GNews).
+  - **Vercel env vars (2026-10-10):** the three `EXPO_PUBLIC_*` values are set for **Production only**. Preview builds still have none, and the Vercel build fails without them.
   - **Known gap:** on web, text first shows in a system font until the fonts arrive; the pre-rendered landing page will need handling for search engines.
 - Backend: Supabase confirmed for DB and auth (2026-10-09).
 - The older code (`uneditd-app.zip`) is **not in this folder** and still uses the old name, fonts and landing layout. It was built ahead of the design.
@@ -163,8 +169,11 @@ These came up because older planning notes and later design passes say different
 - `data-dv` (Mukta vs Tiro follows the Serif / Sans choice) is wired on Home only; add it to the other reading screens when they get Hindi / Marathi versions.
 - Accessibility settings are designed but not yet applied across the other boards (they only drive the live preview).
 - Notification delivery (web push, Android) is not yet built or decided; see §5.
-- Fill landing placeholders: funding, contact email, store links.
-- Web onboarding and a web tour.
-- Handles and domain.
+- Fill landing store links.
+- Handles (domain stays on Vercel for now).
 - Bring the Expo code up to date with the current design (name, motto, fonts, patterns). Expo as the stack is settled (2026-10-09); where the code lives and whether to reuse `uneditd-app.zip` is not.
 - `Article-ptmb.dc.html` is Ashmit's experiment ("Article by" byline; its layout now matches Article). Decide whether to merge it into Article or drop it.
+
+## 9. Future plan (not scheduled)
+
+- **Android home-screen widgets** (Ashmit, 2026-10-10): e.g. today's Morning Edition lead and edition number, or the latest stories from the reader's sources. Not designed yet; needs a board and a native widget (Expo config plugin) when it's picked up.

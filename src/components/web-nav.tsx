@@ -7,6 +7,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Wordmark } from '@/components/wordmark';
 import { MaxContentWidth, TouchTarget } from '@/constants/theme';
 import { useTheme } from '@/theme/theme-provider';
+import { useTourTarget } from '@/tour/tour';
 import { useT } from '@/lib/i18n';
 
 /** Web top nav height (all Web boards). */
@@ -34,6 +35,12 @@ export function WebNav() {
   // Pages under a tab keep it lit: a folder is in Library, Your news is in You.
   const section = pathname.startsWith('/folder') ? '/library' : pathname.startsWith('/manage') ? '/you' : pathname;
   const active = TABS.find((tab) => section === tab.path || section.startsWith(`${tab.path}/`))?.path;
+  // Tour targets (the web tour points at the nav instead of the phone tab bar).
+  const tabsRef = useTourTarget('tabbar');
+  const libraryRef = useTourTarget('tabLibrary');
+  const youRef = useTourTarget('tabYou');
+  const searchRef = useTourTarget('search');
+  const tabRef = (path: string) => (path === '/library' ? libraryRef : path === '/you' ? youRef : undefined);
 
   return (
     <>
@@ -44,12 +51,12 @@ export function WebNav() {
         <Pressable accessibilityRole="link" accessibilityLabel="Un:edited home" onPress={() => router.navigate('/home')} style={styles.wordmark}>
           <Wordmark size={28} />
         </Pressable>
-        <View style={styles.links}>
+        <View ref={tabsRef} style={styles.links}>
           {TABS.map((tab) => {
             const on = tab.path === active;
             return (
+              <View key={tab.path} ref={tabRef(tab.path)}>
               <Pressable
-                key={tab.path}
                 accessibilityRole="link"
                 accessibilityState={{ selected: on }}
                 aria-current={on ? 'page' : undefined}
@@ -59,13 +66,16 @@ export function WebNav() {
                   {t(tab.key)}
                 </Text>
               </Pressable>
+              </View>
             );
           })}
         </View>
         <View style={styles.tools}>
+          <View ref={searchRef}>
           <Pressable accessibilityRole="button" accessibilityLabel="Search" onPress={() => router.push('/search')} style={styles.icon}>
             <SearchIcon size={20} color={colors.ink} />
           </Pressable>
+          </View>
           <ThemeToggle />
         </View>
       </View>

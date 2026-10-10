@@ -11,6 +11,13 @@ import { join } from 'node:path';
 
 const run = (cmd) => execSync(cmd, { stdio: 'inherit' });
 
+// Vercel's Git builds don't see .env.local. Without these the site ships with no backend and shows no news,
+// so stop the build instead. (Locally, Expo reads .env.local itself, so this only checks on Vercel.)
+if (process.env.VERCEL) {
+  const missing = ['EXPO_PUBLIC_SUPABASE_URL', 'EXPO_PUBLIC_SUPABASE_KEY'].filter((k) => !process.env[k]);
+  if (missing.length) throw new Error(`Set ${missing.join(' and ')} in the Vercel project's environment variables.`);
+}
+
 rmSync('dist', { recursive: true, force: true });
 run('npx expo export -p web');
 

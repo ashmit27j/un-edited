@@ -12,6 +12,7 @@ import { WideHome } from '@/components/wide/home';
 import { Wordmark } from '@/components/wordmark';
 import { useLayout } from '@/hooks/use-layout';
 import { useTour, useTourTarget } from '@/tour/tour';
+import { useInstallGuide } from '@/components/install-guide';
 import { WideBreakpoint } from '@/constants/theme';
 import { editionNumber } from '@/data/sample';
 import { useNews } from '@/data/news';
@@ -66,10 +67,11 @@ export default function Home() {
   const { startIfNew } = useTour();
   const online = useOnline();
   const { onboarded } = useReader();
-  // First time a phone reader reaches Home after setup: the tour (once).
+  // First time a reader reaches Home after setup: the tour (once), after the iPhone install guide if that's due.
+  const { pending: installPending } = useInstallGuide();
   useEffect(() => {
-    if (onboarded && layout === 'phone') startIfNew();
-  }, [onboarded, layout, startIfNew]);
+    if (onboarded && !installPending) startIfNew();
+  }, [onboarded, installPending, startIfNew]);
 
   if (!online)
     return (

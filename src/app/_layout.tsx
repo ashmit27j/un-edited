@@ -20,6 +20,7 @@ import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useEditionSchedule } from '@/components/notification-settings';
+import { InstallGuideProvider } from '@/components/install-guide';
 import { ToastProvider } from '@/components/toast';
 import { useAccountSync } from '@/session/account-sync';
 import { NewsProvider } from '@/data/news';
@@ -40,7 +41,9 @@ function Shell() {
     <>
       <StatusBar style={name === 'ink' ? 'light' : 'dark'} />
       <TourProvider>
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
+        <InstallGuideProvider>
+          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }} />
+        </InstallGuideProvider>
       </TourProvider>
     </>
   );

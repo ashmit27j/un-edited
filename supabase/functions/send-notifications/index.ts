@@ -38,6 +38,10 @@ type Target = {
 };
 type Message = { title: string; body: string; open: string; key: string; counts: boolean };
 
+/** Android channel for a message, by its kind (the channels are created by the app, src/lib/channels.ts). */
+const CHANNEL_BY_KIND: Record<string, string> = { edition: 'edition', big: 'big', alert: 'alerts', papers: 'papers' };
+const channelOf = (key: string) => CHANNEL_BY_KIND[key.split(':')[0]] ?? 'edition';
+
 const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, { auth: { persistSession: false } });
 const VAPID_PUBLIC = Deno.env.get('VAPID_PUBLIC_KEY');
 const VAPID_PRIVATE = Deno.env.get('VAPID_PRIVATE_KEY');
@@ -82,7 +86,7 @@ async function deliver(t: Target, m: Message) {
   const res = await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
     headers: { 'content-type': 'application/json', accept: 'application/json' },
-    body: JSON.stringify({ to: t.token, title: m.title, body: m.body, data: { open: m.open }, sound: t.notify.sound ? 'default' : null, channelId: 'default' }),
+    body: JSON.stringify({ to: t.token, title: m.title, body: m.body, data: { open: m.open }, sound: t.notify.sound ? 'default' : null, channelId: channelOf(m.key) }),
   });
   const json = await res.json().catch(() => null);
   if (json?.data?.details?.error === 'DeviceNotRegistered') await db.from('push_targets').delete().eq('id', t.id);

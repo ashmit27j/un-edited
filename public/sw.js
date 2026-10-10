@@ -11,7 +11,8 @@ self.addEventListener('push', (event) => {
     self.registration.showNotification(data.title || 'Un:edited', {
       body: data.body || '',
       icon: '/icon-192.png',
-      badge: '/icon-192.png',
+      // Android shows the badge as a mask in the status bar: it must be a single colour on transparent.
+      badge: '/badge-96.png',
       tag: data.tag,
       data: { open: data.open || '/home' },
     }),

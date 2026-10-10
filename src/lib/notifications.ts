@@ -1,5 +1,6 @@
 import * as Notifications from 'expo-notifications';
 
+import { ensureChannels } from '@/lib/channels';
 import type { NotifyPrefs } from '@/store/reader-provider';
 
 export type Permission = 'granted' | 'denied' | 'default' | 'unsupported';
@@ -33,6 +34,7 @@ export function deliveryTime(n: NotifyPrefs) {
 export async function scheduleEdition(n: NotifyPrefs) {
   await Notifications.cancelAllScheduledNotificationsAsync();
   if (!n.all || !n.edition) return;
+  await ensureChannels();
   const { hour, minute } = deliveryTime(n);
   for (const day of n.days) {
     await Notifications.scheduleNotificationAsync({
@@ -42,7 +44,7 @@ export async function scheduleEdition(n: NotifyPrefs) {
         sound: n.sound ? 'default' : undefined,
         data: { open: '/home' },
       },
-      trigger: { type: Notifications.SchedulableTriggerInputTypes.WEEKLY, weekday: DAY_NUMBERS[day], hour, minute },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.WEEKLY, channelId: 'edition', weekday: DAY_NUMBERS[day], hour, minute },
     });
   }
 }

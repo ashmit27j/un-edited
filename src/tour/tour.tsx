@@ -21,9 +21,11 @@ import { useTheme } from '@/theme/theme-provider';
 
 /**
  * First-run tour (Tour board, MOTION.md §4–5): 8 steps + done, a spotlight over the real screens with a hint card.
- * Phones only (no web tour, by design). Shown once after the first setup; You › About › Replay the tour.
+ * Phones use the Tour board's steps. Web (768px+) runs the same tour over the web layouts (Ashmit, 2026-10-10):
+ * the top nav instead of the tab bar, and the Feed's sections instead of the swipe. Same motion.
+ * Shown once after the first setup; You › About › Replay the tour.
  */
-export type TourTarget = 'strip' | 'lead' | 'search' | 'tabbar' | 'feedStory' | 'feedMode' | 'tabLibrary' | 'tabYou';
+export type TourTarget = 'strip' | 'lead' | 'search' | 'tabbar' | 'feedStory' | 'feedSections' | 'feedMode' | 'tabLibrary' | 'tabYou';
 
 type Step = { route: Href; target?: TourTarget; area: string; title: string; text: string; swipe?: boolean; nextLabel?: string };
 
@@ -39,6 +41,19 @@ const STEPS: Step[] = [
   { route: '/home', area: 'Tour complete', title: 'You’re all set.', text: 'Your first edition is ready. Every story, as it was written.' },
 ];
 
+/** Web: the same tour, pointed at the top nav and the Feed's sections. */
+const WEB_STEPS: Step[] = [
+  STEPS[0],
+  STEPS[1],
+  STEPS[2],
+  { route: '/home', target: 'tabbar', area: 'Home', title: 'Four places, always at the top.', text: STEPS[3].text, nextLabel: 'Show me Feed' },
+  { route: '/feed', target: 'feedSections', area: 'Feed', title: 'Pick a section.', text: 'Today, World, India and the rest, each with how many stories came in today. Stories arrive in the order they were published. Nothing is ranked for you.' },
+  STEPS[5],
+  STEPS[6],
+  STEPS[7],
+  STEPS[8],
+];
+
 const SEEN_KEY = 'unedited.tourSeen';
 const EASE = Easing.bezier(0.3, 0.7, 0.3, 1);
 
@@ -50,37 +65,56 @@ type Ctx = {
   register: (id: TourTarget, ref: RefObject<View | null>) => () => void;
 };
 
+type Targets = Map<TourTarget, Set<RefObject<View | null>>>;
+
+/**
+ * The on-screen view for a target. Several views can register the same id (the phone Home keeps its refs while
+ * the web Home is shown, and the hidden tab list keeps its tabs), so pick one that is mounted and visible.
+ */
+function resolve(targets: Targets, id: TourTarget): View | null {
+  for (const ref of targets.get(id) ?? []) {
+    const node = ref.current;
+    if (!node) continue;
+    if (Platform.OS !== 'web') return node;
+    const r = (node as unknown as Element).getBoundingClientRect();
+    if (r.width || r.height) return node;
+  }
+  return null;
+}
+
 const TourContext = createContext<Ctx>({ active: false, start: () => {}, startIfNew: () => {}, register: () => () => {} });
 
 export function TourProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const phone = useLayout() === 'phone';
-  const targets = useRef(new Map<TourTarget, RefObject<View | null>>());
+  const steps = phone ? STEPS : WEB_STEPS;
+  const targets = useRef<Targets>(new Map());
   const [step, setStep] = useState<number | null>(null);
 
   const register = useCallback((id: TourTarget, ref: RefObject<View | null>) => {
-    targets.current.set(id, ref);
+    const set = targets.current.get(id) ?? new Set();
+    set.add(ref);
+    targets.current.set(id, set);
     return () => {
-      if (targets.current.get(id) === ref) targets.current.delete(id);
+      set.delete(ref);
     };
   }, []);
 
   const go = useCallback(
     (i: number) => {
       setStep(i);
-      router.navigate(STEPS[i].route);
+      router.navigate(steps[i].route);
     },
-    [router],
+    [router, steps],
   );
-  const start = useCallback(() => phone && go(0), [phone, go]);
+  const start = useCallback(() => go(0), [go]);
   const startIfNew = useCallback(() => {
-    if (!phone) return;
     AsyncStorage.getItem(SEEN_KEY)
       .then((seen) => {
         if (!seen) go(0);
       })
       .catch(() => {});
-  }, [phone, go]);
+  }, [go]);
   const finish = useCallback(() => {
     setStep(null);
     AsyncStorage.setItem(SEEN_KEY, '1').catch(() => {});
@@ -92,11 +126,13 @@ export function TourProvider({ children }: { children: ReactNode }) {
   return (
     <TourContext.Provider value={value}>
       {children}
-      {step !== null && phone ? (
+      {step !== null ? (
         <TourOverlay
+          steps={steps}
+          wide={!phone}
           index={step}
           targets={targets}
-          onNext={() => (step < STEPS.length - 1 ? go(step + 1) : finish())}
+          onNext={() => (step < steps.length - 1 ? go(step + 1) : finish())}
           onBack={() => go(Math.max(0, step - 1))}
           onSkip={finish}
         />
@@ -127,14 +163,18 @@ function measure(node: View, done: (x: number, y: number, w: number, h: number) 
 }
 
 function TourOverlay({
+  steps: STEPS,
+  wide,
   index,
   targets,
   onNext,
   onBack,
   onSkip,
 }: {
+  steps: Step[];
+  wide: boolean;
   index: number;
-  targets: RefObject<Map<TourTarget, RefObject<View | null>>>;
+  targets: RefObject<Targets>;
   onNext: () => void;
   onBack: () => void;
   onSkip: () => void;
@@ -148,6 +188,25 @@ function TourOverlay({
   const [box, setBox] = useState<Box | null>(null);
   const [cardH, setCardH] = useState(220);
   const scrim = name === 'ink' ? 'rgba(10,9,8,0.72)' : 'rgba(28,26,23,0.62)';
+  // Web: a 400px card next to the target instead of a full-width one.
+  const cardW = wide ? Math.min(400, width - 32) : width - 32;
+
+  // Web: the page doesn't scroll under the tour (the spotlight is measured against the window), and Esc skips.
+  // (The body is what scrolls from 768px, see +html.tsx; locking it keeps the window as the scroller.)
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof document === 'undefined') return;
+    const body = document.body;
+    const before = body.style.overflow;
+    if (wide) body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onSkip();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      body.style.overflow = before;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [onSkip, wide]);
 
   // Spotlight geometry, animated between steps (0.35s cubic-bezier(.3,.7,.3,1); jumps with reduced motion).
   const [anim] = useState(() => ({ x: new Animated.Value(0), y: new Animated.Value(0), w: new Animated.Value(0), h: new Animated.Value(0), card: new Animated.Value(height) }));
@@ -157,16 +216,25 @@ function TourOverlay({
     let tries = 0;
     let timer: ReturnType<typeof setTimeout>;
     const find = () => {
-      const node = step.target ? targets.current.get(step.target)?.current : null;
+      const node = step.target ? resolve(targets.current, step.target) : null;
       if (done) {
         // Done: no ring; the stamp lands over the Home lead photo.
-        const lead = targets.current.get('lead')?.current;
+        const lead = resolve(targets.current, 'lead');
         if (lead) return measure(lead, (x, y, w) => setBox({ x: x + w / 2, y: y + 150, w: 0, h: 0 }));
         return setBox({ x: width / 2, y: height * 0.4, w: 0, h: 0 });
       }
       if (!node) {
         if (tries++ < 50) timer = setTimeout(find, 60);
         return;
+      }
+      // Web 768px+: scroll the window (instantly) to a target that is off screen or under the fixed 68px top nav,
+      // centring it in the space below the nav. Targets inside the nav stay put.
+      if (Platform.OS === 'web' && wide) {
+        const r = (node as unknown as Element).getBoundingClientRect();
+        const room = window.innerHeight - 68;
+        if (r.bottom > 68 && (r.top < 68 || r.bottom > window.innerHeight)) {
+          window.scrollBy(0, r.top - (68 + Math.max(16, (room - r.height) / 2)));
+        }
       }
       measure(node, (x, y, w, h) => {
         if (!w && tries++ < 50) {
@@ -183,10 +251,21 @@ function TourOverlay({
       clearTimeout(timer);
       clearTimeout(settle);
     };
-  }, [index, step.target, done, targets, width, height]);
+  }, [index, step.target, done, targets, width, height, wide]);
 
   // Card below the target when it fits, otherwise above it.
-  const cardTop = box ? (done ? box.y + 130 : box.y + box.h + 20 + cardH <= height - 16 ? box.y + box.h + 20 : Math.max(16, box.y - cardH - 20)) : height;
+  const fitsBelow = !!box && box.y + box.h + 20 + cardH <= height - 16;
+  const fitsAbove = !!box && box.y - cardH - 20 >= 16;
+  // Web, a target too tall for the card above or below it (the lead story): the card goes beside it.
+  const beside = wide && !!box && !done && !fitsBelow && !fitsAbove;
+  const besideRight = !!box && box.x + box.w + 20 + cardW <= width - 16;
+  let cardTop = box ? (done ? box.y + 130 : fitsBelow ? box.y + box.h + 20 : Math.max(16, box.y - cardH - 20)) : height;
+  // Web: lined up with the target's left edge (centred under the stamp when done), kept inside the window.
+  let cardLeft = !wide ? 16 : box ? Math.min(Math.max(16, done ? box.x - cardW / 2 : box.x), width - cardW - 16) : (width - cardW) / 2;
+  if (beside && box) {
+    cardTop = Math.min(Math.max(16, box.y), height - cardH - 16);
+    cardLeft = besideRight ? box.x + box.w + 20 : Math.max(16, box.x - cardW - 20);
+  }
 
   useEffect(() => {
     if (!box) return;
@@ -206,7 +285,7 @@ function TourOverlay({
   const bottom = Animated.add(anim.y, anim.h);
 
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+    <View style={[StyleSheet.absoluteFill, wide && styles.fixed]} pointerEvents="box-none">
       {/* Scrim everywhere except the target. */}
       <Animated.View style={[styles.scrim, { backgroundColor: scrim, top: 0, left: 0, right: 0, height: anim.y }]} />
       <Animated.View style={[styles.scrim, { backgroundColor: scrim, top: bottom, left: 0, right: 0, bottom: 0 }]} />
@@ -236,7 +315,7 @@ function TourOverlay({
         role="dialog"
         aria-modal
         onLayout={(e) => setCardH(e.nativeEvent.layout.height)}
-        style={[styles.card, { top: anim.card, backgroundColor: colors.surface, borderColor: colors.rule, borderTopColor: colors.accent }]}>
+        style={[styles.card, { top: anim.card, left: cardLeft, width: cardW, backgroundColor: colors.surface, borderColor: colors.rule, borderTopColor: colors.accent }]}>
         <View style={styles.cardHead}>
           <Text variant="label" color="accent" style={{ letterSpacing: 0.8 }}>
             {done ? step.area : `${step.area} · ${index + 1} of ${STEPS.length - 1}`}
@@ -394,7 +473,9 @@ function DoneStamp({ x, y }: { x: number; y: number }) {
 const styles = StyleSheet.create({
   scrim: { position: 'absolute' },
   ring: { position: 'absolute', borderWidth: 2 },
-  card: { position: 'absolute', left: 16, right: 16, paddingTop: 16, paddingHorizontal: 18, paddingBottom: 14, gap: 10, borderWidth: 1, borderTopWidth: 3 },
+  // 'fixed' is web-only: the document scrolls on web, and the tour stays over the window, above the fixed top nav.
+  fixed: { position: 'fixed' as 'absolute', zIndex: 100 },
+  card: { position: 'absolute', paddingTop: 16, paddingHorizontal: 18, paddingBottom: 14, gap: 10, borderWidth: 1, borderTopWidth: 3 },
   cardHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 24 },
   skip: { height: 44, marginVertical: -10, marginRight: -6, paddingHorizontal: 6, justifyContent: 'center' },
   cardFoot: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 4 },

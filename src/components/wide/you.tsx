@@ -394,6 +394,7 @@ export function WideYou({ onClearDownloads }: { onClearDownloads: () => void }) 
           </Section>
 
           <Section id="about" title="About">
+            <LinkRow label="Replay the tour" action="Start" onPress={() => router.push('/tour')} />
             <LinkRow
               label="Start over"
               desc="Clears your choices on this browser and replays the setup."

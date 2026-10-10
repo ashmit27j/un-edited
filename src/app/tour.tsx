@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { useTour } from '@/tour/tour';
 
-/** You › About › Replay the tour. Starts the tour (phones only) and goes to Home. */
+/** You › About › Replay the tour. Starts the tour (phones and web) and goes to Home. */
 export default function Tour() {
   const { start } = useTour();
   useEffect(() => {

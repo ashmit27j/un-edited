@@ -6,6 +6,7 @@
 import { useRouter } from 'expo-router';
 import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 
+import { useInstallGuide } from '@/components/install-guide';
 import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
@@ -47,11 +48,13 @@ const PAPERS = [
   { label: 'Official report', title: 'Quarterly report on rural road connectivity, July–September', note: 'A primary document from a government body, linked in full.' },
 ];
 
-// The funding question is left out until its answer is written (docs/current-config.md §8).
+const CONTACT = 'ashmit27j@gmail.com';
+
 const FAQS = [
   { q: 'Do you rewrite or summarise articles?', a: 'No. Headlines, text and image credits are shown as each publisher released them. When only an excerpt is available, the article says so and links to the full story.' },
   { q: 'How is my feed ordered?', a: 'By time of publication, from the sources you chose. Nothing is ranked by what you click.' },
   { q: 'Do I need an account?', a: 'No. Anyone can read. An account lets you save articles into folders and keep your settings on every device.' },
+  { q: 'How does Un:edited pay for itself?', a: 'It doesn’t need to. There is no paid version, no subscription and no ads, and there won’t be. It is built by one person and runs on free and low-cost services.' },
 ];
 
 const OUTLETS = ['Morning Ledger', 'Deccan Courier', 'Civic Wire', 'The Plateau Times', 'सह्याद्री वार्ता', 'नगर दर्पण'];
@@ -144,6 +147,7 @@ export function LandingPage() {
   const { name, setPreference } = useTheme();
   const { continueAsGuest } = useSession();
   const { finishOnboarding } = useReader();
+  const installGuide = useInstallGuide();
   const scroller = useRef<HTMLDivElement>(null);
 
   // Typing headline. Starts on "edited" so the pre-rendered page and reduced motion read "Un:edited".
@@ -568,7 +572,13 @@ export function LandingPage() {
                 <span style={{ flex: 1 }}>Set up my edition</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <a href="#install-iphone" className="lp-cta lp-big lp-big-solid">
+              <a
+                href="#install-iphone"
+                onClick={(e) => {
+                  e.preventDefault();
+                  installGuide.open('landing');
+                }}
+                className="lp-cta lp-big lp-big-solid">
                 <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" className="lp-ico" style={{ strokeWidth: 1.6 }}>
                   <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
                   <path d="M10.5 5h3M11 18.5h2" />
@@ -620,6 +630,7 @@ export function LandingPage() {
               <span className="lp-label lp-footer-h">Maker</span>
               <span className="lp-footer-item">Ashmit</span>
               <a href="https://github.com/ashmit27j/un-edited" target="_blank" rel="noreferrer" className="lp-out">Source code ↗</a>
+              <a href={`mailto:${CONTACT}`} className="lp-out" style={{ overflowWrap: 'anywhere' }}>{CONTACT}</a>
             </div>
           </nav>
         </div>
