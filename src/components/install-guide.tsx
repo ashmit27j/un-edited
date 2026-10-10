@@ -17,13 +17,15 @@ import { useTheme } from '@/theme/theme-provider';
 /**
  * iPhone install guide (Ashmit, 2026-10-10): four swipeable cards showing Safari's Share › Add to Home Screen ›
  * Add › open from the Home Screen, with Got it at the end.
- *  - Shown on its own once, in Safari on an iPhone or iPad (not already installed), when the reader first reaches
- *    the app after setup (and sign-in). The tour waits until it is closed.
+ *  - Shown on its own once, in Safari on an iPhone or iPad (not already installed), when setup starts (Ashmit,
+ *    2026-10-10): iPhone keeps Home Screen apps separate from Safari, so setting up first in Safari would mean
+ *    doing it twice. Readers who set up before this existed see it on their next visit to a tab screen instead
+ *    (the tour waits for it).
  *  - The landing page's "Add to iPhone" opens it any time; its last button continues to setup (or Home).
  *  - Closing it either way counts as seen, so it never comes back by itself.
  * No motion of its own: the cards scroll natively (snap), and with reduced motion the buttons jump.
  */
-type Mode = 'setup' | 'landing';
+type Mode = 'start' | 'setup' | 'landing';
 type Ctx = {
   /** The guide is still due for this reader: the tour waits for it. */
   pending: boolean;
@@ -57,8 +59,16 @@ export function InstallGuideProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const pending = offer && onboarded && seen !== true;
-  // First time on a tab screen after setup: it shows by itself.
-  const mode: Mode | null = asked ?? (pending && seen === false && TAB_PATHS.includes(pathname) ? 'setup' : null);
+  // Shows by itself once: when setup starts, or (set up before the guide existed) on a tab screen.
+  const auto: Mode | null =
+    !offer || seen !== false
+      ? null
+      : !onboarded && pathname === '/onboarding'
+        ? 'start'
+        : onboarded && TAB_PATHS.includes(pathname)
+          ? 'setup'
+          : null;
+  const mode: Mode | null = asked ?? auto;
 
   const close = useCallback(() => {
     setAsked(null);
@@ -84,7 +94,7 @@ export function InstallGuideProvider({ children }: { children: ReactNode }) {
         <InstallGuide
           mode={mode}
           signedIn={status === 'signedIn'}
-          doneLabel={mode === 'setup' ? 'Got it' : onboarded ? 'Go to my edition' : 'Set up my edition'}
+          doneLabel={mode !== 'landing' ? 'Got it' : onboarded ? 'Go to my edition' : 'Set up my edition'}
           onClose={close}
           onDone={done}
         />
@@ -118,7 +128,9 @@ function InstallGuide({
   const last =
     mode === 'landing'
       ? 'It opens full screen, like an app, without the browser bars. Set up your edition there, or carry on here.'
-      : signedIn
+      : mode === 'start'
+        ? 'It opens full screen, like an app. Set up your edition there: iPhone keeps Home Screen apps separate from Safari, so choices made here stay in Safari.'
+        : signedIn
         ? 'It opens full screen, like an app. Sign in there once and your sources, settings and folders come with you.'
         : 'It opens full screen, like an app. iPhone keeps Home Screen apps separate from Safari, so you’ll pick your sources once more there. Sign in to bring them along instead.';
 

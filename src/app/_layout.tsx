@@ -28,6 +28,7 @@ import { TourProvider } from '@/tour/tour';
 import { useWebScrollMemory } from '@/hooks/use-web-scroll-memory';
 import { SessionProvider } from '@/session/session-provider';
 import { ReaderProvider } from '@/store/reader-provider';
+import { useSourceCleanup } from '@/store/source-cleanup';
 import { ThemeProvider, useTheme } from '@/theme/theme-provider';
 
 SplashScreen.preventAutoHideAsync();
@@ -37,6 +38,7 @@ function Shell() {
   useWebScrollMemory();
   useEditionSchedule();
   useAccountSync();
+  useSourceCleanup();
   return (
     <>
       <StatusBar style={name === 'ink' ? 'light' : 'dark'} />
