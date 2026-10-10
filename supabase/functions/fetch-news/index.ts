@@ -6,7 +6,7 @@
 //    about the same event by shared names and numbers (no AI).
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
-import { keysOf, parseFeed, plain, sameEvent, topicOf, type FeedItem } from '../_shared/feeds.ts';
+import { EXCERPT_MAX, keysOf, parseFeed, plain, sameEvent, topicOf, type FeedItem } from '../_shared/feeds.ts';
 
 type Source = {
   id: string;
@@ -60,7 +60,7 @@ async function fromApis(src: Source): Promise<{ items: FeedItem[]; via: string }
         return (json.results ?? []).map((r: Record<string, string>) => ({
           url: r.link,
           title: plain(r.title ?? ''),
-          excerpt: r.description ? plain(r.description).slice(0, 600) : null,
+          excerpt: r.description ? plain(r.description).slice(0, EXCERPT_MAX) : null,
           body: null,
           imageUrl: r.image_url ?? null,
           imageCredit: null,
@@ -80,7 +80,7 @@ async function fromApis(src: Source): Promise<{ items: FeedItem[]; via: string }
         return (json.articles ?? []).map((a: Record<string, string>) => ({
           url: a.url,
           title: plain(a.title ?? ''),
-          excerpt: a.description ? plain(a.description).slice(0, 600) : null,
+          excerpt: a.description ? plain(a.description).slice(0, EXCERPT_MAX) : null,
           body: null,
           imageUrl: a.urlToImage ?? null,
           imageCredit: null,
@@ -101,7 +101,7 @@ async function fromApis(src: Source): Promise<{ items: FeedItem[]; via: string }
         return (json.articles ?? []).map((a: Record<string, string>) => ({
           url: a.url,
           title: plain(a.title ?? ''),
-          excerpt: a.description ? plain(a.description).slice(0, 600) : null,
+          excerpt: a.description ? plain(a.description).slice(0, EXCERPT_MAX) : null,
           body: null,
           imageUrl: a.image ?? null,
           imageCredit: null,

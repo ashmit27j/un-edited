@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useNews } from '@/data/news';
 import type { Story } from '@/data/sample';
+import { useSession } from '@/session/session-provider';
 import { useReader } from '@/store/reader-provider';
 
 /**
@@ -31,7 +32,7 @@ export function useEdition() {
   const { mine, outside } = useStories();
   const { live, updatedAt } = useNews();
   return useMemo(() => {
-    if (!live || !updatedAt) return { mine, outside };
+    if (!live || !updatedAt) return { mine, outside, cutoff: null };
     const cutoff = Math.floor((updatedAt - EDITION_UTC_MS) / DAY_MS) * DAY_MS + EDITION_UTC_MS;
     const since = (updatedAt - cutoff) / 60_000; // minutes from the cutoff to when the data loaded
     const inEdition = (s: Story) => s.minsAgo >= since && s.minsAgo < since + 24 * 60;
@@ -40,10 +41,24 @@ export function useEdition() {
     // the last 24 hours until the first full edition. 10 stories is a thin front page, not an edition.
     if (edition.length < 10) {
       const recent = (s: Story) => s.minsAgo < 24 * 60;
-      return { mine: mine.filter(recent), outside: outside.filter(recent) };
+      return { mine: mine.filter(recent), outside: outside.filter(recent), cutoff };
     }
-    return { mine: edition, outside: outside.filter(inEdition) };
+    return { mine: edition, outside: outside.filter(inEdition), cutoff };
   }, [mine, outside, live, updatedAt]);
+}
+
+/**
+ * "Save daily edition" (You › Storage): once per edition, the edition's stories (one per event, as Home lists
+ * them) go into Saved. Signed-in readers only, since guests can't save. Live news only.
+ */
+export function useSaveDailyEdition() {
+  const { prefs, saveEditionStories, editionSavedFor, ready } = useReader();
+  const { status } = useSession();
+  const { mine, cutoff } = useEdition();
+  useEffect(() => {
+    if (!ready || status !== 'signedIn' || !prefs.saveEdition || cutoff === null || editionSavedFor === cutoff || !mine.length) return;
+    saveEditionStories(onePerEvent(mine).map((s) => s.id), cutoff);
+  }, [ready, status, prefs.saveEdition, cutoff, editionSavedFor, mine, saveEditionStories]);
 }
 
 /** Newest story of each event, so one event isn't listed once per outlet. */

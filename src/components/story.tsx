@@ -1,9 +1,22 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Platform, Pressable, Share, StyleSheet, TextInput, View } from 'react-native';
 
 import { Button } from '@/components/button';
-import { BackIcon, BookmarkIcon, MoreIcon } from '@/components/icons';
+import {
+  BackIcon,
+  BookmarkIcon,
+  ChevronIcon,
+  DownloadedIcon,
+  DownloadIcon,
+  FlagIcon,
+  InfoIcon,
+  MinusIcon,
+  MoreIcon,
+  PlusIcon,
+  RemoveSourceIcon,
+  ShareIcon,
+} from '@/components/icons';
 import { Sheet, SheetRow } from '@/components/sheet';
 import { Text } from '@/components/text';
 import { useToast } from '@/components/toast';
@@ -18,13 +31,16 @@ import { useTheme } from '@/theme/theme-provider';
 import { useT } from '@/lib/i18n';
 import { useNews } from '@/data/news';
 
-export const SITE_URL = 'https://unedited-six.vercel.app';
+export const SITE_URL = 'https://unedited-bulletin.vercel.app';
 
 /**
  * Spread on anything that opens a story. On desktop web it gets the "Read more" stamp cursor
  * ([data-story-link] in +html.tsx); elsewhere it does nothing.
  */
 export const storyLink = (Platform.OS === 'web' ? { dataSet: { storyLink: '' } } : {}) as object;
+
+/** Spread on a whole story card (photo, headline, byline): hovering anywhere on it underlines the headline. */
+export const storyCard = (Platform.OS === 'web' ? { dataSet: { storyCard: '' } } : {}) as object;
 
 export function useOpenStory() {
   const router = useRouter();
@@ -110,17 +126,26 @@ export function SaveButton({ story, size = 22, withText }: { story: Story; size?
   );
 }
 
-/** ⋯ menu: Download · Share link · More about [topic] · Not interested · Report a problem. */
+/**
+ * ⋯ menu (MoreSheet board): outlet · topic and headline, then Download · Share link | More about [topic] ·
+ * Not interested · Add / Remove this source · Report a problem. Each row has its line icon.
+ * Add this source shows on stories from outlets the reader hasn't picked (Explore); Remove this source on
+ * their own outlets' stories (Feed), after a Yes / No check.
+ */
 export function MoreButton({ story, vertical, onImage }: { story: Story; vertical?: boolean; onImage?: boolean }) {
   const { colors } = useTheme();
   const router = useRouter();
   const toast = useToast();
-  const { downloaded, toggleDownload, hide } = useReader();
+  const { sourceById } = useNews();
+  const { downloaded, toggleDownload, hide, prefs, setPrefs } = useReader();
   const [open, setOpen] = useState(false);
-  const [panel, setPanel] = useState<'menu' | 'report' | 'sent'>('menu');
+  const [panel, setPanel] = useState<'menu' | 'report' | 'sent' | 'remove'>('menu');
   const isDownloaded = downloaded.includes(story.id);
+  const source = sourceById(story.sourceId);
+  const mineSource = prefs.sources.includes(story.sourceId);
   const target = useTarget();
   const t = useT();
+  const lang = story.lang !== 'en' ? story.lang : undefined;
 
   const close = () => {
     setOpen(false);
@@ -155,40 +180,128 @@ export function MoreButton({ story, vertical, onImage }: { story: Story; vertica
         <MoreIcon size={22} color={onImage ? colors.ink : colors.muted} vertical={vertical} />
       </Pressable>
       <Sheet visible={open} onClose={close}>
-        {panel !== 'menu' ? (
+        {panel === 'report' || panel === 'sent' ? (
           <ReportPanel story={story} sent={panel === 'sent'} onBack={() => setPanel('menu')} onSent={() => setPanel('sent')} onDone={close} />
+        ) : panel === 'remove' ? (
+          <View accessibilityRole="alert" style={{ paddingTop: 14, gap: 12 }}>
+            <Text variant="headline" medium style={{ fontSize: 22, lineHeight: 27.5 }}>
+              Are you sure you want to remove this source?
+            </Text>
+            <Text variant="ui" color="muted" style={{ fontSize: 14, lineHeight: 21.5 }} lang={source.lang !== 'en' ? source.lang : undefined}>
+              {source.name} will leave My Feed and your front page. Its stories can still show in Explore, and you can add it back any time.
+            </Text>
+            <View style={{ gap: 8, marginTop: 4 }}>
+              <Button
+                label="Yes"
+                onPress={() => {
+                  setPrefs({ sources: prefs.sources.filter((id) => id !== story.sourceId) });
+                  close();
+                  toast.show(`Removed ${source.name}`);
+                }}
+              />
+              <Button label="No" kind="secondary" onPress={() => setPanel('menu')} />
+            </View>
+          </View>
         ) : (
-          <>
-        <SheetRow
-          label={isDownloaded ? 'Remove download' : 'Download'}
-          hint={isDownloaded ? undefined : 'Keep a copy on this device'}
-          onPress={() => {
-            toggleDownload(story.id);
-            close();
-            toast.show(isDownloaded ? 'Download removed' : 'Downloaded');
-          }}
-        />
-        <SheetRow label={t('story.share')} onPress={share} />
-        <SheetRow
-          label={`More about ${story.topic}`}
-          onPress={() => {
-            close();
-            router.push({ pathname: '/search', params: { q: story.topic } });
-          }}
-        />
-        <SheetRow
-          label={t('story.notInterested')}
-          onPress={() => {
-            hide(story.id);
-            close();
-            toast.show('Hidden from your front page');
-          }}
-        />
-        <SheetRow label={t('story.report')} danger onPress={() => setPanel('report')} />
-          </>
+          <View accessibilityRole="menu" accessibilityLabel="Story options">
+            <Text variant="label" color="muted" style={{ marginTop: 4 }}>
+              {source.name} · {story.topic}
+            </Text>
+            <Text variant="headline" lang={lang} numberOfLines={2} style={[styles.menuTitle, { borderBottomColor: colors.rule }]}>
+              {story.headline}
+            </Text>
+            <MenuRow
+              icon={isDownloaded ? <DownloadedIcon size={20} color={colors.accent} /> : <DownloadIcon size={20} color={colors.ink} />}
+              label={isDownloaded ? 'Remove download' : 'Download'}
+              hint={isDownloaded ? 'Downloaded · readable offline' : 'Keep this story for offline reading'}
+              onPress={() => {
+                toggleDownload(story.id);
+                close();
+                toast.show(isDownloaded ? 'Download removed' : 'Downloaded');
+              }}
+            />
+            <MenuRow icon={<ShareIcon size={20} color={colors.ink} />} label={t('story.share')} onPress={share} />
+            <View style={[styles.menuRule, { backgroundColor: colors.rule }]} />
+            <MenuRow
+              icon={<InfoIcon size={20} color={colors.ink} />}
+              label={`More about ${story.topic}`}
+              onPress={() => {
+                close();
+                router.push({ pathname: '/search', params: { q: story.topic } });
+              }}
+            />
+            <MenuRow
+              icon={<MinusIcon size={20} color={colors.ink} />}
+              label={t('story.notInterested')}
+              onPress={() => {
+                hide(story.id);
+                close();
+                toast.show('Hidden from your front page');
+              }}
+            />
+            {mineSource ? (
+              <MenuRow icon={<RemoveSourceIcon size={20} color={colors.ink} />} label="Remove this source" hint={source.name} onPress={() => setPanel('remove')} />
+            ) : (
+              <MenuRow
+                icon={<PlusIcon size={20} color={colors.ink} />}
+                label="Add this source"
+                hint={source.name}
+                onPress={() => {
+                  setPrefs({ sources: [...prefs.sources, story.sourceId] });
+                  close();
+                  toast.show(`Added ${source.name} to your sources`);
+                }}
+              />
+            )}
+            <MenuRow
+              icon={<FlagIcon size={20} color={colors.accent} />}
+              label={t('story.report')}
+              danger
+              chevron
+              onPress={() => setPanel('report')}
+            />
+          </View>
         )}
       </Sheet>
     </>
+  );
+}
+
+/** One ⋯ menu row: 20px icon, 14px gap, label (and an optional muted note). */
+function MenuRow({
+  icon,
+  label,
+  hint,
+  danger,
+  chevron,
+  onPress,
+}: {
+  icon: ReactNode;
+  label: string;
+  hint?: string;
+  danger?: boolean;
+  chevron?: boolean;
+  onPress: () => void;
+}) {
+  const { colors } = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="menuitem"
+      onPress={onPress}
+      style={({ pressed }) => [styles.menuRow, { opacity: pressed ? 0.7 : 1 }]}>
+      {icon}
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text variant="ui" color={danger ? 'accent' : 'ink'} style={{ fontSize: 15.5 }}>
+          {label}
+        </Text>
+        {hint ? (
+          <Text variant="meta" color="muted" style={{ fontSize: 12.5 }}>
+            {hint}
+          </Text>
+        ) : null}
+      </View>
+      {chevron ? <ChevronIcon size={16} color={colors.muted} /> : null}
+    </Pressable>
   );
 }
 
@@ -352,4 +465,7 @@ const styles = StyleSheet.create({
   row: { paddingTop: 14, paddingBottom: 2, borderBottomWidth: StyleSheet.hairlineWidth },
   rowMain: { flexDirection: 'row', gap: 12, alignItems: 'flex-start' },
   number: { width: 22, paddingTop: 1 },
+  menuTitle: { marginTop: 4, paddingBottom: 12, marginBottom: 4, fontSize: 18, lineHeight: 22.5, borderBottomWidth: StyleSheet.hairlineWidth },
+  menuRow: { minHeight: 52, paddingVertical: 6, flexDirection: 'row', alignItems: 'center', gap: 14 },
+  menuRule: { height: StyleSheet.hairlineWidth, marginVertical: 4 },
 });

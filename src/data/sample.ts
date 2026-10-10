@@ -69,6 +69,8 @@ export type Story = {
   /** Live stories: the publisher's page and photo. */
   url?: string;
   imageUrl?: string;
+  /** A video file from the publisher's page. Plays as the thumbnail where allowed; the photo stays the fallback. */
+  videoUrl?: string;
 };
 
 export type Paper = {

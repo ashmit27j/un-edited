@@ -6,7 +6,6 @@ import { SearchIcon } from '@/components/icons';
 import { Byline, StoryRow, useOpenStory, storyLink } from '@/components/story';
 import { Text } from '@/components/text';
 import { Photo, Rule, Screen, SectionHeader, useGutter } from '@/components/ui';
-import { NotifyAsk } from '@/components/notify-ask';
 import { OfflineScreen, useOnline } from '@/components/states';
 import { WideHome } from '@/components/wide/home';
 import { Wordmark } from '@/components/wordmark';
@@ -114,7 +113,6 @@ export default function Home() {
           <Wordmark size={26} />
         </View>
       )}
-      <NotifyAsk />
       <View ref={stripRef} style={[styles.strip, { borderTopColor: colors.ink, borderBottomColor: colors.ink }]}>
         <Text variant="label" color="muted">
           {edition}
@@ -277,8 +275,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     minHeight: 44,
+    // Top and bottom rules the same weight (Ashmit, 2026-10-10).
     borderTopWidth: 1.5,
-    borderBottomWidth: StyleSheet.hairlineWidth * 2,
+    borderBottomWidth: 1.5,
   },
   search: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
   leadRow: { flexDirection: 'row', alignItems: 'flex-start' },

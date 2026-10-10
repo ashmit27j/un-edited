@@ -167,7 +167,7 @@ Not an animation, but easy to miss: with `(hover: hover) and (pointer: fine)` on
 - Other links and buttons: normal `pointer`. Inputs: `text`.
 
 ## 11. Not animated (by design)
-Tab switches, Feed category tabs, Save toggle, the Article prev/next source switch and Accessibility settings have no designed motion. Use the platform defaults or ask Ashmit.
+Tab switches (including the phone Explore tab), Feed category tabs, Save toggle, the Article prev/next source switch and Accessibility settings have no designed motion. Use the platform defaults or ask Ashmit.
 
 ---
 
@@ -196,3 +196,30 @@ Taken from the board's own CSS (it wasn't covered here before):
 ## 14. Tour as built (`src/tour/tour.tsx`)
 
 Follows §4–5. The spotlight is drawn as four scrim panels around the target plus a 2px accent ring 3px out, all animated together over 0.35s `cubic-bezier(.3,.7,.3,1)`; the card's `top` uses the same timing. Targets are the real screens' views, measured after the screen lays out.
+
+## 15. Headline hover underline (web, mouse and trackpad; added 2026-10-10, no design board)
+
+Asked for by Ashmit: hovering a story should underline its headline, with an animation.
+
+- **Where:** any headline inside something that opens a story (`[data-story-link]`); on web Feed and Home lead cards, hovering anywhere on the card (`[data-story-card]`) does it too. Also on keyboard focus.
+- **Motion:** a 1px rule in the text colour draws under the headline **left to right over 0.3s, ease-out**, on every line of a wrapped headline at once (background-size 0% → 100%, `box-decoration-break: clone`). It undraws the same way when the pointer leaves.
+- **Reduced motion:** the rule appears and disappears at once (system setting or You › Reduce motion).
+- **Not on touch screens** (`hover: hover` and `pointer: fine` only).
+- **Code:** CSS in `src/app/+html.tsx`; `Text` (`src/components/text.tsx`) wraps display and headline text in the span the rule draws on.
+
+## 16. Landing page menu on phones (added 2026-10-10, no design board)
+
+Asked for by Ashmit: on phones (720px and under) the landing page's links fold into a ☰ menu. Only the landing page; app screens keep their bottom tab bar.
+
+- **Open:** the panel under the header **fades in and drops 8px over 0.25s, ease-out**. The ☰ icon switches to ✕ (no motion). Closes on a link, ✕ or Esc, instantly.
+- **Reduced motion:** the panel appears at once.
+- **Scroll snap (phones):** `scroll-snap-type: y proximity` on the page: it settles on the header, a section's top or the footer only when you stop close to one, and never holds you inside a long section. Off with reduced motion.
+- **Code:** `src/components/landing-page.web.tsx` (`.lp-menu`, `.lp-burger`).
+
+## 17. Thumbnail videos (added 2026-10-10, no design board)
+
+- **Web, mouse and trackpad:** a story's video plays (muted, looping) while the pointer is over its photo, and stops when it leaves. No fade: the video simply replaces the photo.
+- **Phones (app and phone web):** only with You › Reading › **Play thumbnail videos** on (off by default), and only the Feed story on screen plays.
+- **Reduced motion:** never plays; the photo stays.
+- **"N new stories" pill (Feed / Explore on phones):** appears and goes without motion; tapping it scrolls to the top (animated scroll, instant with reduced motion).
+- **Code:** `src/components/story-media.tsx` / `.web.tsx`, `src/components/feed-screen.tsx`.

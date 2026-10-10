@@ -25,7 +25,7 @@ import { useTheme } from '@/theme/theme-provider';
  * the top nav instead of the tab bar, and the Feed's sections instead of the swipe. Same motion.
  * Shown once after the first setup; You › About › Replay the tour.
  */
-export type TourTarget = 'strip' | 'lead' | 'search' | 'tabbar' | 'feedStory' | 'feedSections' | 'feedMode' | 'tabLibrary' | 'tabYou';
+export type TourTarget = 'strip' | 'lead' | 'search' | 'tabbar' | 'feedStory' | 'feedSections' | 'feedMode' | 'tabExplore' | 'tabLibrary' | 'tabYou';
 
 type Step = { route: Href; target?: TourTarget; area: string; title: string; text: string; swipe?: boolean; nextLabel?: string };
 
@@ -33,22 +33,22 @@ const STEPS: Step[] = [
   { route: '/home', target: 'strip', area: 'Home', title: 'This is today’s edition.', text: 'Home is put together at 6:00 every morning from the sources you chose. It stays the same all day, so you can actually finish it.' },
   { route: '/home', target: 'lead', area: 'Home', title: 'Tap a story to read it.', text: 'When several outlets cover the same news, you can read each one’s version in its own words. The ⋯ under a story lets you save, share or see less of a topic.' },
   { route: '/home', target: 'search', area: 'Home', title: 'Search anything.', text: 'Find stories, papers, outlets and topics, in your sources or across all of them.' },
-  { route: '/home', target: 'tabbar', area: 'Home', title: 'Four places, always here.', text: 'Home for today’s edition. Feed for stories as they arrive. Library for what you save. You for settings.', nextLabel: 'Show me Feed' },
+  { route: '/home', target: 'tabbar', area: 'Home', title: 'Five places, always here.', text: 'Home for today’s edition. Feed for your sources as they publish. Explore for everyone else. Library for what you save. You for settings.', nextLabel: 'Show me Feed' },
   { route: '/feed', target: 'feedStory', area: 'Feed', swipe: true, title: 'Swipe left or right to switch sections.', text: 'Move between Today, World, India and the rest without reaching for the tabs. Swipe up for the next story.' },
-  { route: '/feed', target: 'feedMode', area: 'Feed', title: 'My Feed or Explore.', text: 'My Feed is only the outlets you chose. Explore shows stories from everyone else, and always says so.' },
+  { route: '/feed', target: 'tabExplore', area: 'Feed', title: 'Then Explore.', text: 'Feed is only the outlets you chose. When it runs out, Explore shows stories from everyone else, and always says so.' },
   { route: '/library', target: 'tabLibrary', area: 'Library', title: 'Your Library.', text: 'Save any story into folders. Download a story from ⋯, or a whole folder, to read it offline. Your last five stories are under Recently viewed.' },
   { route: '/you', target: 'tabYou', area: 'You', title: 'Make it yours.', text: 'Change sources, topics, places, font and theme any time. You can replay this tour from You › About.' },
   { route: '/home', area: 'Tour complete', title: 'You’re all set.', text: 'Your first edition is ready. Every story, as it was written.' },
 ];
 
-/** Web: the same tour, pointed at the top nav and the Feed's sections. */
+/** Web: the same tour, pointed at the top nav and the Feed's sections. Web keeps Explore inside Feed. */
 const WEB_STEPS: Step[] = [
   STEPS[0],
   STEPS[1],
   STEPS[2],
-  { route: '/home', target: 'tabbar', area: 'Home', title: 'Four places, always at the top.', text: STEPS[3].text, nextLabel: 'Show me Feed' },
+  { route: '/home', target: 'tabbar', area: 'Home', title: 'Four places, always at the top.', text: 'Home for today’s edition. Feed for stories as they arrive. Library for what you save. You for settings.', nextLabel: 'Show me Feed' },
   { route: '/feed', target: 'feedSections', area: 'Feed', title: 'Pick a section.', text: 'Today, World, India and the rest, each with how many stories came in today. Stories arrive in the order they were published. Nothing is ranked for you.' },
-  STEPS[5],
+  { route: '/feed', target: 'feedMode', area: 'Feed', title: 'My Feed or Explore.', text: 'My Feed is only the outlets you chose. Explore shows stories from everyone else, and always says so.' },
   STEPS[6],
   STEPS[7],
   STEPS[8],

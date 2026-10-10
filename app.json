@@ -40,7 +40,8 @@
           "icon": "./assets/images/android-icon-monochrome.png",
           "color": "#A8372A"
         }
-      ]
+      ],
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,

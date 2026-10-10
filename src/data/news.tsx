@@ -35,7 +35,7 @@ type NewsValue = NewsData & {
   refresh: () => Promise<void>;
 };
 
-const CACHE_KEY = 'unedited.news.v2';
+const CACHE_KEY = 'unedited.news.v3';
 const REFRESH_MS = 30 * 60_000;
 /** Covers the whole Morning Edition (the 24h before the latest 06:00 IST) at any time of day, plus today. */
 const WINDOW_MS = 54 * 3_600_000;
@@ -50,6 +50,7 @@ type Row = {
   has_full: boolean;
   image_url: string | null;
   image_credit: string | null;
+  video_url?: string | null;
   topic: string;
   lang: Story['lang'];
   group_id: string | null;
@@ -110,15 +111,37 @@ function toData(sources: SourceRow[], rows: Row[], now: number, older: Row[] = [
       lang: r.lang,
       url: r.url,
       imageUrl: r.image_url ?? undefined,
+      videoUrl: r.video_url ?? undefined,
     });
   }
+  borrowPhotos(stories, src);
   const archive = older.length ? toData(sources, older, now).stories : [];
   return { sources: src, stories, papers, live: true, archive };
 }
 
+/**
+ * A story whose outlet sent no photo borrows one from another outlet's report of the same event (same group),
+ * and says where it came from: "Photo from [Outlet]".
+ */
+function borrowPhotos(stories: Story[], sources: Source[]) {
+  const withPhoto = new Map<string, Story>();
+  for (const s of stories) if (s.group && s.imageUrl && !withPhoto.has(s.group)) withPhoto.set(s.group, s);
+  for (const s of stories) {
+    if (s.imageUrl || !s.group) continue;
+    const from = withPhoto.get(s.group);
+    if (!from) continue;
+    s.imageUrl = from.imageUrl;
+    s.credit = `Photo from ${sources.find((x) => x.id === from.sourceId)?.name ?? 'another outlet'}`;
+  }
+}
+
 const NewsContext = createContext<NewsValue | null>(null);
 
-const LIST = 'id, source_id, url, title, excerpt, has_full, image_url, image_credit, topic, lang, group_id, published_at';
+const BASE_LIST = 'id, source_id, url, title, excerpt, has_full, image_url, image_credit, topic, lang, group_id, published_at';
+/** With video_url (added 2026-10-10). Until that migration is live the column is missing: fall back to BASE_LIST. */
+let LIST = `${BASE_LIST}, video_url`;
+/** Postgres "undefined column": the database is behind the app. */
+const missingColumn = (error: { code?: string; message: string } | null) => !!error && (error.code === '42703' || /video_url/.test(error.message));
 const PAGE = 1000;
 const MAX_ROWS = 4000;
 
@@ -128,10 +151,14 @@ async function pages(since: string): Promise<{ data: Row[]; error: { message: st
   for (let from = 0; from < MAX_ROWS; from += PAGE) {
     const { data, error } = await supabase!
       .from('articles')
-      .select(LIST)
+      .select(LIST as '*')
       .gte('published_at', since)
       .order('published_at', { ascending: false })
       .range(from, from + PAGE - 1);
+    if (missingColumn(error) && LIST !== BASE_LIST) {
+      LIST = BASE_LIST;
+      return pages(since);
+    }
     if (error) return { data: all, error };
     all.push(...((data ?? []) as Row[]));
     if (!data || data.length < PAGE) break;
@@ -209,7 +236,7 @@ export function NewsProvider({ children }: { children: ReactNode }) {
       ? ((
           await supabase
             .from('articles')
-            .select('id, source_id, url, title, excerpt, has_full, image_url, image_credit, topic, lang, group_id, published_at')
+            .select(LIST as '*')
             .in('id', missing.slice(0, 200))
         ).data ?? [])
       : [];
@@ -245,7 +272,7 @@ export function NewsProvider({ children }: { children: ReactNode }) {
     if (!supabase || !UUID.test(id) || storyById(id)) return;
     const { data: row } = await supabase
       .from('articles')
-      .select('id, source_id, url, title, excerpt, has_full, image_url, image_credit, topic, lang, group_id, published_at')
+      .select(LIST as '*')
       .eq('id', id)
       .maybeSingle();
     if (!row) return;

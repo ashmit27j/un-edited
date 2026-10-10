@@ -32,8 +32,8 @@ export function WebNav() {
   const t = useT();
   const { width } = useWindowDimensions();
   const side = Math.max(32, (width - MaxContentWidth) / 2 + 32);
-  // Pages under a tab keep it lit: a folder is in Library, Your news is in You.
-  const section = pathname.startsWith('/folder') ? '/library' : pathname.startsWith('/manage') ? '/you' : pathname;
+  // Pages under a tab keep it lit: a folder is in Library, Your news is in You, Explore is in Feed.
+  const section = pathname.startsWith('/folder') ? '/library' : pathname.startsWith('/manage') ? '/you' : pathname === '/explore' ? '/feed' : pathname;
   const active = TABS.find((tab) => section === tab.path || section.startsWith(`${tab.path}/`))?.path;
   // Tour targets (the web tour points at the nav instead of the phone tab bar).
   const tabsRef = useTourTarget('tabbar');

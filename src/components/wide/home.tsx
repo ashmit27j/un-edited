@@ -2,8 +2,8 @@ import { useRouter } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { NotifyAsk } from '@/components/notify-ask';
-import { MoreButton, SaveButton, storyLink, useOpenStory } from '@/components/story';
+import { MoreButton, SaveButton, storyCard, storyLink, useOpenStory } from '@/components/story';
+import { StoryMedia } from '@/components/story-media';
 import { ChevronIcon } from '@/components/icons';
 import { Text } from '@/components/text';
 import { Photo } from '@/components/ui';
@@ -53,7 +53,6 @@ export function WideHome({
 
   return (
     <WidePage top={24} bottom={64}>
-      <NotifyAsk />
       <View ref={stripRef} style={[styles.strip, { borderTopColor: colors.ink, borderBottomColor: colors.ink }]}>
         <Text variant="label" color="muted">
           {edition} · {date}
@@ -74,10 +73,10 @@ export function WideHome({
         </View>
       ) : (
         <View style={styles.top}>
-          <View ref={leadRef} style={styles.lead}>
+          <View ref={leadRef} {...storyCard} style={styles.lead}>
             {comfortable ? (
               <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel="Open lead story" onPress={() => open(lead.id)}>
-                <Photo uri={lead.imageUrl} credit={lead.credit} height={380} />
+                <StoryMedia story={lead} height={380} />
               </Pressable>
             ) : null}
             <Text variant="label" color="accent">
@@ -300,8 +299,9 @@ function SmallStory({ story, size }: { story: Story; size: number }) {
 
 const styles = StyleSheet.create({
   strip: {
-    borderTopWidth: 3,
-    borderBottomWidth: 1,
+    // Top and bottom rules the same weight (Ashmit, 2026-10-10; the board had 3px over 1px).
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
     paddingVertical: 8,
     flexDirection: 'row',
     flexWrap: 'wrap',

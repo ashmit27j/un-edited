@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { MoreButton, SaveButton, useOpenStory, storyLink } from '@/components/story';
+import { MoreButton, SaveButton, useOpenStory, storyCard, storyLink } from '@/components/story';
+import { StoryMedia } from '@/components/story-media';
 import { Text } from '@/components/text';
-import { Fade, Photo } from '@/components/ui';
+import { Fade } from '@/components/ui';
 import { PeekPapers, TwoColumn, WidePage } from '@/components/wide/page';
 import { ago, type Story } from '@/data/sample';
 import { useLayout } from '@/hooks/use-layout';
@@ -22,11 +23,11 @@ const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /** Feed on web at 768px and wider (WebFeed): sections in a sidebar, full stories down the page. */
-export function WideFeed() {
+export function WideFeed({ initialMode = 'mine' }: { initialMode?: 'mine' | 'explore' }) {
   const { colors } = useTheme();
   const { prefs } = useReader();
   const { mine, outside } = useStories();
-  const [mode, setMode] = useState<'mine' | 'explore'>('mine');
+  const [mode, setMode] = useState<'mine' | 'explore'>(initialMode);
   const [category, setCategory] = useState(TODAY);
   const [older, setOlder] = useState(false);
   // 768–1023px: one column, so sections become a row of tabs above the stories.
@@ -145,7 +146,8 @@ export function WideFeed() {
 
   return (
     <WidePage top={28}>
-      <TwoColumn side={side} sideWidth={200}>
+      {/* The sidebar (My Feed / Explore, Sections, the note) stays put while the stories scroll (Ashmit, 2026-10-10). */}
+      <TwoColumn side={side} sideWidth={200} stickySide={!compact}>
         {items.length === 0 ? (
           <View style={{ gap: 8, paddingBottom: 24 }}>
             <Text variant="display">Nothing here today.</Text>
@@ -220,9 +222,9 @@ function WideStory({ story, sources }: { story: Story; sources: number }) {
   const [clipped, setClipped] = useState(false);
 
   return (
-    <View style={[styles.story, { borderBottomColor: colors.rule }]}>
+    <View {...storyCard} style={[styles.story, { borderBottomColor: colors.rule }]}>
       <Pressable {...storyLink} accessibilityRole="link" accessibilityLabel={`Open story: ${story.headline}`} onPress={() => open(story.id)}>
-        <Photo uri={story.imageUrl} credit={story.credit} height={320} />
+        <StoryMedia story={story} height={320} />
       </Pressable>
       <Text variant="label" color="accent">
         {kicker}

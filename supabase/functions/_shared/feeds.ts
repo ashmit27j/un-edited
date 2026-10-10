@@ -15,6 +15,9 @@ export type FeedItem = {
   publishedAt: string;
 };
 
+/** Longest excerpt kept: enough for any feed summary, short of a feed that puts the whole article there. */
+export const EXCERPT_MAX = 4000;
+
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@', textNodeName: '#text', cdataPropName: '#cdata' });
 
 const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', ndash: '–', mdash: '—', hellip: '…' };
@@ -84,7 +87,8 @@ export function parseFeed(xml: string): FeedItem[] {
     out.push({
       url: url.trim(),
       title,
-      excerpt: excerpt ? excerpt.slice(0, 600) : null,
+      // The whole summary the publisher sent (was cut at 600 characters until 2026-10-10).
+      excerpt: excerpt ? excerpt.slice(0, EXCERPT_MAX) : null,
       body: body && body.length ? body : null,
       imageUrl: imageOf(item, full || desc),
       imageCredit: creditOf(item),

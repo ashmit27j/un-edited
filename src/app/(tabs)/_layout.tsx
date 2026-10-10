@@ -1,9 +1,17 @@
-import { TabList, Tabs, TabSlot, TabTrigger, type TabTriggerSlotProps } from 'expo-router/ui';
+import {
+  defaultTabsSlotRender,
+  TabList,
+  Tabs,
+  TabSlot,
+  TabTrigger,
+  type TabsSlotRenderOptions,
+  type TabTriggerSlotProps,
+} from 'expo-router/ui';
 import type { ComponentType } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { FeedIcon, HomeIcon, LibraryIcon, YouIcon, type IconProps } from '@/components/icons';
+import { ExploreIcon, FeedIcon, HomeIcon, LibraryIcon, YouIcon, type IconProps } from '@/components/icons';
 import { Text } from '@/components/text';
 import { WebNav } from '@/components/web-nav';
 import { TouchTarget } from '@/constants/theme';
@@ -46,6 +54,17 @@ function TabButton({ label, Icon, isFocused, tour, ...props }: TabButtonProps) {
   );
 }
 
+/**
+ * Phones (and web under 768px): pin each tab screen to the slot. expo-router's tab screens don't shrink, so on
+ * phone web a long screen (Home) grew to its full height inside the locked page and couldn't scroll.
+ */
+function fillSlot(descriptor: Parameters<typeof defaultTabsSlotRender>[0], options: TabsSlotRenderOptions) {
+  return defaultTabsSlotRender(
+    { ...descriptor, render: () => <View style={StyleSheet.absoluteFill}>{descriptor.render()}</View> },
+    options,
+  );
+}
+
 export default function TabsLayout() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -61,6 +80,10 @@ export default function TabsLayout() {
       </TabTrigger>
       <TabTrigger name="feed" href="/feed" asChild>
         <TabButton label={t('nav.feed')} Icon={FeedIcon} />
+      </TabTrigger>
+      {/* Phones: Explore is its own tab (Ashmit, 2026-10-10). Web keeps it inside Feed, so the web nav has no Explore. */}
+      <TabTrigger name="explore" href="/explore" asChild>
+        <TabButton label={t('feed.explore')} Icon={ExploreIcon} tour="tabExplore" />
       </TabTrigger>
       <TabTrigger name="library" href="/library" asChild>
         <TabButton label={t('nav.library')} Icon={LibraryIcon} tour="tabLibrary" />
@@ -82,7 +105,7 @@ export default function TabsLayout() {
       ) : null}
 
       <View style={styles.slot}>
-        <TabSlot />
+        <TabSlot renderFn={wide ? undefined : fillSlot} />
       </View>
 
       {wide ? null : (
@@ -91,7 +114,7 @@ export default function TabsLayout() {
             styles.bottomList,
             { backgroundColor: colors.bg, borderTopColor: colors.rule, paddingBottom: Math.max(insets.bottom, 10) },
           ]}>
-          {/* Tour target for "Four places, always here": a plain view the size of the bar. */}
+          {/* Tour target for "Five places, always here": a plain view the size of the bar. */}
           <View ref={barRef} pointerEvents="none" style={StyleSheet.absoluteFill} />
           {triggers}
         </TabList>
@@ -106,7 +129,7 @@ const styles = StyleSheet.create({
   bottomList: {
     flexDirection: 'row',
     paddingTop: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   bottomTab: {

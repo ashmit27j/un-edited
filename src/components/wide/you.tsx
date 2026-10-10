@@ -340,6 +340,18 @@ export function WideYou({ onClearDownloads }: { onClearDownloads: () => void }) 
               on={prefs.autoDownload}
               onChange={(autoDownload) => setPrefs({ autoDownload })}
             />
+            <SwitchRow
+              label="Save daily edition"
+              desc={
+                !signedIn
+                  ? 'Sign in to use this: saving needs an account.'
+                  : prefs.saveEdition
+                    ? 'Each morning, the stories in your edition go into Saved.'
+                    : 'Off. Turn on to keep every Morning Edition in Saved.'
+              }
+              on={signedIn && prefs.saveEdition}
+              onChange={(saveEdition) => (signedIn ? setPrefs({ saveEdition }) : router.push('/sign-in'))}
+            />
             <LinkRow
               label="Downloaded"
               value={`${downloaded.length} ${downloaded.length === 1 ? 'article' : 'articles'}`}

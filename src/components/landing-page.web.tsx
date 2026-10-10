@@ -158,6 +158,15 @@ export function LandingPage() {
   const [faq, setFaq] = useState(0);
   const [armed, setArmed] = useState(false);
   const [seen, setSeen] = useState<Partial<Record<RevealId, boolean>>>({});
+  // Phones (720px and under): the page links fold into a menu behind the ☰ button.
+  const [menu, setMenu] = useState(false);
+
+  useEffect(() => {
+    if (!menu) return;
+    const close = (e: KeyboardEvent) => e.key === 'Escape' && setMenu(false);
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, [menu]);
 
   useEffect(() => {
     const rotate = setInterval(() => setVersion((s) => (s.auto ? { ...s, v: (s.v + 1) % VERSIONS.length } : s)), 6000);
@@ -279,6 +288,17 @@ export function LandingPage() {
             </nav>
             <button
               type="button"
+              className="lp-theme lp-burger"
+              onClick={() => setMenu((m) => !m)}
+              aria-expanded={menu}
+              aria-controls="lp-menu"
+              aria-label={menu ? 'Close menu' : 'Open menu'}>
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                {menu ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+              </svg>
+            </button>
+            <button
+              type="button"
               className="lp-theme"
               onClick={() => setPreference(dark ? 'paper' : 'ink')}
               aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
@@ -296,6 +316,30 @@ export function LandingPage() {
             </button>
           </div>
         </div>
+        {menu ? (
+          <nav id="lp-menu" aria-label="Page" className="lp-menu">
+            <div className="lp-wrap lp-menu-in">
+              {[
+                ['#idea', 'How it works'],
+                ['#sources', 'Sources'],
+                ['#papers', 'Papers & reports'],
+                ['#questions', 'Questions'],
+              ].map(([href, label]) => (
+                <a key={href} href={href} className="lp-menu-link" onClick={() => setMenu(false)}>
+                  {label}
+                </a>
+              ))}
+              <div className="lp-menu-btns">
+                <a href="/onboarding" onClick={go('/onboarding')} className="lp-cta lp-hero-btn lp-solid">
+                  Start reading
+                </a>
+                <a href="#start" onClick={() => setMenu(false)} className="lp-cta lp-ghost lp-hero-btn lp-outline">
+                  Get the app
+                </a>
+              </div>
+            </div>
+          </nav>
+        ) : null}
       </header>
 
       <main style={{ position: 'relative' }}>
@@ -625,6 +669,7 @@ export function LandingPage() {
               <a href="#idea" className="lp-out">How it works</a>
               <a href="#sources" className="lp-out">Sources</a>
               <a href="#questions" className="lp-out">Questions</a>
+              <a href="/privacy" className="lp-out">Privacy policy</a>
             </div>
             <div>
               <span className="lp-label lp-footer-h">Maker</span>
@@ -665,7 +710,16 @@ const CSS = `
 .lp-ico{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .lp-wrap{max-width:1200px;margin:0 auto;padding-left:32px;padding-right:32px;box-sizing:border-box}
 
-.lp-header{border-bottom:1px solid var(--rule)}
+.lp-header{border-bottom:1px solid var(--rule);position:relative;z-index:5}
+.lp-burger{display:none}
+.lp-burger svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+/* Phone menu: drops 8px and fades in over 0.25s (ease-out); appears at once with reduced motion. */
+@keyframes lp-menu-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.lp-menu{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--rule);animation:lp-menu-in .25s ease-out both}
+.lp-menu-in{display:flex;flex-direction:column;padding-top:4px;padding-bottom:20px}
+.lp-menu-link{min-height:52px;display:flex;align-items:center;border-bottom:1px solid var(--rule);font-family:'Baskervville',Baskerville,Georgia,serif;font-size:22px}
+.lp-menu-btns{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.lp-menu-btns .lp-hero-btn{justify-content:center}
 .lp-header-row{min-height:72px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px}
 .lp-header-right{display:flex;align-items:center;gap:8px 20px;flex-wrap:wrap}
 .lp-nav{display:flex;flex-wrap:wrap;gap:0 28px;font-family:'Inter',system-ui,sans-serif;font-size:14.5px}
@@ -785,6 +839,15 @@ const CSS = `
 
 @media (max-width:720px){
   .lp-wrap{padding-left:16px;padding-right:16px}
+  .lp-nav{display:none}
+  .lp-burger{display:inline-flex}
+  .lp-header-row{flex-wrap:nowrap}
+  /* Start reading and Get the app stacked, full width. */
+  .lp-btns{flex-direction:column;align-items:stretch}
+  .lp-btns .lp-hero-btn{justify-content:center}
+  /* Gentle scroll snap: settles on a section's top only when you stop close to it, never holds you there. */
+  .lp-root{scroll-snap-type:y proximity}
+  .lp-header,.lp-root section[id],.lp-footer{scroll-snap-align:start}
   .lp-aside{display:none}
   .lp-hero{padding-top:18px}
   .lp-hero-row{margin-top:24px;gap:28px}
@@ -800,7 +863,8 @@ const CSS = `
 }
 
 @media (prefers-reduced-motion: reduce){
-  .lp-root{scroll-behavior:auto}
+  .lp-root{scroll-behavior:auto;scroll-snap-type:none}
+  .lp-menu{animation:none}
   .lp-caret,.lp-hero-stamp,.lp-wipe,.lp-rise,.lp-track,.lp-swap,.lp-sheet,.lp-sheet path,.lp-sheet rect,.lp-sheet circle,.lp-scrolling,.lp-screen,.lp-tap,.lp-px-text,.lp-px-phone,.lp-px-deep{animation:none}
   .lp-sheet path,.lp-sheet rect,.lp-sheet circle{stroke-dasharray:none}
   .lp-fade,.lp-hide{transition:none;opacity:1;transform:none}

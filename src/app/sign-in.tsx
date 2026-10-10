@@ -1,6 +1,4 @@
-import { useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -8,46 +6,26 @@ import { Button } from '@/components/button';
 import { EditionCard } from '@/components/edition-card';
 import { StampDown } from '@/components/stamp';
 import { Text } from '@/components/text';
+import { WideSignIn } from '@/components/wide/sign-in';
 import { Wordmark } from '@/components/wordmark';
 import { Fonts, Spacing, TouchTarget } from '@/constants/theme';
-import { useSession } from '@/session/session-provider';
+import { useLayout } from '@/hooks/use-layout';
+import { useSignInFlow, type SignInFlow } from '@/session/use-sign-in-flow';
 import { useTheme } from '@/theme/theme-provider';
 
 // Lets the web popup flow hand control back to this page.
 WebBrowser.maybeCompleteAuthSession();
 
-type Step = 'choose' | 'email' | 'code';
-
-const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+/** Sign in (OB9SignIn on phones; the WebOnboarding sign-in step as its own page at 768px and wider). */
 export default function SignIn() {
+  const flow = useSignInFlow();
+  return useLayout() === 'phone' ? <PhoneSignIn flow={flow} /> : <WideSignIn flow={flow} />;
+}
+
+function PhoneSignIn({ flow }: { flow: SignInFlow }) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const router = useRouter();
-  const { status, continueAsGuest, sendEmailCode, verifyEmailCode, signInWithGoogle } = useSession();
-
-  const [step, setStep] = useState<Step>('choose');
-  const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [busy, setBusy] = useState<null | 'google' | 'email' | 'code'>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  // Signed in (by code, Google, or an OAuth redirect back to this page): move on.
-  useEffect(() => {
-    if (status === 'signedIn') router.replace('/feed');
-  }, [status, router]);
-
-  const address = email.trim();
-  const emailOk = EMAIL_SHAPE.test(address);
-
-  async function run(kind: 'google' | 'email' | 'code', task: () => Promise<string | null>, onDone?: () => void) {
-    setBusy(kind);
-    setError(null);
-    const message = await task();
-    setBusy(null);
-    if (message) setError(message);
-    else onDone?.();
-  }
+  const { step, email, setEmail, code, setCode, busy, error, address, emailOk } = flow;
 
   const inputStyle = [styles.input, { borderColor: colors.ink, color: colors.ink, backgroundColor: colors.surface }];
 
@@ -99,9 +77,7 @@ export default function SignIn() {
                 placeholder="you@example.com"
                 placeholderTextColor={colors.muted}
                 accessibilityLabel="Email address"
-                onSubmitEditing={() =>
-                  emailOk && run('email', () => sendEmailCode(address), () => setStep('code'))
-                }
+                onSubmitEditing={flow.sendCode}
                 style={inputStyle}
               />
             </>
@@ -120,7 +96,7 @@ export default function SignIn() {
               </Text>
               <TextInput
                 value={code}
-                onChangeText={(value) => setCode(value.replace(/\D/g, ''))}
+                onChangeText={setCode}
                 autoComplete="one-time-code"
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
@@ -141,27 +117,9 @@ export default function SignIn() {
         <View style={[styles.column, styles.actions]}>
           {step === 'choose' ? (
             <>
-              <Button
-                label="Continue with Google"
-                busy={busy === 'google'}
-                onPress={() => run('google', signInWithGoogle)}
-              />
-              <Button
-                label="Continue with email"
-                kind="secondary"
-                onPress={() => {
-                  setError(null);
-                  setStep('email');
-                }}
-              />
-              <Button
-                label="Not now"
-                kind="link"
-                onPress={() => {
-                  continueAsGuest();
-                  router.replace('/feed');
-                }}
-              />
+              <Button label="Continue with Google" busy={busy === 'google'} onPress={flow.google} />
+              <Button label="Continue with email" kind="secondary" onPress={flow.toEmail} />
+              <Button label="Not now" kind="link" onPress={flow.notNow} />
               <Text variant="meta" color="muted" style={styles.note}>
                 Without an account, your choices stay on this device and saving to folders is off.
               </Text>
@@ -170,46 +128,16 @@ export default function SignIn() {
 
           {step === 'email' ? (
             <>
-              <Button
-                label="Send code"
-                disabled={!emailOk}
-                busy={busy === 'email'}
-                onPress={() => run('email', () => sendEmailCode(address), () => setStep('code'))}
-              />
-              <Button
-                label="Back"
-                kind="link"
-                onPress={() => {
-                  setError(null);
-                  setStep('choose');
-                }}
-              />
+              <Button label="Send code" disabled={!emailOk} busy={busy === 'email'} onPress={flow.sendCode} />
+              <Button label="Back" kind="link" onPress={flow.back} />
             </>
           ) : null}
 
           {step === 'code' ? (
             <>
-              <Button
-                label="Sign in"
-                disabled={code.length < 6}
-                busy={busy === 'code'}
-                onPress={() => run('code', () => verifyEmailCode(address, code))}
-              />
-              <Button
-                label="Send a new code"
-                kind="secondary"
-                busy={busy === 'email'}
-                onPress={() => run('email', () => sendEmailCode(address))}
-              />
-              <Button
-                label="Use a different email"
-                kind="link"
-                onPress={() => {
-                  setError(null);
-                  setCode('');
-                  setStep('email');
-                }}
-              />
+              <Button label="Sign in" disabled={code.length < 6} busy={busy === 'code'} onPress={flow.verify} />
+              <Button label="Send a new code" kind="secondary" busy={busy === 'email'} onPress={flow.resendCode} />
+              <Button label="Use a different email" kind="link" onPress={flow.differentEmail} />
             </>
           ) : null}
         </View>

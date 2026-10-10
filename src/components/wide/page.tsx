@@ -5,6 +5,7 @@ import Svg, { Path, Rect } from 'react-native-svg';
 import { Text } from '@/components/text';
 import { useReducedMotion } from '@/components/stamp';
 import { MaxContentWidth, NarrowColumn } from '@/constants/theme';
+import { NavHeight } from '@/components/web-nav';
 import { useLayout } from '@/hooks/use-layout';
 import { useTheme } from '@/theme/theme-provider';
 
@@ -17,7 +18,8 @@ export function WidePage({ children, top = 32, bottom = 72 }: { children: ReactN
   const layout = useLayout();
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: colors.bg }}
+      // Visible, not auto: the document is what scrolls, so position: sticky (Feed's sidebar) holds to the window.
+      style={{ flex: 1, backgroundColor: colors.bg, overflow: 'visible' }}
       contentContainerStyle={{ paddingHorizontal: 32, paddingTop: top, paddingBottom: bottom }}>
       <View style={{ width: '100%', maxWidth: layout === 'webFull' ? MaxContentWidth - 64 : NarrowColumn, alignSelf: 'center' }}>
         {children}
@@ -32,18 +34,27 @@ export function TwoColumn({
   children,
   sideWidth = 220,
   gap = 56,
+  stickySide,
   style,
 }: {
   side: ReactNode;
   children: ReactNode;
   sideWidth?: number;
   gap?: number;
+  /** Keep the sidebar in view under the top nav while the page scrolls (two-column layout only). */
+  stickySide?: boolean;
   style?: StyleProp<ViewStyle>;
 }) {
   return (
     // Wraps to one column (side above main) when the page is narrower than both columns.
     <View style={[{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', columnGap: gap, rowGap: 32 }, style]}>
-      <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: sideWidth, minWidth: 0 }}>{side}</View>
+      <View
+        style={[
+          { flexGrow: 1, flexShrink: 1, flexBasis: sideWidth, minWidth: 0 },
+          stickySide && { position: 'sticky' as 'relative', top: NavHeight + 28, zIndex: 1 },
+        ]}>
+        {side}
+      </View>
       <View style={{ flexGrow: 999, flexShrink: 1, flexBasis: 560, minWidth: 0, maxWidth: 760 }}>{children}</View>
     </View>
   );

@@ -28,6 +28,7 @@ import { TourProvider } from '@/tour/tour';
 import { useWebScrollMemory } from '@/hooks/use-web-scroll-memory';
 import { SessionProvider } from '@/session/session-provider';
 import { ReaderProvider } from '@/store/reader-provider';
+import { useSaveDailyEdition } from '@/store/selectors';
 import { useSourceCleanup } from '@/store/source-cleanup';
 import { ThemeProvider, useTheme } from '@/theme/theme-provider';
 
@@ -39,6 +40,7 @@ function Shell() {
   useEditionSchedule();
   useAccountSync();
   useSourceCleanup();
+  useSaveDailyEdition();
   return (
     <>
       <StatusBar style={name === 'ink' ? 'light' : 'dark'} />

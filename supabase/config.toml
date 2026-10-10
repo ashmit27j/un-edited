@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.register-push]
 verify_jwt = false
+
+[functions.extract-articles]
+verify_jwt = false

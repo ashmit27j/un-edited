@@ -75,6 +75,10 @@ export type Prefs = {
   sources: string[];
   front: FrontSections;
   autoDownload: boolean;
+  /** Save daily edition: each new Morning Edition's stories go into Saved by themselves. Signed-in only. */
+  saveEdition: boolean;
+  /** Phones: play a story's thumbnail video in Feed. Off = the photo. (Web plays on hover.) */
+  playVideos: boolean;
   notify: NotifyPrefs;
 };
 
@@ -93,6 +97,8 @@ type Data = {
   viewedAt: Record<string, number>;
   hidden: string[];
   searches: string[];
+  /** The edition (its 06:00 IST cutoff, ms) last put into Saved by "Save daily edition". */
+  editionSavedFor: number | null;
 };
 
 const DEFAULT_PREFS: Prefs = {
@@ -122,6 +128,8 @@ const DEFAULT_PREFS: Prefs = {
   sources: [],
   front: { papers: true, outside: true, continueReading: true, trending: false },
   autoDownload: false,
+  saveEdition: false,
+  playVideos: false,
   notify: {
     all: false,
     edition: true,
@@ -153,6 +161,7 @@ const DEFAULT_DATA: Data = {
   viewedAt: {},
   hidden: [],
   searches: [],
+  editionSavedFor: null,
 };
 
 type ReaderValue = Data & {
@@ -171,6 +180,8 @@ type ReaderValue = Data & {
   clearDownloads: () => void;
   markViewed: (id: string) => void;
   hide: (id: string) => void;
+  /** "Save daily edition": put the edition's stories into Saved (skipping ones already in a folder), once per edition. */
+  saveEditionStories: (ids: string[], edition: number) => void;
   addSearch: (q: string) => void;
   clearSearches: () => void;
   removeSearch: (q: string) => void;
@@ -356,6 +367,24 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
 
   const hide = useCallback((id: string) => update((d) => ({ ...d, hidden: [...new Set([...d.hidden, id])] })), [update]);
 
+  const saveEditionStories = useCallback(
+    (ids: string[], edition: number) =>
+      update((d) => {
+        if (d.editionSavedFor === edition) return d;
+        const inFolders = new Set(Object.values(d.folders).flat());
+        const add = ids.filter((id) => !inFolders.has(id));
+        // Same rule as a tap on Save: with Auto-download (or a downloaded Saved folder), new saves download.
+        const autoDl = d.prefs.autoDownload || d.downloadedFolders.includes(DEFAULT_FOLDER);
+        return {
+          ...d,
+          editionSavedFor: edition,
+          folders: { ...d.folders, [DEFAULT_FOLDER]: [...add, ...(d.folders[DEFAULT_FOLDER] ?? [])] },
+          downloaded: autoDl ? [...new Set([...d.downloaded, ...add])] : d.downloaded,
+        };
+      }),
+    [update],
+  );
+
   const addSearch = useCallback(
     (q: string) => {
       const clean = q.trim();
@@ -388,6 +417,7 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
       clearDownloads,
       markViewed,
       hide,
+      saveEditionStories,
       addSearch,
       clearSearches,
       removeSearch,
@@ -396,7 +426,7 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
     }),
     [
       data, ready, setPrefs, finishOnboarding, isSaved, folderOf, toggleSaved, moveToFolder, createFolder,
-      toggleDownload, toggleFolderDownload, clearDownloads, markViewed, hide, addSearch, clearSearches, removeSearch, resetAll, importSynced,
+      toggleDownload, toggleFolderDownload, clearDownloads, markViewed, hide, saveEditionStories, addSearch, clearSearches, removeSearch, resetAll, importSynced,
     ],
   );
 

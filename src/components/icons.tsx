@@ -109,6 +109,68 @@ export const ArrowIcon = (p: IconProps) => (
 
 export const FolderIcon = LibraryIcon;
 
+/** Explore tab: a compass, in the tab bar's line style. */
+export const ExploreIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Circle cx={12} cy={12} r={8.5} />
+    <Path d="M15.5 8.5l-2 5-5 2 2-5z" strokeLinejoin="round" />
+  </Base>
+);
+
+// ⋯ menu icons (MoreSheet board, 20px).
+export const DownloadIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14" strokeLinejoin="round" />
+  </Base>
+);
+
+export const DownloadedIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Circle cx={12} cy={12} r={8.5} />
+    <Path d="M8.2 12.4l2.7 2.7 5-5.4" strokeLinejoin="round" />
+  </Base>
+);
+
+export const ShareIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v7h14v-7" strokeLinejoin="round" />
+  </Base>
+);
+
+export const InfoIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Circle cx={12} cy={12} r={8.5} />
+    <Path d="M12 11v5.5" />
+    <Circle cx={12} cy={7.8} r={0.9} fill={p.color} stroke="none" />
+  </Base>
+);
+
+export const MinusIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Path d="M5 12h14" />
+  </Base>
+);
+
+export const PlusIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Path d="M12 5v14M5 12h14" />
+  </Base>
+);
+
+/** "Remove this source": the outlet leaves the reader's list. */
+export const RemoveSourceIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Circle cx={12} cy={12} r={8.5} />
+    <Path d="M8 12h8" />
+  </Base>
+);
+
+export const FlagIcon = (p: IconProps) => (
+  <Base {...p} round>
+    <Path d="M6 21V4h11l-2 4 2 4H6" strokeLinejoin="round" />
+  </Base>
+);
+
 export const SunIcon = (p: IconProps) => (
   <Base {...p} round>
     <Circle cx="12" cy="12" r="4" />

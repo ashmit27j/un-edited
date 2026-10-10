@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { BackHeader, Screen, Segmented } from '@/components/ui';
+import { BackHeader, Screen, Segmented, SettingRow } from '@/components/ui';
 import { useT } from '@/lib/i18n';
 import { useReader } from '@/store/reader-provider';
 import { useTheme } from '@/theme/theme-provider';
@@ -51,6 +51,18 @@ export default function Reading() {
           { value: 'focused', label: 'Focused' },
         ]}
       />
+      <View style={{ marginTop: 12 }}>
+        <SettingRow
+          label="Play thumbnail videos"
+          desc={
+            prefs.playVideos
+              ? 'When a story has a video, it plays silently in Feed while the story is on screen.'
+              : 'Off. Stories show their photo instead. Videos use more data.'
+          }
+          on={prefs.playVideos}
+          onChange={(playVideos) => setPrefs({ playVideos })}
+        />
+      </View>
       <View style={[styles.preview, { borderColor: colors.rule, backgroundColor: colors.surface }]}>
         <Text variant="label" color="muted">
           Preview

@@ -1,4 +1,4 @@
-import { StyleSheet, Text as RNText, type TextProps as RNTextProps } from 'react-native';
+import { Platform, StyleSheet, Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
 import { Fonts, type Colors } from '@/constants/theme';
 import type { LanguageCode } from '@/data/sample';
@@ -105,6 +105,16 @@ export function Text({ variant = 'body', color = 'ink', medium, lang: given, sty
         }
       : null;
 
+  // Web: headlines carry an inline span, so a story link's hover underline can draw along every line
+  // (+html.tsx, [data-hover-line]). It only shows inside [data-story-link].
+  const { children, ...props } = rest;
+  const content =
+    Platform.OS === 'web' && (variant === 'display' || variant === 'headline') && children != null ? (
+      <RNText {...HOVER_LINE}>{children}</RNText>
+    ) : (
+      children
+    );
+
   return (
     <RNText
       lang={lang}
@@ -116,10 +126,13 @@ export function Text({ variant = 'body', color = 'ink', medium, lang: given, sty
         sized,
         italic,
       ]}
-      {...rest}
-    />
+      {...props}>
+      {content}
+    </RNText>
   );
 }
+
+const HOVER_LINE = { dataSet: { hoverLine: '' } } as object;
 
 const mediumFamily: Record<TextVariant, string> = {
   display: Fonts.serifMedium,

@@ -33,7 +33,7 @@ type Ctx = {
 };
 
 const SEEN_KEY = 'unedited.installGuideSeen';
-const TAB_PATHS = ['/home', '/feed', '/library', '/you'];
+const TAB_PATHS = ['/home', '/feed', '/explore', '/library', '/you'];
 
 const InstallContext = createContext<Ctx>({ pending: false, open: () => {} });
 export const useInstallGuide = () => useContext(InstallContext);
@@ -263,7 +263,7 @@ function ShareArt() {
       <Line x1={60} y1={116} x2={220} y2={116} stroke={c.rule} />
       <Rect x={84} y={124} width={86} height={18} rx={9} fill={c.bg} stroke={c.rule} />
       <Label x={127} y={136} size={7.5} color={c.muted} anchor="middle">
-        unedited-six.vercel.app
+        unedited-bulletin.vercel.app
       </Label>
       <Path d="M74 127l-5 6 5 6" stroke={c.muted} strokeWidth={1.6} fill="none" strokeLinecap="round" strokeLinejoin="round" />
       {/* Share: a box with an arrow up. */}
@@ -333,7 +333,7 @@ function AddArt() {
       </Label>
       <Line x1={114} y1={80} x2={208} y2={80} stroke={c.rule} />
       <Label x={114} y={92} size={7} color={c.muted}>
-        unedited-six.vercel.app
+        unedited-bulletin.vercel.app
       </Label>
       <Line x1={72} y1={112} x2={208} y2={112} stroke={c.rule} />
       <Label x={72} y={130} size={8.5} color={c.ink}>

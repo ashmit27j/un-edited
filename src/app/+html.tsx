@@ -40,6 +40,15 @@ body{overflow:hidden}
 /* "Underline links": links stay underlined, not just coloured. */
 :root[data-underline-links] [data-link-text]{text-decoration:underline;text-underline-offset:3px}
 
+/* Headline hover underline (MOTION.md §11): hovering a story link draws a 1px rule under its headline, left to
+   right over 0.3s ease-out, along every line. Appears at once with reduced motion. Mouse and trackpad only. */
+@media (hover:hover) and (pointer:fine){
+  [data-story-link] [data-hover-line]{background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:0 100%;background-size:0% 1px;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding-bottom:1px;transition:background-size .3s ease-out}
+  [data-story-link]:hover [data-hover-line],[data-story-link]:focus-visible [data-hover-line],[data-story-card]:hover [data-story-link] [data-hover-line]{background-size:100% 1px}
+}
+:root[data-reduce-motion] [data-hover-line]{transition:none!important}
+@media (prefers-reduced-motion:reduce){[data-hover-line]{transition:none!important}}
+
 /* Desktop cursors (MOTION.md §10): ink pointer by default, native hand on controls, text cursor in fields,
    and the Read more stamp on anything that opens a story (dataSet={{ storyLink: '' }}). */
 @media (hover:hover) and (pointer:fine){

@@ -182,12 +182,15 @@ export function Photo({
   height = 200,
   style,
   uri,
+  children,
 }: {
   credit?: string;
   height?: number;
   style?: StyleProp<ViewStyle>;
   /** The publisher's photo (live stories). Without it, the grey placeholder. */
   uri?: string;
+  /** Drawn over the photo, under the credit (a thumbnail video). */
+  children?: ReactNode;
 }) {
   const { colors } = useTheme();
   // "Read image credits aloud" (You › Accessibility): screen readers hear the publisher's credit line.
@@ -199,6 +202,7 @@ export function Photo({
       accessibilityLabel={credit && prefs.readCredits ? `Photo. ${credit}` : 'Photo'}
       style={[styles.photo, { height, backgroundColor: colors.photo }, style]}>
       {uri ? <Image source={{ uri }} style={StyleSheet.absoluteFill} resizeMode="cover" accessibilityIgnoresInvertColors /> : null}
+      {children}
       {credit ? (
         <Text variant="label" color="muted" style={[styles.credit, uri && { backgroundColor: colors.bg, alignSelf: 'flex-start', paddingVertical: 4 }]} numberOfLines={1}>
           {credit}
