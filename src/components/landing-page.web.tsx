@@ -49,6 +49,8 @@ const PAPERS = [
 ];
 
 const CONTACT = 'ashmit27j@gmail.com';
+// EAS preview build c6cb6d99 (2026-10-13). Update when a new APK is built.
+const ANDROID_APK_URL = 'https://expo.dev/artifacts/eas/JGS3akedGpDN-1rewRkgOEekC-1blBiYaIm32Khb4zM.apk';
 
 const FAQS = [
   { q: 'Do you rewrite or summarise articles?', a: 'No. Headlines, text and image credits are shown as each publisher released them. When only an excerpt is available, the article says so and links to the full story.' },
@@ -630,19 +632,20 @@ export function LandingPage() {
                 <span style={{ flex: 1 }}>Add to iPhone</span>
                 <span aria-hidden="true">→</span>
               </a>
-              <span className="lp-big lp-big-solid" aria-disabled="true" style={{ opacity: 0.55 }}>
+              <a href={ANDROID_APK_URL} className="lp-cta lp-big lp-big-solid">
                 <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" className="lp-ico" style={{ strokeWidth: 1.6 }}>
                   <path d="M5 17.5V11a7 7 0 0 1 14 0v6.5z" />
                   <path d="M7.5 5.5L6 3.5M16.5 5.5L18 3.5" />
                   <path d="M8.5 17.5V21M15.5 17.5V21" />
                 </svg>
-                <span style={{ flex: 1 }}>Android app · coming soon</span>
-              </span>
+                <span style={{ flex: 1 }}>Get the Android app <span style={{ fontWeight: 400, opacity: 0.8 }}>(APK)</span></span>
+                <span aria-hidden="true">↓</span>
+              </a>
 
               <div className="lp-notes">
                 <p className="lp-label" style={{ margin: 0, fontSize: 12, letterSpacing: 0.9, color: 'var(--muted)', lineHeight: 1.55 }}>No account, no store, installs in seconds.</p>
                 <p id="install-iphone" style={{ margin: 0 }}><strong style={{ fontWeight: 500 }}>iPhone:</strong> Open this page in Safari, tap Share, then Add to Home Screen.</p>
-                <p style={{ margin: 0 }}><strong style={{ fontWeight: 500 }}>Android:</strong> The app is on its way. Until then, read on the web or add this page to your home screen from Chrome’s menu.</p>
+                <p style={{ margin: 0 }}><strong style={{ fontWeight: 500 }}>Android:</strong> Tap the button to download the APK, open it, and allow your browser to install apps if asked.</p>
               </div>
             </div>
           </div>
