@@ -25,7 +25,7 @@ When this file and the screen files disagree, ask Ashmit which one is right. Don
 | Platforms | Android, iPhone, web — same features everywhere. | current |
 | Distribution | Android: APK. Web: PWA. iPhone: the installable website (no App Store, no Apple developer fee). | current |
 | Languages at launch | English, Hindi, Marathi — interface and source lists. Three separate settings in You › Language: app language, source languages (at least one on), and the Hindi / Marathi reading font (Match Font · Serif · Sans). | current |
-| Handles / domain | For now the Vercel address, https://unedited-bulletin.vercel.app (Ashmit, 2026-10-10; a custom domain later). Handles not chosen; old handle was `uneditd`. | current (domain) · open (handles) |
+| Handles / domain | The Vercel address https://unedited-bulletin.vercel.app is the permanent domain; no custom domain (Ashmit, 2026-10-13). Handles not chosen; old handle was `uneditd`. | current (domain) · open (handles) |
 | Funding story (for landing page) | No paid version, no payments, no subscriptions, no ads, ever (Ashmit, 2026-10-10). Landing FAQ: "It doesn't need to. There is no paid version, no subscription and no ads, and there won't be. It is built by one person and runs on free and low-cost services." | current |
 | Contact email | ashmit27j@gmail.com (landing footer). | current |
 
@@ -124,7 +124,7 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
 | Stack: backend and hosting | Supabase (DB, auth, Edge Functions, pg_cron every 30 min); web on Vercel. Code in `supabase/`; setup steps in `docs/backend-setup.md`. | current (deployed 2026-10-09) |
 | Sign-in | Google + email. No Sign in with Apple. | proposed |
 | Notifications (delivery) | Web Push (browsers and installed PWA) and the Android app. Edition notification built from the 06:00 IST edition. Topic and source alerts are opt-in and reader-picked, never chosen by an algorithm. Standard system look (the OS styles them; we supply icon, title, one or two lines): Android channels per kind (Morning Edition, Big stories, Topic and source alerts, Papers & Reports) so readers manage each in system settings, monochrome status-bar icon in accent; web push uses a monochrome badge. | current |
-| Android | Package `app.unedited`. EAS `preview` profile builds an APK (EAS project `@ashmit27j/unedited`; `EXPO_PUBLIC_*` vars live in EAS environments; keystore held by Expo). First build started 2026-10-10. Register as a verified developer early. | current (package) |
+| Android | Package `app.unedited`. EAS `preview` profile builds an APK (EAS project `@ashmit27j/unedited`; `EXPO_PUBLIC_*` vars live in EAS environments; keystore held by Expo). Firebase project `un-edited`: `google-services.json` at the repo root (in `app.json`) for FCM; the FCM V1 service account key goes to EAS credentials, never the repo. Second APK (with expo-video, Feed/Explore, FCM) built 2026-10-13. Register as a verified developer early. | current (package) |
 | iPhone install guide | Built 2026-10-10: swipeable cards, once after setup on iPhone Safari, and from the landing page's "Add to iPhone" (see §4). | current |
 
 ## 6. Build status
@@ -147,13 +147,13 @@ Ideas, not made: Morning Edition stamp (`MORNING EDITION · PRINTED 6:00 IST`, "
   - **Supabase keys:** `.env.local` is filled in (`EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_KEY`). Google needs nothing in the app's env: its client ID and secret go only in the Supabase dashboard (see `.env.example`).
   - **Google, checked 2026-10-10:** the provider is on and the button reaches Google's account chooser on the live site; the app exchanges the returned code. Not confirmed end to end. If it fails after picking an account, the cause is in the Supabase / Google dashboards (see `changelog.md` 2026-10-10). The sign-in page now shows Supabase's error instead of silently going back to the first step.
   - **Google, checked 2026-10-09:** the app side works (the button sends the browser to Supabase's authorize URL with PKCE and `redirect_to=http://localhost:8081/sign-in`). Supabase answered "provider is not enabled", so the Google provider still has to be switched on in the dashboard.
-  - **Supabase dashboard setup needed:** enable the Email and Google providers; add redirect URLs `unedited://sign-in`, `http://localhost:8081/sign-in` and the production `/sign-in`; set the Magic Link email template to include the code (`{{ .Token }}`).
+  - **Supabase auth URLs (2026-10-13):** site URL `https://unedited-bulletin.vercel.app`; redirect URLs `https://unedited-bulletin.vercel.app/**`, `http://localhost:8081/**`, `unedited://**`. Kept in `supabase/config.toml` `[auth]` and pushed with `npx supabase config push`. Email and Google providers are on; email codes are 8 digits (the field takes up to 10).
   - **Stamps:** all 16 SVGs are in `design/screens/assets/` and copied to `assets/stamps/` and `assets/cursors/`. `Stamp` and `StampDown` (`src/components/stamp.tsx`) render them; the sign-in screen has the edition preview card with the capped Brand stamp dropping onto it (static when the reader prefers reduced motion). On web the SVGs use React Native's `Image`, because expo-image froze the page on web. On Android they use expo-image, which has **not** been tested on a device, and Android may drop the ink texture (an SVG filter) and show a flat stamp.
   - **Landing (rebuilt 2026-10-09):** web-only HTML/CSS in `src/components/landing-page.web.tsx`, following `Landing.dc.html` and MOTION.md §9, with a light/dark toggle. Phone demo uses captures of the design boards (`public/lp/*.jpg`); re-capture them if Home, Library, You, Feed or Article change.
-  - **Known issue:** tab routes (`/home`, `/you`, `/library`) log a React hydration mismatch (#418) on load in the static build. It was already there before the landing rebuild; the page still works.
-  - **Not done (updated 2026-10-10):** any test on a real Android phone (first APK built 2026-10-10); Firebase (FCM) credentials for Expo push on Android; Google sign-in on Android (redirect not set up or tested); Hindi/Marathi interface beyond the 32 draft strings; API fallback keys (NewsData.io / NewsAPI.org / GNews).
-  - **Vercel env vars (2026-10-10):** the three `EXPO_PUBLIC_*` values are set for **Production only**. Preview builds still have none, and the Vercel build fails without them.
-  - **Known gap:** on web, text first shows in a system font until the fonts arrive; the pre-rendered landing page will need handling for search engines.
+  - **Pre-rendering (2026-10-13):** only `/landing` is pre-rendered with content. Every other web page pre-renders an empty shell and draws after hydration (`useHydrated`, root `_layout.tsx`), because it depends on the reader's device and the date; this fixed the hydration mismatch (#418) on tab routes.
+  - **Not done (updated 2026-10-13):** any test on a real Android phone; upload of the FCM V1 service account key to EAS credentials (Expo push on Android needs it); Google sign-in on Android (redirect `unedited://**` now allowed, untested); Hindi/Marathi interface beyond the 32 draft strings; API fallback keys (NewsData.io / NewsAPI.org / GNews).
+  - **Vercel env vars (checked 2026-10-13):** the three `EXPO_PUBLIC_*` values are set for Production, Preview and Development.
+  - **Web fonts:** the static HTML declares and preloads the app fonts, so text waits briefly (font-display auto) rather than flashing a system font. Since 2026-10-13 `build-web.mjs` preloads only the Latin upright fonts; Devanagari, Atkinson and italics load when used, and the landing page (Google Fonts woff2) preloads none.
 - Backend: Supabase confirmed for DB and auth (2026-10-09).
 - The older code (`uneditd-app.zip`) is **not in this folder** and still uses the old name, fonts and landing layout. It was built ahead of the design.
 
@@ -176,7 +176,7 @@ These came up because older planning notes and later design passes say different
 - Accessibility settings are designed but not yet applied across the other boards (they only drive the live preview).
 - Notification delivery (web push, Android) is not yet built or decided; see §5.
 - Fill landing store links.
-- Handles (domain stays on Vercel for now).
+- Handles (the domain stays https://unedited-bulletin.vercel.app; no custom domain).
 - Bring the Expo code up to date with the current design (name, motto, fonts, patterns). Expo as the stack is settled (2026-10-09); where the code lives and whether to reuse `uneditd-app.zip` is not.
 - `Article-ptmb.dc.html` is Ashmit's experiment ("Article by" byline; its layout now matches Article). Decide whether to merge it into Article or drop it.
 

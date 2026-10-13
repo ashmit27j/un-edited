@@ -35,7 +35,7 @@ select vault.create_secret('<CRON_SECRET from supabase/.env>', 'cron_secret');
 
 Run the fetch once by hand to fill the first edition (Dashboard › Edge Functions › fetch-news › Test, with header `Authorization: Bearer <CRON_SECRET>`), or wait for the next half hour.
 
-**Sign-in** (from `.env.example`): Authentication › Providers: turn on Email and Google. URL Configuration › Redirect URLs: `unedited://sign-in`, `http://localhost:8081/sign-in`, `https://unedited-six.vercel.app/sign-in`. Email templates › Magic Link: include `{{ .Token }}`.
+**Sign-in** (from `.env.example`): Authentication › Providers: turn on Email and Google. URL Configuration › Redirect URLs: set in `supabase/config.toml` (`[auth]`, pushed with `npx supabase config push`): site URL `https://unedited-bulletin.vercel.app`, redirects `https://unedited-bulletin.vercel.app/**`, `http://localhost:8081/**`, `unedited://**`. Email templates › Magic Link: include `{{ .Token }}`.
 
 **News API fallbacks (optional)**: sign up and paste the keys into `supabase/.env`, then run `secrets set` again.
 - NewsData.io: free tier, 200 credits/day.

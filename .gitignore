@@ -45,3 +45,6 @@ example
 # Supabase function secrets (VAPID private key, API keys, CRON_SECRET)
 supabase/.env
 supabase/.temp/
+
+# Firebase service account keys (upload to EAS, never commit)
+*firebase-adminsdk*.json

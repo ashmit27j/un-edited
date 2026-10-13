@@ -33,6 +33,24 @@ writeFileSync('dist/vercel.json', JSON.stringify(routing, null, 2) + '\n');
 
 // Expo puts package assets (all the fonts, some icons) in dist/assets/node_modules/, but the Vercel CLI
 // never uploads folders named node_modules, so they 404 in production. Rename it and rewrite the paths.
+// Expo preloads every font the app registers (~2 MB of TTFs, incl. ~1.6 MB of Devanagari) on every page, so the
+// fonts the first screen needs arrive late and text waits invisible. Keep preloads for the Latin upright fonts only;
+// the rest stay declared (@font-face) and load when a page uses them. The landing page uses Google Fonts' woff2
+// instead, so it preloads none of them.
+const lazyFont = /TiroDevanagari|Mukta|AtkinsonHyperlegible|_Italic/;
+const walkHtml = (dir) =>
+  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walkHtml(join(dir, e.name)) : e.name.endsWith('.html') ? [join(dir, e.name)] : [],
+  );
+for (const file of walkHtml('dist')) {
+  const landing = /[\\/]landing\.html$/.test(file);
+  const html = readFileSync(file, 'utf8');
+  const trimmed = html.replace(/<link rel="preload" href="([^"]+)" as="font"[^>]*>/g, (tag, href) =>
+    landing || lazyFont.test(href) ? '' : tag,
+  );
+  if (trimmed !== html) writeFileSync(file, trimmed);
+}
+
 if (existsSync('dist/assets/node_modules')) {
   renameSync('dist/assets/node_modules', 'dist/assets/pkg');
   const walk = (dir) =>

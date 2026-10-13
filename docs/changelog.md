@@ -2,6 +2,16 @@
 
 Newest first. One line per change: date — what changed — why (if known). Update `current-config.md` alongside.
 
+- 2026-10-13 — **Loose ends from the to-do list:**
+  - **Domain:** https://unedited-bulletin.vercel.app is permanent; no custom domain (Ashmit). Supabase redirect URLs now `https://unedited-bulletin.vercel.app/**`, `http://localhost:8081/**`, `unedited://**` (replacing a mistyped `…/sign-in:` entry), kept in `supabase/config.toml` `[auth]` and pushed with `npx supabase config push`. Site URL was already right. `docs/backend-setup.md` updated.
+  - **Checked, already done:** the `extract-articles` migration was already on the remote database (`db push`: up to date); Vercel already had the three `EXPO_PUBLIC_*` values on Production, Preview and Development.
+  - **`send-notifications` redeployed** with the per-kind Android channels.
+  - **Firebase:** `google-services.json` (project `un-edited`, package `app.unedited`) added and set in `app.json`. The admin service account key is gitignored (`*firebase-adminsdk*.json`); it still has to be uploaded to EAS credentials (FCM V1) and then deleted.
+  - **New APK** on EAS (`preview`): https://expo.dev/accounts/ashmit27j/projects/unedited/builds/c6cb6d99-8bbb-4ff8-9f6e-0452d82e9dd1
+  - **Hydration error #418 fixed:** pages pre-rendered at build time carried that day's date and no reader data, so they could never match the first client render. Only `/landing` is pre-rendered with content now; other web pages render after hydration (`src/hooks/use-hydrated.ts`, root `_layout.tsx`). Checked on a local build: no errors on Home, Feed, You, Landing.
+  - **Font loading:** pages preloaded all 15 app fonts (~2 MB, ~1.6 MB of it Devanagari), slowing the ones the first screen needs. `build-web.mjs` now keeps preloads for the Latin upright fonts only; the landing page preloads none (it uses Google Fonts).
+  - **Privacy page:** added "Report a problem" reports to what's collected and Firebase Cloud Messaging to the push providers; date 13 October 2026.
+
 - 2026-10-11 — **Privacy policy page and new domain:** added `public/privacy.html`, served at `/privacy` (for the Play Console "Privacy policy" link), with a footer link on the landing page. Wording is a draft; Ashmit to review, and the Play Data safety form should match it. Moved the site address from unedited-six to **https://unedited-bulletin.vercel.app** in `story.tsx` (share links), `install-guide.tsx` and `current-config.md`. Supabase Site URL and Redirect URLs need the new domain too.
 
 - 2026-10-10 — **Ashmit's change list (Feed / Explore, ⋯ menu, fuller stories, sign-in, landing):**

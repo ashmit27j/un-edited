@@ -12,11 +12,11 @@ import { Mukta_400Regular, Mukta_500Medium } from '@expo-google-fonts/mukta';
 import { TiroDevanagariHindi_400Regular } from '@expo-google-fonts/tiro-devanagari-hindi';
 import { TiroDevanagariMarathi_400Regular } from '@expo-google-fonts/tiro-devanagari-marathi';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useEditionSchedule } from '@/components/notification-settings';
@@ -25,6 +25,7 @@ import { ToastProvider } from '@/components/toast';
 import { useAccountSync } from '@/session/account-sync';
 import { NewsProvider } from '@/data/news';
 import { TourProvider } from '@/tour/tour';
+import { useHydrated } from '@/hooks/use-hydrated';
 import { useWebScrollMemory } from '@/hooks/use-web-scroll-memory';
 import { SessionProvider } from '@/session/session-provider';
 import { ReaderProvider } from '@/store/reader-provider';
@@ -36,11 +37,16 @@ SplashScreen.preventAutoHideAsync();
 
 function Shell() {
   const { name, colors } = useTheme();
+  const hydrated = useHydrated();
+  const pathname = usePathname();
   useWebScrollMemory();
   useEditionSchedule();
   useAccountSync();
   useSourceCleanup();
   useSaveDailyEdition();
+  // Web: only the landing page is pre-rendered for search engines. Every other page depends on the reader's device
+  // (date, edition, settings), so it renders after hydration instead of mismatching the build-time HTML.
+  if (Platform.OS === 'web' && !hydrated && pathname !== '/landing') return <View style={{ flex: 1 }} />;
   return (
     <>
       <StatusBar style={name === 'ink' ? 'light' : 'dark'} />

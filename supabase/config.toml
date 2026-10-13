@@ -14,3 +14,12 @@ verify_jwt = false
 
 [functions.extract-articles]
 verify_jwt = false
+
+# Sign-in redirects. Push with `npx supabase config push` (only these two settings are declared).
+[auth]
+site_url = "https://unedited-bulletin.vercel.app"
+additional_redirect_urls = [
+  "https://unedited-bulletin.vercel.app/**",
+  "http://localhost:8081/**",
+  "unedited://**",
+]
